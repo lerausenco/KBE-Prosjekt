@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+    h1 {padding-left: 80px;}
+    
+    p {padding-left: 80px;}
+    div {padding-left: 80px;}
+    body {padding-left: 80px;}
+    form {padding-left: 80px; padding-right: 150px; width: 400px;}
+    </style>
+    </head>
+<body style="background-color: #ecf2f3;">
+
+
+<h1 style="font-family:verdana"> CHAIR DESIGNER </h1>
+
+<div style="float:left;">
+<form action="/product_info.php" method="get">
+    <h2 style="font-family:verdana">SEAT FEATURES</h2>
+  <label for="s_width">Seat width:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+  <input type="text" class = "textbox" id="s_width" name="s_width"> cm<br><br>
+
+  <label for="s_depth">Seat depth:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+  <input type="text" id="s_depth" name="s_depth"> cm<br><br>
+
+  <label for="a_th">Apron Thickness:</label>
+  <input type="text" id="a_th" name="a_th"> cm<br><br>
+
+  <label for="arm_support"> Arm support:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+  <input type="checkbox" id="arm_support" name="arm_support" value="with_arm">
+
+
+<h2 style="font-family:verdana">BACK FEATURES </h2>
+
+  <label for="back_check">Back:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+  <input type="checkbox" id="back_check" name="back_check" value="with_back">
+  <input type="text" id="back_height" name="back_height"> cm<br><br>
+
+  <label for="trail_check">Top Rail:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+  <input type="checkbox" id="trail_check" name="trail_check" value="with_trail">
+  <input type="text" id="trail_width" name="trail_width"> cm<br><br>
+
+  <label for="mrail_check">Mid Rail:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+  <input type="checkbox" id="mrail_check" name="mrail_check" value="with_mrail">
+  <input type="text" id="mrail_width" name="mrail_width"> cm<br><br>
+
+  <label for="brail_check">Bottom Rail:&nbsp;</label>
+  <input type="checkbox" id="brail_check" name="brail_check" value="with_brail">
+  <input type="text" id="brail_width" name="brail_width"> cm <br><br>
+  
+
+  <h2 style="font-family:verdana">LEG FEATURES</h2>
+
+  <label for="leg_height">Height: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </label>
+  <input type="text" id="leg_height" name="leg_height"> cm<br><br>
+
+  <label for="top_th">Thickness:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+  <input type="text" id="top_th" name="top_th" > cm<br><br>
+ 
+  <label for="tapered_check">Tapered:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+  <input type="checkbox" id="tapered_check" name="tapered_check" value="with_taper"><br><br>
+
+  Spindles: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  
+  <input type="radio" id="spind_2" name="spindles" value="2">
+  <label for="spind_2">2</label>
+  
+  <input type="radio" id="spind_3" name="spindles" value="3">
+  <label for="spind_3">3</label>
+
+  <input type="radio" id="spind_4" name="spindles" value="4">
+  <label for="spind_4">4</label><br><br>
+
+  <input type="submit" value="Preview">
+</form> 
+</div>
+
+<div style="float:right;">
+    <form action="/order_info.php" method="get">
+        <h2 style="font-family:verdana">CUSTOMER INFORMATION</h2>
+    
+        <label for="fname">Full Name:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        <input type="text" class = "textbox" id="fname" name="fname"> <br><br>
+
+        <label for="email">E-mail:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        <input type="text" class = "textbox" id="email" name="email"> <br><br>
+
+        <input type="submit" value="Submit">
+    </form> 
+</div>
+
+</body>
+</html>
