@@ -12,9 +12,9 @@ DefClass: Chair_Assignment (ug_base_part);
     (number parameter) Chair_Leg_width: 5;
     (number parameter) Chair_Leg_height: 90;
     (Point parameter)  Chair_Leg1_origin: Point(0,0,0);
-	(Point parameter)  Chair_Leg2_origin: Point(0,TableTop_width:-TableLeg_width:,0);
-	(Point parameter)  Chair_Leg3_origin: Point(TableTop_length:-TableLeg_length:,0,0);
-	(Point parameter)  Chair_Leg4_origin: Point(TableTop_length:-TableLeg_length:,TableTop_width:-TableLeg_width:,0);
+	(Point parameter)  Chair_Leg2_origin: Point(0,TableTop_width:-Chair_Leg_width:,0);
+	(Point parameter)  Chair_Leg3_origin: Point(TableTop_length:-Chair_Leg_length:,0,0);
+	(Point parameter)  Chair_Leg4_origin: Point(TableTop_length:-Chair_Leg_length:,TableTop_width:-Chair_Leg_width:,0);
 
 (child) Chair_Seat: {
 	class, ug_block,
@@ -29,34 +29,34 @@ DefClass: Chair_Assignment (ug_base_part);
 
 (child) Chair_Leg1: {
 	class, ug_block;
-	length, TableLeg_length:,
-	width, TableLeg_width:,
-	height, TableLeg_height:,
-	origin, TableLeg1_origin:;
+	length, Chair_Leg_length:,
+	width, Chair_Leg_width:,
+	height, Chair_Leg_height:,
+	origin, Chair_Leg1_origin:;
 };
 
 (child) Chair_Leg2: {
 	class, ug_block,
-	length, TableLeg_length:,
-	width, TableLeg_width:,
-	height, TableLeg_height:,
-	origin, TableLeg2_origin:;
+	length, Chair_Leg_length:,
+	width, Chair_Leg_width:,
+	height, Chair_Leg_height:,
+	origin, Chair_Leg2_origin:;
 };
 
 (child) Chair_Leg3: {
 	class, ug_block,
-	length, TableLeg_length:,
-	width, TableLeg_width:,
-	height, TableLeg_height:,
-	origin, TableLeg3_origin:;
+	length, Chair_Leg_length:,
+	width, Chair_Leg_width:,
+	height, Chair_Leg_height:,
+	origin, Chair_Leg3_origin:;
 };
 
 (child) Chair_Leg4: {
 	class, ug_block,
-	length, TableLeg_length:,
-	width, TableLeg_width:,
-	height, TableLeg_height:,
-	origin, TableLeg4_origin:;
+	length, Chair_Leg_length:,
+	width, Chair_Leg_width:,
+	height, Chair_Leg_height:,
+	origin, Chair_Leg4_origin:;
 };
 
 (List) x_coords: Loop {	
