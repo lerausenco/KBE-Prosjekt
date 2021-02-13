@@ -1,5 +1,5 @@
 #! UGNX/KF 2.0
-DefClass: Chair_template(%ug_create_instance ug_base_part);
+DefClass: Chair_base(%ug_create_instance ug_base_part);
 
 
 # Set of Parameters for the seat
