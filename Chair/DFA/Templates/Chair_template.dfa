@@ -1,0 +1,183 @@
+#! UGNX/KF 2.0
+DefClass: Chair_template(%ug_create_instance ug_base_part);
+
+
+# Set of Parameters for the seat
+
+	(Number Parameter) s_width: 60;
+	(Number Parameter) s_depth: 60;
+	(Number Parameter) s_th: (s_width:+s_depth:)/80;
+	(Point Parameter)  s_origin: Point(0,0,l_height:);
+	
+	(Boolean Parameter) apron: TRUE;
+	
+	(Number Parameter) apron_th: 5;
+	(Point Parameter) apron_origin: Point(l_th:,0,l_height:-apron_th:);
+	
+#Set of parameters for legs
+	(Number Parameter) l_height: 90;
+    (Number Parameter) l_th: 10;
+	
+	(Point Parameter)  l1_origin: Point(0,0,0);
+	(Point Parameter)  l2_origin: Point(0,s_depth:-l_th:,0);
+	(Point Parameter)  l3_origin: Point(s_width:-l_th:,0,0);
+	(Point Parameter)  l4_origin: Point(s_width:-l_th:,s_depth:-l_th:,0);
+	
+
+# Set of Parameters for the back
+	(Number Parameter) b_height: 60;
+    (Number Parameter) b_th: 7;
+	(Number Parameter) b_width: 5;
+	(Point Parameter) b_left_origin: Point(0,s_depth:-b_width:,l_height:+s_th:);
+	(Point Parameter) b_right_origin: Point(s_width:-b_th:, s_depth:-b_width:, l_height:+s_th:);
+	
+	
+# Set of parameters for rails
+	
+	(Number Parameter) top_rail_th: 5;
+	(Point Parameter) top_rail_origin: Point(b_th:, s_depth:-rail_width:, l_height:+s_th:+b_height:-top_rail_th:);
+	
+	(Number Parameter) mid_rail_th: 6;
+	(Point Parameter) mid_rail_origin: Point(b_th:, s_depth:-rail_width:, l_height:+s_th: + b_height:*2/3-mid_rail_th:);
+	
+	
+	(Number Parameter) bot_rail_th: 7;
+	(Point Parameter) bot_rail_origin: Point(b_th:, s_depth:-rail_width:, l_height:+s_th: + b_height:/3-mid_rail_th:);
+	
+	(Number parameter) rail_width: 2;
+	(Number Parameter) rail_length: s_width:-2*b_th:;
+	
+
+(child) Seat: {
+	Class, ug_block,
+	Length, s_width:,
+	Width, s_depth:,
+	Height, s_th:,
+	Origin, s_origin:;
+};
+
+(Child) Apron: {
+	Class, ug_block,
+	Length, Seat:Width: - 2*l_th:,
+	Width, apron_th:/10,
+	Height, apron_th:,
+	Origin, apron_origin:;
+};
+	
+(Child) Back_left: {
+	Class, ug_block,
+	Length, b_th:,	#x-axis
+	Width, b_width:, #y-axis
+	Height, b_height:,
+	Origin, b_left_origin:;
+};
+
+(Child) Back_right: {
+	Class, ug_block,
+	Length, b_th:,	#x-axis
+	Width, b_width:, #y-axis
+	Height, b_height:,
+	Origin, b_right_origin:;
+
+};
+
+(Child) Rail_top: {
+	Class, ug_block,
+	Length, rail_length:,
+	Width, rail_width:,
+	Height, top_rail_th:,
+	Origin, top_rail_origin:;
+	};
+
+(Child) Rail_mid: {
+	Class, ug_block,
+	Length, rail_length:,
+	Width, rail_width:,
+	Height, mid_rail_th:,
+	Origin, mid_rail_origin:;
+	};
+	
+(Child) Rail_bot: {
+	Class, ug_block,
+	Length, rail_length:,
+	Width, rail_width:,
+	Height, bot_rail_th:,
+	Origin, bot_rail_origin:;
+	};
+	
+(Child) Leg_left_front: {
+	Class, ug_block,
+			length, l_th:,
+			width, l_th:,
+			height, l_height:,
+			origin, l1_origin:;
+
+};
+(Child) Leg_left_back: {
+	Class, ug_block,
+			length, l_th:,
+			width, l_th:,
+			height, l_height:,
+			origin, l2_origin:;
+
+};
+
+(Child) Leg_right_front: {
+	Class, ug_block,
+			length, l_th:,
+			width, l_th:,
+			height, l_height:,
+			origin, l3_origin:;
+
+};
+
+(Child) Leg_right_back: {
+	Class, ug_block,
+			length, l_th:,
+			width, l_th:,
+			height, l_height:,
+			origin, l4_origin:;
+
+};
+
+(Child) Taper1: {
+	Class, ug_edge_taper,
+	References, @{
+		$face << first(ug_body_askFaceClosestToPoint(Leg_left_front:, Point(0.5*l_th:, 0.5*l_th:, l_height:)));
+		ug_face_askEdges($face);
+	};
+	Taper_Angle, 1.0;
+	Draw_Direction, Vector(0,0,-1);
+};
+
+(Child) Taper2: {
+	Class, ug_edge_taper,
+	References, @{
+		$face << first(ug_body_askFaceClosestToPoint(Leg_left_back:, Point(0.5*l_th:, s_depth:-l_th: + 0.5*l_th:, l_height:)));
+		ug_face_askEdges($face);
+	};
+	Taper_Angle, 1.0;
+	Draw_Direction, Vector(0,0,-1);
+};
+
+(Child) Taper3: {
+	Class, ug_edge_taper,
+	References, @{
+		$face << first(ug_body_askFaceClosestToPoint(Leg_right_front:, Point(s_width:-l_th: + 0.5*l_th:,0.5*l_th:, l_height:)));
+		ug_face_askEdges($face);
+	};
+	Taper_Angle, 1.0;
+	Draw_Direction, Vector(0,0,-1);
+};
+
+(Child) Taper3: {
+	Class, ug_edge_taper,
+	References, @{
+		$face << first(ug_body_askFaceClosestToPoint(Leg_right_back:, Point(s_width:-l_th: + 0.5*l_th:, s_depth:-l_th: + 0.5*l_th:, l_height:)));
+		ug_face_askEdges($face);
+	};
+	Taper_Angle, 1.0;
+	Draw_Direction, Vector(0,0,-1);
+};
+
+
