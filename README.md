@@ -5,5 +5,5 @@ This page describes the process of creating a KBE system for customisable chairs
 
 ## Development
 ### Customer Interface
-
-![](CustomerUI.png)
+The cus
+![](Figures/CustomerUI.png)
