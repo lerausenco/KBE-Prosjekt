@@ -9,6 +9,9 @@ DefClass: Chair_template(%ug_create_instance ug_base_part);
 	(Number Parameter) s_th: (s_width:+s_depth:)/80;
 	(Point Parameter)  s_origin: Point(0,0,l_height:);
 	
+	(Number Parameter) apron: 1;
+	
+	(Boolean Parameter) arm_support: TRUE;
 	
 	(Number Parameter) apron_th: 5;
 	(Number Parameter) apron_width: apron_th:/10;
@@ -64,6 +67,7 @@ DefClass: Chair_template(%ug_create_instance ug_base_part);
 
 
 
+
 (Child) Apron_front: {
 	Class, ug_block,
 	Length, Seat:Width: - 2*l_th:,
@@ -95,7 +99,7 @@ DefClass: Chair_template(%ug_create_instance ug_base_part);
 	Height, apron_th:,
 	Origin, apron_left_origin:;
 
-
+};
 #ARM SUPPORT
 
 (Number Parameter) arm_width:  s_width:/10;
@@ -278,7 +282,7 @@ DefClass: Chair_template(%ug_create_instance ug_base_part);
 	Length, sp_th:,
 	Width, side_sp_length:,
 	Height, sp_height:,
-	Origin, Point(adj:, leg_th2:, l_height:/3)
+	Origin, Point(adj:, leg_th2:, l_height:/3);
 };
 
 (Child) Spindle_left: {
@@ -286,7 +290,7 @@ DefClass: Chair_template(%ug_create_instance ug_base_part);
 	Length, sp_th:,
 	Width, side_sp_length:,
 	Height, sp_height:,
-	Origin, Point(adj:+s_width:-l_th:, leg_th2:, l_height:/3)
+	Origin, Point(adj:+s_width:-l_th:, leg_th2:, l_height:/3);
 };
 
 (Child) Spindle_back: {
@@ -294,7 +298,7 @@ DefClass: Chair_template(%ug_create_instance ug_base_part);
 	Length, front_sp_length:,
 	Width, sp_th:,
 	Height, sp_height:,
-	Origin, Point(leg_th2:, s_depth:-sp_th:-adj:, l_height:/3)
+	Origin, Point(leg_th2:, s_depth:-sp_th:-adj:, l_height:/3);
 };
 
 (Child) Spindle_front: {
@@ -302,5 +306,5 @@ DefClass: Chair_template(%ug_create_instance ug_base_part);
 	Length, front_sp_length:,
 	Width, sp_th:,
 	Height, sp_height:,
-	Origin, Point(leg_th2:, adj:, l_height:/3)
+	Origin, Point(leg_th2:, adj:, l_height:/3);
 };
