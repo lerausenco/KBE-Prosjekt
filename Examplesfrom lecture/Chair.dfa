@@ -1,0 +1,114 @@
+#! UGNX/KF 2.0
+DefClass: Chair_Assignment (ug_base_part);
+
+# Set of parameters for Chair_Seat
+    (number parameter) Chair_Seat_length: 100;
+    (number parameter) Chair_Seat_width: 100;
+    (number parameter) Chair_Seat_height: 5;
+    (Point parameter)  Chair_Seat_origin: Point(0,0,Chair_Seat_height:);
+
+# Set of parameters for the TableLegx
+	(number parameter) Chair_Leg_length: 6;
+    (number parameter) Chair_Leg_width: 5;
+    (number parameter) Chair_Leg_height: 90;
+    (Point parameter)  Chair_Leg1_origin: Point(0,0,0);
+	(Point parameter)  Chair_Leg2_origin: Point(0,TableTop_width:-Chair_Leg_width:,0);
+	(Point parameter)  Chair_Leg3_origin: Point(TableTop_length:-Chair_Leg_length:,0,0);
+	(Point parameter)  Chair_Leg4_origin: Point(TableTop_length:-Chair_Leg_length:,TableTop_width:-Chair_Leg_width:,0);
+
+(child) Chair_Seat: {
+	class, ug_block,
+	length, Chair_Seat_length:,
+	width, Chair_Seat_width:,
+	height, Chair_Seat_height:,
+	origin, Chair_Seat_origin:;
+
+};
+
+
+
+(child) Chair_Leg1: {
+	class, ug_block;
+	length, Chair_Leg_length:,
+	width, Chair_Leg_width:,
+	height, Chair_Leg_height:,
+	origin, Chair_Leg1_origin:;
+};
+
+(child) Chair_Leg2: {
+	class, ug_block,
+	length, Chair_Leg_length:,
+	width, Chair_Leg_width:,
+	height, Chair_Leg_height:,
+	origin, Chair_Leg2_origin:;
+};
+
+(child) Chair_Leg3: {
+	class, ug_block,
+	length, Chair_Leg_length:,
+	width, Chair_Leg_width:,
+	height, Chair_Leg_height:,
+	origin, Chair_Leg3_origin:;
+};
+
+(child) Chair_Leg4: {
+	class, ug_block,
+	length, Chair_Leg_length:,
+	width, Chair_Leg_width:,
+	height, Chair_Leg_height:,
+	origin, Chair_Leg4_origin:;
+};
+
+(List) x_coords: Loop {	
+	for $b from 0 to 4;
+	append {
+		cos($b*angle:) * cyl_diameter:/2 - hole_width:*sin($b*angle:) ;
+	};
+};
+(List) DemandValue: {x_coords:};
+
+(List) y_coords: Loop {	
+	for $c from 0 to 4;
+	append {
+		sin($c*angle:) *cyl_diameter:/2 + hole_width:* cos($c*angle:);
+	};
+};
+
+(List) place_legs: Loop {
+
+	for $x in x_coords:;
+	for $y in y_coords:;
+	for $a from 1 to 4;
+	for $pt is Point($x, $y, 4/5*cyl_height:);
+	
+	append {ug_createInstance (
+	{
+		Class,	ug_block;
+		Height, 2*thickness:;
+		Width,	0.5*cyl_height:;
+		Length,	hole_width:;
+		referenceFrame, framexy($pt, vector(-$y - hole_width:*sin($a * angle:), $x + hole_width:*cos($a*angle:), 0), vector(0,0,-1));
+		Operation, Subtract;
+		Target,		{cylinder:};
+	};)};
+	};
+	
+(list) list1: loop
+{
+  for $x in {0, 1}; # Coodinates for X hardcoded
+  collect loop {
+  	for $y in {0, 1}; # Coordinates for Y hardcoded
+  	for $pt is Point($x*,$y,0);
+  	do printValue($pt);
+  	append {ug_createInstance(
+  	{
+   	 	class, ug_cylinder;
+    		diameter, 1;
+    		height, 1.5;
+    		Origin, $pt; 
+    		Direction, Vector(0,0,1);
+   		Operation, Subtract;
+   		Target, {button_disk:}; # Generating a cylinder and subtracting from the button disk
+  	})};
+  };
+};
