@@ -1,0 +1,42 @@
+#TAPER LEGS 
+(Number Parameter) taper_angle: 1.0;
+
+(Child) Taper1: {
+	Class, ug_edge_taper,
+	References, @{
+		$face << first(ug_body_askFaceClosestToPoint(Leg_left_front:, Point(0.5*l_th:, 0.5*l_th:, l_height:)));
+		ug_face_askEdges($face);
+	};
+	Taper_Angle, taper_angle:;
+	Draw_Direction, Vector(0,0,-1);
+};
+
+(Child) Taper2: {
+	Class, ug_edge_taper,
+	References, @{
+		$face << first(ug_body_askFaceClosestToPoint(Leg_left_back:, Point(0.5*l_th:, s_depth:-l_th: + 0.5*l_th:, l_height:)));
+		ug_face_askEdges($face);
+	};
+	Taper_Angle, taper_angle:;
+	Draw_Direction, Vector(0,0,-1);
+};
+
+(Child) Taper3: {
+	Class, ug_edge_taper,
+	References, @{
+		$face << first(ug_body_askFaceClosestToPoint(Leg_right_front:, Point(s_width:-l_th: + 0.5*l_th:,0.5*l_th:, l_height:)));
+		ug_face_askEdges($face);
+	};
+	Taper_Angle, taper_angle:;
+	Draw_Direction, Vector(0,0,-1);
+};
+
+(Child) Taper3: {
+	Class, ug_edge_taper,
+	References, @{
+		$face << first(ug_body_askFaceClosestToPoint(Leg_right_back:, Point(s_width:-l_th: + 0.5*l_th:, s_depth:-l_th: + 0.5*l_th:, l_height:)));
+		ug_face_askEdges($face);
+	};
+	Taper_Angle, taper_angle:;
+	Draw_Direction, Vector(0,0,-1);
+};

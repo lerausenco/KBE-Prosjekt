@@ -1,0 +1,66 @@
+#! UGNX/KF 2.0
+DefClass: Chair_template(%ug_create_instance ug_base_part);
+
+
+# Set of Parameters for the seat
+	(Number Parameter) test_som: 1;
+	(Number Parameter) s_width: 60;
+	(Number Parameter) s_depth: 60;
+	(Number Parameter) s_th: (s_width:+s_depth:)/80;
+	(Point Parameter)  s_origin: Point(0,0,l_height:);
+	
+		
+#Set of parameters for legs
+	(Number Parameter) l_height: 90;
+    (Number Parameter) l_th: 10;
+	
+	(Point Parameter)  l1_origin: Point(0,0,0);
+	(Point Parameter)  l2_origin: Point(0,s_depth:-l_th:,0);
+	(Point Parameter)  l3_origin: Point(s_width:-l_th:,0,0);
+	(Point Parameter)  l4_origin: Point(s_width:-l_th:,s_depth:-l_th:,0);
+	
+	
+	(child) Seat: {
+	Class, ug_block,
+	Length, s_width:,
+	Width, s_depth:,
+	Height, s_th:,
+	Origin, s_origin:;
+};
+
+#LEGS
+	
+(Child) Leg_left_front: {
+	Class, ug_block,
+			length, l_th:,
+			width, l_th:,
+			height, l_height:,
+			origin, l1_origin:;
+
+};
+(Child) Leg_left_back: {
+	Class, ug_block,
+			length, l_th:,
+			width, l_th:,
+			height, l_height:,
+			origin, l2_origin:;
+
+};
+
+(Child) Leg_right_front: {
+	Class, ug_block,
+			length, l_th:,
+			width, l_th:,
+			height, l_height:,
+			origin, l3_origin:;
+
+};
+
+(Child) Leg_right_back: {
+	Class, ug_block,
+			length, l_th:,
+			width, l_th:,
+			height, l_height:,
+			origin, l4_origin:;
+
+};

@@ -1,0 +1,40 @@
+#ARM SUPPORT
+
+(Number Parameter) arm_width:  s_width:/10;
+(Number Parameter) arm_length: s_depth:-b_width:-arm_th:;
+(Number Parameter) arm_th: s_width:/50;
+(Number Parameter) arm_height: 20;
+
+(Child) Right_arm_front: {
+	Class, ug_block,
+	Length, arm_width:,
+	Width, arm_th:,
+	Height, arm_height:,
+	Origin, Point(0, 0, l_height:+s_th:),
+};
+
+
+(Child) Right_arm_top: {
+	Class, ug_block,
+	Length, arm_width:,
+	Width, arm_length:,
+	Height, arm_th:,
+	Origin, Point(s_width:-arm_width:, 0, l_height:+s_th:+arm_height:),
+};
+
+(Child) Left_arm_front: {
+	Class, ug_block,
+	Length, arm_width:,
+	Width, arm_th:,
+	Height, arm_height:,
+	Origin, Point(s_width:-arm_width:, 0, l_height:+s_th:),
+};
+
+
+(Child) Left_arm_top: {
+	Class, ug_block,
+	Length, arm_width:,
+	Width, arm_length:,
+	Height, arm_th:,
+	Origin, Point(0, 0, l_height:+s_th:+arm_height:),
+};

@@ -1,0 +1,48 @@
+(Number Parameter) apron: 1;
+	
+	(Boolean Parameter) arm_support: TRUE;
+	
+	(Number Parameter) apron_th: 5;
+	(Number Parameter) apron_width: apron_th:/10;
+	
+	(Point Parameter) apron_front_origin: Point(l_th:,0,l_height:-apron_th:);
+	(Point Parameter) apron_back_origin: Point(l_th:,s_depth:-apron_width:,l_height:-apron_th:);
+	(Point Parameter) apron_right_origin: Point(0,l_th:,l_height:-apron_th:);
+	(Point Parameter) apron_left_origin: Point(s_width:-apron_width:,l_th:,l_height:-apron_th:);
+
+#APRON
+
+
+
+(Child) Apron_front: {
+	Class, ug_block,
+	Length, Seat:Width: - 2*l_th:,
+	Width, apron_width:,
+	Height, apron_th:, #user defined
+	Origin, apron_front_origin:;
+};
+
+(Child) Apron_back: {
+	Class, ug_block,
+	Length, Seat:Length: - 2*l_th:,
+	Width,  apron_width:,
+	Height, apron_th:,
+	Origin, apron_back_origin:;
+};
+
+(Child) Apron_right: {
+	Class, ug_block,
+	Length, apron_width:,
+	Width,  Seat:Width: - 2*l_th:,
+	Height, apron_th:,
+	Origin, apron_right_origin:;
+
+};
+(Child) Apron_left: {
+	Class, ug_block,
+	Length, apron_width:,
+	Width,  Seat:Width: - 2*l_th:,
+	Height, apron_th:,
+	Origin, apron_left_origin:;
+
+};

@@ -1,0 +1,39 @@
+# Set of parameters for rails
+	
+	(Number Parameter) top_rail_th: 5;
+	(Point Parameter) top_rail_origin: Point(b_th:, s_depth:-rail_width:, l_height:+s_th:+b_height:-top_rail_th:);
+	
+	(Number Parameter) mid_rail_th: 6;
+	(Point Parameter) mid_rail_origin: Point(b_th:, s_depth:-rail_width:, l_height:+s_th: + b_height:*2/3-mid_rail_th:);
+	
+	
+	(Number Parameter) bot_rail_th: 7;
+	(Point Parameter) bot_rail_origin: Point(b_th:, s_depth:-rail_width:, l_height:+s_th: + b_height:/3-mid_rail_th:);
+	
+	(Number parameter) rail_width: 2;
+	(Number Parameter) rail_length: s_width:-2*b_th:;
+
+(Child) Rail_top: {
+	Class, ug_block,
+	Length, rail_length:,
+	Width, rail_width:,
+	Height, top_rail_th:,
+	Origin, top_rail_origin:;
+	};
+
+(Child) Rail_mid: {
+	Class, ug_block,
+	Length, rail_length:,
+	Width, rail_width:,
+	Height, mid_rail_th:,
+	Origin, mid_rail_origin:;
+	};
+	
+(Child) Rail_bot: {
+	Class, ug_block,
+	Length, rail_length:,
+	Width, rail_width:,
+	Height, bot_rail_th:,
+	Origin, bot_rail_origin:;
+	};
+	

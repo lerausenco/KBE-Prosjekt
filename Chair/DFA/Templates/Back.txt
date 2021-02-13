@@ -1,0 +1,7 @@
+# Set of Parameters for the back
+	(Number Parameter) b_height: 60;
+    (Number Parameter) b_th: 7;
+	(Number Parameter) b_width: 5;
+	(Point Parameter) b_left_origin: Point(0,s_depth:-b_width:,l_height:+s_th:);
+	(Point Parameter) b_right_origin: Point(s_width:-b_th:, s_depth:-b_width:, l_height:+s_th:);
+	###IF NO BACK SET B_TH TO ZERO

@@ -1,0 +1,41 @@
+#SPINDLES
+(Number Parameter) leg_th2: l_th:-SIN(2*taper_angle:)*l_height:*2/3; #leg thickness at spindle height 
+(Number Parameter) side_sp_length: s_depth:-leg_th2:*2;
+(Number Parameter) sp_height: l_height:/12;
+(Number	Parameter) sp_th: leg_th2:*2/3;
+
+
+(Number Parameter) front_sp_length: s_width:-leg_th2:*2;
+(Number Parameter) adj: (l_th:-sp_th:)/2; #adjustment to center the spindles
+
+(Child) Spindle_right: {
+	Class, ug_block,
+	Length, sp_th:,
+	Width, side_sp_length:,
+	Height, sp_height:,
+	Origin, Point(adj:, leg_th2:, l_height:/3);
+};
+
+(Child) Spindle_left: {
+	Class, ug_block,
+	Length, sp_th:,
+	Width, side_sp_length:,
+	Height, sp_height:,
+	Origin, Point(adj:+s_width:-l_th:, leg_th2:, l_height:/3);
+};
+
+(Child) Spindle_back: {
+	Class, ug_block,
+	Length, front_sp_length:,
+	Width, sp_th:,
+	Height, sp_height:,
+	Origin, Point(leg_th2:, s_depth:-sp_th:-adj:, l_height:/3);
+};
+
+(Child) Spindle_front: {
+	Class, ug_block,
+	Length, front_sp_length:,
+	Width, sp_th:,
+	Height, sp_height:,
+	Origin, Point(leg_th2:, adj:, l_height:/3);
+};
