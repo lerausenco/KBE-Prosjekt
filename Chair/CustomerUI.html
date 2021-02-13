@@ -77,7 +77,19 @@
 </div>
 
 <div style="float:right;">
+
+  <img src="img/chair_w_back.jpg" width ="200" height = "200" alt="Chair with back" class="center">
     <form action="/order_info.php" method="get">
+
+        <label for="quantity">Quantity: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        <input type="text" class = "textbox" id="quantity" name="quantity"> <br><br>
+
+        <input type="submit" value= "Add to Order">
+
+      </form>
+
+      <form action="/customer_info.php" method="get">
+
         <h2 style="font-family:verdana">CUSTOMER INFORMATION</h2>
     
         <label for="fname">Full Name:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
@@ -87,7 +99,7 @@
         <input type="text" class = "textbox" id="email" name="email"> <br><br>
 
         <input type="submit" value="Submit">
-    </form> 
+      </form>
 </div>
 
 </body>
