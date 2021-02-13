@@ -3,7 +3,6 @@ DefClass: Chair_base(%ug_create_instance ug_base_part);
 
 
 # Set of Parameters for the seat
-	(Number Parameter) test_som: 1;
 	(Number Parameter) s_width: 60;
 	(Number Parameter) s_depth: 60;
 	(Number Parameter) s_th: (s_width:+s_depth:)/80;
