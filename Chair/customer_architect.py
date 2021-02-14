@@ -10,11 +10,16 @@ import json
 HOST_NAME = 'localhost'
 CUST_PORT_NUMBER = 1024
 
+values = {} #stores the last chair generated
+chair_name = ""
+quantity = 0
+
 def getHTMLstring(file_name):
     f = open(os.path.join(sys.path[0], file_name), "r")
     return f.read()
 
 class CustomerHandler(BaseHTTPRequestHandler):
+    
     def do_HEAD(s):
         s.send_response(200)
         s.send_header("Content-type", "text/html")
@@ -29,20 +34,11 @@ class CustomerHandler(BaseHTTPRequestHandler):
         s.wfile.write(bytes(html_code, "utf-8"))
 
         str_path = s.path
-        quantity = 0
-
-
-        values = {} #stores the last chair generated
-        
         if str_path.find("product_info")!=-1:
-            
             str_path = str_path.replace("+", "_")
-
             data = str_path.split("?")
             params = data[1]
             pairs = params.split("&") #key value pairs
-
-            
 
             for i in range(len(pairs)):
                 param_value = pairs[i].split("=")[1]
@@ -50,29 +46,28 @@ class CustomerHandler(BaseHTTPRequestHandler):
                     values[pairs[i].split("=")[0]] = 0
                 else:
                     values[pairs[i].split("=")[0]] = param_value
-            
-            print(values)
-            addChair(values)
 
-        if str_path.find("quantity")!=-1:
-            quantity = str_path.split("?")[1]
-
-            ###add order defined by dictionary "values", and quantity
+        if str_path.find("order_info")!=-1:
+            quantity_key_pair = str_path.split("?")[1]
+            quantity = quantity_key_pair.split("=")[1]
+            values['quantity'] = quantity
 
         if str_path.find("customer_info")!=-1:
+            str_path = str_path.replace("+", "_")
             data = str_path.split("?")
             params = data[1]
             pairs = params.split("&")
 
             name = pairs[0].split("=")[1]
             email = pairs[1].split("=")[1]
+            email = email.replace("%40", "@")
 
-            ###add order defined by dictionary "values", and quantity
+            quantity = values['quantity']            
+            chair_name = addChair(values) #add chair to factory database
+            addOrder(chair_name, quantity, name, email) #add order to factory database
 
-            print("values ",values)
-           # addOrder(values, quantity, name, email)
 
-
+            
 
 def addChair(values):
     chair_name = str(values['s_width']) + "x" +str(values['s_depth'])
@@ -94,11 +89,35 @@ def addChair(values):
             { 
             } 
             '''
+    #print("UPDATE QUERY:", UPDATE)
+    PARAMS = {'update':UPDATE}
+    response = requests.post(URL,data=PARAMS)
+    print("Result:", response.text)
+    return chair_name
+
+def addOrder(chair_name, quantity, name, email):
+    orderID = name + chair_name
+
+    URL = "http://127.0.0.1:3030/kbe/update"
+    UPDATE = '''
+            PREFIX kbe: <http://www.kbe.com/chairs.owl#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            INSERT
+            {
+             kbe:order_''' +orderID+ ''' a kbe:order. 
+             kbe:order_''' +orderID+ ''' kbe:name "'''+name+ '''".
+             kbe:order_''' +orderID+ ''' kbe:quantity "'''+str(quantity)+'''"^^xsd:float.
+             kbe:order_''' +orderID+ ''' kbe:email "'''+email+'''".
+             kbe:order_''' +orderID+ ''' kbe:status "0"^^xsd:float.            
+            }
+            WHERE
+            { 
+            }  
+    '''
     print("UPDATE QUERY:", UPDATE)
     PARAMS = {'update':UPDATE}
     response = requests.post(URL,data=PARAMS)
     print("Result:", response.text)
-
 
 if __name__ == '__main__':
     customer_server = HTTPServer
