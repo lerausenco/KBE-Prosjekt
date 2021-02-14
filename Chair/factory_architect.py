@@ -28,10 +28,10 @@ class FactoryHandler(BaseHTTPRequestHandler):
 
         jsonData = getOrder()
         chair_list = parseJson(jsonData)
-        makeDFA(chair_list)
-        #html_chair_data = OrderOverView(chair_data)
+        #makeDFA(chair_list)
+        html_chair_data = OrderOverView(chair_list)
         html_code = getHTMLstring("factory_overview.html")
-        #html_code = html_code.replace("<p> No orders yet </p>", html_chair_data)
+        html_code = html_code.replace("<p> No orders yet </p>", html_chair_data)
         s.wfile.write(bytes(html_code, "utf-8"))
 
         str_path = s.path
@@ -40,7 +40,7 @@ def getOrder():
     chair_params = { 'name':0, 's_width': 0, 's_depth': 0, 'a_th': 0, 'with_arm': 0, 'with_back': 0,
              'back_height': 0, 'with_top': 0, 'top_th': 0, 'with_mid': 0, 'mid_th': 0,
              'with_bot': 0, 'bot_th': 0 , 'leg_height': 0, 'leg_th': 0, 'with_taper': 0,
-             'spindles': 0 }
+             'spindles': 0  }
     
     
     where_str = '''?a_chair a kbe:chair. \n ''' 
@@ -57,7 +57,7 @@ def getOrder():
                '''+where_str+'''
             }
             '''
-    print("QUERY::", QUERY)
+   # print("QUERY::", QUERY)
     PARAMS = {'query':QUERY}
     response = requests.post(URL,data=PARAMS)
     #print("Result of query:", response.text)
@@ -77,17 +77,25 @@ def parseJson(json_data): #returns an array with parameters
     for x in range(num_of_chairs):
         for key in chair_parms:
             chair_parms[key] = json_data['results']['bindings'][x][key]['value']
-        chair_list.append(chair_parms)
+        dic_copy = chair_parms.copy()
+        chair_list.append(dic_copy)
     print("Chair list",chair_list)    
     return chair_list
 
 def OrderOverView(chair_list):
     #create html string to update factory overview table
+    chair_parms = { 'name':0, 's_width': 0, 's_depth': 0, 'a_th': 0, 'with_arm': 0, 'with_back': 0,
+             'back_height': 0, 'with_top': 0, 'top_th': 0, 'with_mid': 0, 'mid_th': 0,
+             'with_bot': 0, 'bot_th': 0 , 'leg_height': 0, 'leg_th': 0, 'with_taper': 0,
+             'spindles': 0 }
+    #for key in chair_parms:
+     #   print('first chair', chair_list[0][key])
+    
     Msg = ''
-    for i in range(len(table_data)):
+    for x in range(len(chair_list)):
         Msg +='<tr>'
-        for j in range(len(table_data[i])):
-            Msg += '<td>'+table_data[i][j]+'</td>'
+        for key in chair_list[x]:
+            Msg += '<td>'+chair_list[x][key]+'</td>'
         Msg += '</tr>'
     
     return Msg
@@ -129,7 +137,3 @@ if __name__ == '__main__':
         pass
     
     factory_httpd.server_close()
-        
-    
-    
-    
