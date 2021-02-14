@@ -34,6 +34,8 @@ class CustomerHandler(BaseHTTPRequestHandler):
         s.wfile.write(bytes(html_code, "utf-8"))
 
         str_path = s.path
+
+        #extract chair dimensions on "Preview button press"
         if str_path.find("product_info")!=-1:
             str_path = str_path.replace("+", "_")
             data = str_path.split("?")
@@ -47,11 +49,13 @@ class CustomerHandler(BaseHTTPRequestHandler):
                 else:
                     values[pairs[i].split("=")[0]] = param_value
 
+        #add quantity
         if str_path.find("order_info")!=-1:
             quantity_key_pair = str_path.split("?")[1]
             quantity = quantity_key_pair.split("=")[1]
             values['quantity'] = quantity
-
+        
+        #get customer info
         if str_path.find("customer_info")!=-1:
             str_path = str_path.replace("+", "_")
             data = str_path.split("?")
@@ -62,15 +66,21 @@ class CustomerHandler(BaseHTTPRequestHandler):
             email = pairs[1].split("=")[1]
             email = email.replace("%40", "@")
 
+        #send an order into the database
             quantity = values['quantity']            
             chair_name = addChair(values) #add chair to factory database
             addOrder(chair_name, quantity, name, email) #add order to factory database
 
-            
+         #display estimated time of arrival   
             html_code = writeTimeEstimate()
             s.wfile.write(bytes(html_code, "utf-8"))
 
 def getQuantity():
+    #get the total amount of chairs waiting to be produced
+
+
+
+    ##status???
     URL = "http://127.0.0.1:3030/kbe/query"
     QUERY =    '''
             PREFIX kbe: <http://www.kbe.com/chairs.owl#>
@@ -91,17 +101,21 @@ def getQuantity():
     return quantity
 
 def estimateTime():
+    #calculate an estimate for how long the customer has to wait (arbitray formula)
     quantity = getQuantity()
-    days = quantity % 10 + 1 #can make 10 chairs a day
+    days = quantity % 10 + 1 #can make 10 chairs a day + extra day for packing
     return days
 
 def writeTimeEstimate():
+    #update the html file with the number of days
     days = estimateTime()
     html_code = getHTMLstring("order_complete.html")
     html_code = html_code.replace("xxx", str(days))
     return html_code
 
 def addChair(values):
+    #add chair design to database
+    values.pop("quantity") #do not want to add quantity to chair class
     chair_name = str(values['s_width']) + "x" +str(values['s_depth'])
     insert_str = '''kbe:chair_''' + chair_name +  ''' a kbe:chair.
                     kbe:chair_''' + chair_name + ''' kbe:name "'''+chair_name+ '''".\n''' 
@@ -123,10 +137,12 @@ def addChair(values):
             '''
     
     PARAMS = {'update':UPDATE}
+    print("Update query:", UPDATE)
     response = requests.post(URL,data=PARAMS)
     return chair_name
 
 def addOrder(chair_name, quantity, name, email):
+    #add order to database
     orderID = name + chair_name
 
     URL = "http://127.0.0.1:3030/kbe/update"
