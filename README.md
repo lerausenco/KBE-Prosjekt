@@ -38,6 +38,8 @@ The factory user interface implemented in this task is shown below. In this case
 
 ![](Figures/NAME)
 
+
+
 ### customer_architect.py
 The customer architect responds to a GET-request triggered by pressing one of the buttons on the customer UI. 
 
