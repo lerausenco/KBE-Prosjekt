@@ -143,28 +143,76 @@ def OrderOverView(chair_list, order_list):
 
 def makeDFA(chair_list):
     
-    template_path = "Templates\\Chair_base.dfa"
+    template_path = "DFA\\Templates\\Chair_base.dfa"
     f = open(template_path, "r")
     dfa_txt = f.read()
 
-    for i in range(len(chair_data)):
+    for i in range(len(chair_list)):
 
-        if (not os.path.isfile("Orders\\"+chair_data[i]['name']+".dfa")): #check if file already exists
+        if (not os.path.isfile("DFA\\Orders\\"+chair_list[i]['name']+".dfa")): #check if file already exists
             
             #create new dfa file with chair name
-            order_dfa = open("Orders\\"+chair_data[i]['name']+".dfa", "w")
+            order_dfa = open("DFA\\Orders\\"+chair_list[i]['name']+".dfa", "w")
 
 
-            #write parameters into dfa file
+            #write number parameters into dfa file
 
-            for key in chair_data[i]:
-                dfa_txt = dfa_txt.replace("<"+key+">", chair_data[i][key])    
+            for key in chair_list[i]:
+                #print("NAMES: ", chair_list[i]['name'])
+                dfa_txt = dfa_txt.replace("<"+key+">", chair_list[i][key])
+            
             order_dfa.write(dfa_txt)
+
+            #write extra features
+            #print(chair_list[i])
+
+            if (chair_list[i]['with_arm']!="0"):
+                feature_file = open("DFA\\Templates\\arm_support.txt", "r")
+                feature_txt = feature_file.read()
+                order_dfa.write(feature_txt)
+
+            if (chair_list[i]['with_back']!="0"):
+                feature_file = open("DFA\\Templates\\Back.txt", "r")
+                feature_txt = feature_file.read()
+                order_dfa.write(feature_txt)
+
+            if (chair_list[i]['with_top']!="0"):
+                feature_file = open("DFA\\Templates\\rail-top.txt", "r")
+                feature_txt = feature_file.read()
+                order_dfa.write(feature_txt)
+            
+            if (chair_list[i]['with_mid']!="0"):
+                feature_file = open("DFA\\Templates\\rail-mid.txt", "r")
+                feature_txt = feature_file.read()
+                order_dfa.write(feature_txt)
+
+            if (chair_list[i]['with_bot']!="0"):
+                feature_file = open("DFA\\Templates\\rail-bot.txt", "r")
+                feature_txt = feature_file.read()
+                order_dfa.write(feature_txt)
+
+            if (chair_list[i]['with_taper']!="0"):
+                feature_file = open("DFA\\Templates\\taper.txt", "r")
+                feature_txt = feature_file.read()
+                order_dfa.write(feature_txt)
+
+            if (int(chair_list[i]['spindles']) > 0):
+                feature_file = open("DFA\\Templates\\spindles.txt", "r")
+                feature_txt = feature_file.read()
+                order_dfa.write(feature_txt)
+            
+            if (int(chair_list[i]['spindles']) > 2):
+                feature_file = open("DFA\\Templates\\spindles3.txt", "r")
+                feature_txt = feature_file.read()
+                order_dfa.write(feature_txt)
+            
+            if (int(chair_list[i]['spindles']) > 3):
+                feature_file = open("DFA\\Templates\\spindles4.txt", "r")
+                feature_txt = feature_file.read()
+                order_dfa.write(feature_txt)
 
 
             order_dfa.close()
-
-    return
 
 if __name__ == '__main__':
     factory_server = HTTPServer
