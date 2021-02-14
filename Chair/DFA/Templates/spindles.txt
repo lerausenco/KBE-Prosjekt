@@ -1,12 +1,3 @@
-#SPINDLES
-(Number Parameter) leg_th2: l_th:-SIN(2*taper_angle:)*l_height:*2/3; #leg thickness at spindle height 
-(Number Parameter) side_sp_length: s_depth:-leg_th2:*2;
-(Number Parameter) sp_height: l_height:/12;
-(Number	Parameter) sp_th: leg_th2:*2/3;
-
-
-(Number Parameter) front_sp_length: s_width:-leg_th2:*2;
-(Number Parameter) adj: (l_th:-sp_th:)/2; #adjustment to center the spindles
 
 (Child) Spindle_right: {
 	Class, ug_block,

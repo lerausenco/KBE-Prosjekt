@@ -1,0 +1,7 @@
+(Child) Rail_mid: {
+	Class, ug_block,
+	Length, rail_length:,
+	Width, rail_width:,
+	Height, mid_rail_th:,
+	Origin, mid_rail_origin:;
+	};

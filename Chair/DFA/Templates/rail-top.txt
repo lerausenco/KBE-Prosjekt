@@ -1,0 +1,7 @@
+(Child) Rail_top: {
+	Class, ug_block,
+	Length, rail_length:,
+	Width, rail_width:,
+	Height, top_rail_th:,
+	Origin, top_rail_origin:;
+	};

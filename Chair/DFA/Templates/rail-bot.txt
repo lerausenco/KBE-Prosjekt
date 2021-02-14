@@ -1,0 +1,7 @@
+(Child) Rail_bot: {
+	Class, ug_block,
+	Length, rail_length:,
+	Width, rail_width:,
+	Height, bot_rail_th:,
+	Origin, bot_rail_origin:;
+	};

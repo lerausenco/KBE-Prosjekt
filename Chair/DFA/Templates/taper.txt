@@ -1,5 +1,4 @@
 #TAPER LEGS 
-(Number Parameter) taper_angle: 1.0;
 
 (Child) Taper1: {
 	Class, ug_edge_taper,

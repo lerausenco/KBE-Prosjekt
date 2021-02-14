@@ -1,23 +1,66 @@
 #! UGNX/KF 2.0
-DefClass: Chair_base(%ug_create_instance ug_base_part);
+DefClass: Chair_template(%ug_create_instance ug_base_part);
 
 
 # Set of Parameters for the seat
-	(Number Parameter) s_width: 60;
-	(Number Parameter) s_depth: 60;
+
+	(Number Parameter) s_width: <s_width>;
+	(Number Parameter) s_depth: <s_depth>;
 	(Number Parameter) s_th: (s_width:+s_depth:)/80;
 	(Point Parameter)  s_origin: Point(0,0,l_height:);
 	
-		
+	(Number Parameter) apron_th: <a_th>;
+	(Number Parameter) apron_width: apron_th:/10;
+	
+	(Point Parameter) apron_front_origin: Point(l_th:,0,l_height:-apron_th:);
+	(Point Parameter) apron_back_origin: Point(l_th:,s_depth:-apron_width:,l_height:-apron_th:);
+	(Point Parameter) apron_right_origin: Point(0,l_th:,l_height:-apron_th:);
+	(Point Parameter) apron_left_origin: Point(s_width:-apron_width:,l_th:,l_height:-apron_th:);
+	
 #Set of parameters for legs
-	(Number Parameter) l_height: 90;
-    (Number Parameter) l_th: 10;
+	(Number Parameter) l_height: <leg_height>;
+    (Number Parameter) l_th: <leg_th>;
 	
 	(Point Parameter)  l1_origin: Point(0,0,0);
 	(Point Parameter)  l2_origin: Point(0,s_depth:-l_th:,0);
 	(Point Parameter)  l3_origin: Point(s_width:-l_th:,0,0);
 	(Point Parameter)  l4_origin: Point(s_width:-l_th:,s_depth:-l_th:,0);
 	
+
+# Set of Parameters for the back
+	(Number Parameter) b_height: <back_height>;
+    (Number Parameter) b_th: 7;
+	(Number Parameter) b_width: 5;
+	(Point Parameter) b_left_origin: Point(0,s_depth:-b_width:,l_height:+s_th:);
+	(Point Parameter) b_right_origin: Point(s_width:-b_th:, s_depth:-b_width:, l_height:+s_th:);
+	
+	
+# Set of parameters for rails
+	
+	(Number Parameter) top_rail_th: <top_th>;
+	(Point Parameter) top_rail_origin: Point(b_th:, s_depth:-rail_width:, l_height:+s_th:+b_height:-top_rail_th:);
+	
+	(Number Parameter) mid_rail_th: <mid_th>;
+	(Point Parameter) mid_rail_origin: Point(b_th:, s_depth:-rail_width:, l_height:+s_th: + b_height:*2/3-mid_rail_th:);
+	
+	
+	(Number Parameter) bot_rail_th: <bot_th>;
+	(Point Parameter) bot_rail_origin: Point(b_th:, s_depth:-rail_width:, l_height:+s_th: + b_height:/3-mid_rail_th:);
+	
+	(Number parameter) rail_width: 2;
+	(Number Parameter) rail_length: s_width:-2*b_th:;
+
+	(Number Parameter) taper_angle: 1.0;
+
+
+	(Number Parameter) leg_th2: l_th:-SIN(2*taper_angle:)*l_height:*2/3; #leg thickness at spindle height 
+	(Number Parameter) side_sp_length: s_depth:-leg_th2:*2;
+	(Number Parameter) sp_height: l_height:/12;
+	(Number	Parameter) sp_th: leg_th2:*2/3;
+	
+	
+	(Number Parameter) front_sp_length: s_width:-leg_th2:*2;
+	(Number Parameter) adj: (l_th:-sp_th:)/2; #adjustment to center the spindles
 	
 	(child) Seat: {
 	Class, ug_block,

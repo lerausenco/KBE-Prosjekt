@@ -1,9 +1,5 @@
 #ARM SUPPORT
 
-(Number Parameter) arm_width:  s_width:/10;
-(Number Parameter) arm_length: s_depth:-b_width:-arm_th:;
-(Number Parameter) arm_th: s_width:/50;
-(Number Parameter) arm_height: 20;
 
 (Child) Right_arm_front: {
 	Class, ug_block,
