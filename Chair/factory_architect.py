@@ -37,21 +37,25 @@ class FactoryHandler(BaseHTTPRequestHandler):
         str_path = s.path
 
 def getOrder():
-    chair_params = { 's_width': 0, 's_depth': 0, 'a_th': 0, 'with_arm': 0, 'with_back': 0,
+    chair_params = { 'name':0, 's_width': 0, 's_depth': 0, 'a_th': 0, 'with_arm': 0, 'with_back': 0,
              'back_height': 0, 'with_top': 0, 'top_th': 0, 'with_mid': 0, 'mid_th': 0,
              'with_bot': 0, 'bot_th': 0 , 'leg_height': 0, 'leg_th': 0, 'with_taper': 0,
              'spindles': 0 }
+    chair_param = ['name', 's_width', 's_depth', 'a_th', 'with_arm', 'with_back' \
+                'back_height', 'with_top', 'top_th', 'with_mid', 'mid_th'\
+                'with_bot', 'bot_th', 'leg_height', 'leg_th', 'with_taper'\
+                'spindles']
     
-    chair_name = str(chair_params['s_width']) + "x" +str(chair_params['s_depth'])
-    where_str = '''kbe:chair_''' + chair_name +  ''' a kbe:chair. \n ''' 
+    #chair_name = str(chair_param[0]) # + "x" +str(chair_param[1])
+    where_str = '''?a_chair a kbe:chair. \n ''' 
 
     for key in chair_params:    
-        where_str += 'kbe:chair_'+chair_name+ ' kbe:'+ key+' ?'+ key+ '. \n'  
+        where_str += ' ?a_chair kbe:'+key+'' ' ?'+key+ '. \n'  
 
     URL = "http://127.0.0.1:3030/kbe/query"
     QUERY = '''
             PREFIX kbe: <http://www.kbe.com/chairs.owl#>
-            SELECT ?chair_name ?s_width ?s_depth ?a_th ?with_arm ?with_back ?back_height ?with_top ?top_th ?with_mid ?mid_th ?with_bot ?bot_th ?leg_height ?leg_th ?with_taper ?spindles
+            SELECT ?name ?s_width ?s_depth ?a_th ?with_arm ?with_back ?back_height ?with_top ?top_th ?with_mid ?mid_th ?with_bot ?bot_th ?leg_height ?leg_th ?with_taper ?spindles
             WHERE {
                '''+where_str+'''
             }
@@ -65,33 +69,23 @@ def getOrder():
     return json_data
 
 def parseJson(json_data): #returns an array with parameters
-    #with open(json_data) as json_file: 
-     #   chair_dictionary = json.load(json_file)
-    chair_params = ['s_width', 's_depth', 'a_th', 'with_arm', 'with_back' \
-                'back_height', 'with_top', 'top_th', 'with_mid', 'mid_th'\
-                'with_bot', 'bot_th', 'leg_height', 'leg_th', 'with_taper'\
-                'spindles']
-    #chair_dictionary = json.load(json_data)
-
-
+    chair_parms = { 'name':0, 's_width': 0, 's_depth': 0, 'a_th': 0, 'with_arm': 0, 'with_back': 0,
+             'back_height': 0, 'with_top': 0, 'top_th': 0, 'with_mid': 0, 'mid_th': 0,
+             'with_bot': 0, 'bot_th': 0 , 'leg_height': 0, 'leg_th': 0, 'with_taper': 0,
+             'spindles': 0 }
     #get sizes
-  #  num_of_params = len(chair_params)
+    num_of_params = len(chair_parms)
     num_of_chairs = len(json_data['results']['bindings'])
-
-    #make empty array to store table data
-  #  table_data = [[0 for x in range(num_of_params)] for y in range(num_of_tables)]
     
-    #populate array
-  #  for j in range(num_of_tables):
-   #     table_data[j][0] = json_data['results']['bindings'][j][chair_params[0]]['value'].split("#")[1] #get name of table
-    #    for i in range(1, len(chair_params)):
-     #       table_data[j][i] = json_data['results']['bindings'][j][chair_params[i]]['value']
-    #for i in range(len(chair_params)):
-     #   print(json_data[chair_params[i]])    
-    json_data = 0
-    return json_data
+    #print('printout from json: ', json_data['results']['bindings'][1]['name']['value'])
+    for x in range(num_of_chairs):
+        for key in chair_parms:
+            chair_parms[key] = json_data['results']['bindings'][x][key]['value']
+    print('dictionary with parms', chair_parms)
+    chair_data = chair_parms
+    return chair_data
 
-def OrderOverView(table_data):
+def OrderOverView(chair_data):
     #create html string to update factory overview table
     Msg = ''
     for i in range(len(table_data)):
