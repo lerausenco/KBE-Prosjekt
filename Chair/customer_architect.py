@@ -66,8 +66,40 @@ class CustomerHandler(BaseHTTPRequestHandler):
             chair_name = addChair(values) #add chair to factory database
             addOrder(chair_name, quantity, name, email) #add order to factory database
 
-
             
+            html_code = writeTimeEstimate()
+            s.wfile.write(bytes(html_code, "utf-8"))
+
+def getQuantity():
+    URL = "http://127.0.0.1:3030/kbe/query"
+    QUERY =    '''
+            PREFIX kbe: <http://www.kbe.com/chairs.owl#>
+            SELECT ?quantity
+            WHERE {
+                ?an_order a kbe:order.
+                ?an_order kbe:quantity ?quantity.
+                }
+            '''
+    PARAMS = {'query':QUERY}
+    response = requests.post(URL,data=PARAMS)
+    json_data = response.json()
+
+    num_of_orders = len(json_data['results']['bindings'])
+    quantity = 0
+    for i in range(num_of_orders):
+        quantity += int(json_data['results']['bindings'][i]["quantity"]["value"])
+    return quantity
+
+def estimateTime():
+    quantity = getQuantity()
+    days = quantity % 10 + 1 #can make 10 chairs a day
+    return days
+
+def writeTimeEstimate():
+    days = estimateTime()
+    html_code = getHTMLstring("order_complete.html")
+    html_code = html_code.replace("xxx", str(days))
+    return html_code
 
 def addChair(values):
     chair_name = str(values['s_width']) + "x" +str(values['s_depth'])
@@ -89,10 +121,9 @@ def addChair(values):
             { 
             } 
             '''
-    #print("UPDATE QUERY:", UPDATE)
+    
     PARAMS = {'update':UPDATE}
     response = requests.post(URL,data=PARAMS)
-    print("Result:", response.text)
     return chair_name
 
 def addOrder(chair_name, quantity, name, email):
@@ -114,10 +145,9 @@ def addOrder(chair_name, quantity, name, email):
             { 
             }  
     '''
-    print("UPDATE QUERY:", UPDATE)
     PARAMS = {'update':UPDATE}
     response = requests.post(URL,data=PARAMS)
-    print("Result:", response.text)
+   
 
 if __name__ == '__main__':
     customer_server = HTTPServer
