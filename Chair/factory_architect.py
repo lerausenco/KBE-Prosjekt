@@ -24,15 +24,15 @@ class FactoryHandler(BaseHTTPRequestHandler):
         s.send_response(200)
         s.send_header("Content-type", "text/html")
         s.end_headers()
+       
 
         jsonData = getOrder()
         chair_data = parseJson(jsonData)
         #makeDFA(table_data)
-        html_chair_data = OrderOverView(chair_data)
+        #html_chair_data = OrderOverView(chair_data)
         html_code = getHTMLstring("factory_overview.html")
-        html_code = html_code.replace("<p> No orders yet </p>", html_chair_data)
+        #html_code = html_code.replace("<p> No orders yet </p>", html_chair_data)
         s.wfile.write(bytes(html_code, "utf-8"))
-        
 
         str_path = s.path
 
@@ -46,7 +46,7 @@ def getOrder():
     where_str = '''kbe:chair_''' + chair_name +  ''' a kbe:chair. \n ''' 
 
     for key in chair_params:    
-        where_str += 'kbe:chair_'+chair_name+ ' kbe:'+ key +' "' + ' ?'+ key+ '". \n'  
+        where_str += 'kbe:chair_'+chair_name+ ' kbe:'+ key+' ?'+ key+ '. \n'  
 
     URL = "http://127.0.0.1:3030/kbe/query"
     QUERY = '''
@@ -56,11 +56,12 @@ def getOrder():
                '''+where_str+'''
             }
             '''
+    #print("QUERY::", QUERY)
     PARAMS = {'query':QUERY}
     response = requests.post(URL,data=PARAMS)
-    print("Result of query:", response.text)
+    #print("Result of query:", response.text)
     json_data = response.json()
-    print("JSON", json_data)
+    #print("JSON", json_data)
     return json_data
 
 def parseJson(json_data): #returns an array with parameters
@@ -75,7 +76,7 @@ def parseJson(json_data): #returns an array with parameters
 
     #get sizes
   #  num_of_params = len(chair_params)
-   # num_of_tables = len(json_data['results']['bindings'])
+    num_of_chairs = len(json_data['results']['bindings'])
 
     #make empty array to store table data
   #  table_data = [[0 for x in range(num_of_params)] for y in range(num_of_tables)]
@@ -85,8 +86,9 @@ def parseJson(json_data): #returns an array with parameters
    #     table_data[j][0] = json_data['results']['bindings'][j][chair_params[0]]['value'].split("#")[1] #get name of table
     #    for i in range(1, len(chair_params)):
      #       table_data[j][i] = json_data['results']['bindings'][j][chair_params[i]]['value']
-    for i in range(len(chair_params)):
-        print(json_data[chair_params[i]])    
+    #for i in range(len(chair_params)):
+     #   print(json_data[chair_params[i]])    
+    json_data = 0
     return json_data
 
 def OrderOverView(table_data):
