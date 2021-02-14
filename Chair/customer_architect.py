@@ -77,17 +77,14 @@ class CustomerHandler(BaseHTTPRequestHandler):
 
 def getQuantity():
     #get the total amount of chairs waiting to be produced
-
-
-
-    ##status???
     URL = "http://127.0.0.1:3030/kbe/query"
     QUERY =    '''
             PREFIX kbe: <http://www.kbe.com/chairs.owl#>
-            SELECT ?quantity
+            SELECT ?quantity ?status
             WHERE {
                 ?an_order a kbe:order.
                 ?an_order kbe:quantity ?quantity.
+                ?an_order kbe:status ?status.
                 }
             '''
     PARAMS = {'query':QUERY}
@@ -97,7 +94,9 @@ def getQuantity():
     num_of_orders = len(json_data['results']['bindings'])
     quantity = 0
     for i in range(num_of_orders):
-        quantity += int(json_data['results']['bindings'][i]["quantity"]["value"])
+        status = json_data['results']['bindings'][i]["status"]["value"]
+        if (status == "0"):
+            quantity += int(json_data['results']['bindings'][i]["quantity"]["value"])
     return quantity
 
 def estimateTime():
