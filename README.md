@@ -29,25 +29,28 @@ The database ontology is defined by Chairs.owl, which holds definitions for two 
 
 # Implementation
 ## Customer User Interface
-The image below shows the actual implementation of the customer UI for this task. The image of the chair is static, but represents a live model of the customer's design after pressing "Preview".
+The image below shows the actual implementation of the customer UI for this task. The image of the chair is static, but represents a live model of the customer's design after pressing "Preview". The customer UI consists of three forms, with a button at the end of each form. The "preview" form is to collect the parameter values, the "quantity" form is to record the number of chairs in the order, and the "submit" form is to record the customer information and send the order.
+
 ![](Figures/UI-screenshot.png)
 
 ## Factory User Interface
+The factory user interface implemented in this task is shown below. In this case it is a table displaying the orders and their status.
 
+![](Figures/NAME)
 
 ### customer_architect.py
 The customer architect responds to a GET-request triggered by pressing one of the buttons on the customer UI. 
 
-Pressing the preview button parses the URL and extracts the parameters using string manipulation functions. The parameters are stored in a dictionary called 'values'.
+- Pressing the preview button parses the URL and extracts the parameters using string manipulation functions. The parameters are stored in a dictionary called 'values'.
 
-Pressing the Add to Order button records the value written in the Quantity text box.
+- Pressing the Add to Order button records the value written in the Quantity text box.
 
-Pressing the Submit button adds the chair design to the database. It also adds an order with the name of the chair design, the quantity, customer name and email. Finally, a "thank you" message is displayed, as well as an estimate of the ETA for the customer's order.
+- Pressing the Submit button adds the chair design to the database. It also adds an order with the name of the chair design, the quantity, customer name and email. Finally, a "thank you" message is displayed, as well as an estimate of the ETA for the customer's order.
 
-The code to create the update string used to add a chair design to the database uses a for-loop to save time.
+The code to create the update string used to add a chair design to the database uses a for-loop to save time. One of the benefits of using a dictionary to store the parameters is that the keys can be used as parameter names to create the update string.
 
 ```python
-chair_name = str(values['s_width']) + "x" +str(values['s_depth'])
+    chair_name = str(values['s_width']) + "x" +str(values['s_depth'])
     insert_str = '''kbe:chair_''' + chair_name +  ''' a kbe:chair.
                     kbe:chair_''' + chair_name + ''' kbe:name "'''+chair_name+ '''".\n''' 
 
@@ -67,3 +70,56 @@ chair_name = str(values['s_width']) + "x" +str(values['s_depth'])
             } 
             '''
 ```
+
+Next, the order update code is similar to the chair database update code, but does not use a for-loop as the function recieves the variables individually.
+
+```python
+    orderID = name + chair_name
+
+    URL = "http://127.0.0.1:3030/kbe/update"
+    UPDATE = '''
+            PREFIX kbe: <http://www.kbe.com/chairs.owl#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            INSERT
+            {
+             kbe:order_''' +orderID+ ''' a kbe:order. 
+             kbe:order_''' +orderID+ ''' kbe:name "'''+name+ '''".
+             kbe:order_''' +orderID+ ''' kbe:quantity "'''+str(quantity)+'''"^^xsd:float.
+             kbe:order_''' +orderID+ ''' kbe:email "'''+email+'''".
+             kbe:order_''' +orderID+ ''' kbe:status "0"^^xsd:float.            
+            }
+            WHERE
+            { 
+            }  
+    '''
+```
+
+To provide the customer with an estimate for when their order will arrive, the customer_architect.py script performs a query on the database. The output of this query is the number of chairs in the production queue at the factory. To calculate the number of chairs in the queue, the quantity from one order is only added to the total quantity if the status of the order is "0", representing an unprocessed order. The code is shown below.
+
+```python
+URL = "http://127.0.0.1:3030/kbe/query"
+    QUERY =    '''
+            PREFIX kbe: <http://www.kbe.com/chairs.owl#>
+            SELECT ?quantity ?status
+            WHERE {
+                ?an_order a kbe:order.
+                ?an_order kbe:quantity ?quantity.
+                ?an_order kbe:status ?status.
+                }
+            '''
+    PARAMS = {'query':QUERY}
+    response = requests.post(URL,data=PARAMS)
+    json_data = response.json()
+
+    num_of_orders = len(json_data['results']['bindings'])
+    quantity = 0
+    for i in range(num_of_orders):
+        status = json_data['results']['bindings'][i]["status"]["value"]
+        if (status == "0"):
+            quantity += int(json_data['results']['bindings'][i]["quantity"]["value"])
+```
+
+The quantity parameter is used in another function which estimates the time it takes to produce as many chairs as given in the variable quantity. The formula is arbitrary. To display the estimate, the number of days is written into the order_complete.html.
+
+### factory_architect.py
+
