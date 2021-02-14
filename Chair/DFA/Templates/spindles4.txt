@@ -1,0 +1,8 @@
+
+(Child) Spindle_front: {
+	Class, ug_block,
+	Length, front_sp_length:,
+	Width, sp_th:,
+	Height, sp_height:,
+	Origin, Point(leg_th2:, adj:, l_height:/3);
+};

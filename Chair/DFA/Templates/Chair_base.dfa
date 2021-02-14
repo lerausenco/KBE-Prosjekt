@@ -1,5 +1,5 @@
 #! UGNX/KF 2.0
-DefClass: Chair_template(%ug_create_instance ug_base_part);
+DefClass: Chair_<name>(%ug_create_instance ug_base_part);
 
 
 # Set of Parameters for the seat
@@ -52,6 +52,7 @@ DefClass: Chair_template(%ug_create_instance ug_base_part);
 
 	(Number Parameter) taper_angle: 1.0;
 
+#spindles parameters
 
 	(Number Parameter) leg_th2: l_th:-SIN(2*taper_angle:)*l_height:*2/3; #leg thickness at spindle height 
 	(Number Parameter) side_sp_length: s_depth:-leg_th2:*2;
@@ -61,6 +62,11 @@ DefClass: Chair_template(%ug_create_instance ug_base_part);
 	
 	(Number Parameter) front_sp_length: s_width:-leg_th2:*2;
 	(Number Parameter) adj: (l_th:-sp_th:)/2; #adjustment to center the spindles
+
+	(Number Parameter) arm_width:  s_width:/10;
+	(Number Parameter) arm_length: s_depth:-b_width:-arm_th:;
+	(Number Parameter) arm_th: s_width:/50;
+	(Number Parameter) arm_height: 20;
 	
 	(child) Seat: {
 	Class, ug_block,
@@ -69,6 +75,41 @@ DefClass: Chair_template(%ug_create_instance ug_base_part);
 	Height, s_th:,
 	Origin, s_origin:;
 };
+
+#APRON
+(Child) Apron_front: {
+	Class, ug_block,
+	Length, Seat:Length: - 2*l_th:,
+	Width, apron_width:,
+	Height, apron_th:, #user defined
+	Origin, apron_front_origin:;
+};
+
+(Child) Apron_back: {
+	Class, ug_block,
+	Length, Seat:Length: - 2*l_th:,
+	Width,  apron_width:,
+	Height, apron_th:,
+	Origin, apron_back_origin:;
+};
+
+(Child) Apron_right: {
+	Class, ug_block,
+	Length, apron_width:,
+	Width,  Seat:Width: - 2*l_th:,
+	Height, apron_th:,
+	Origin, apron_right_origin:;
+
+};
+(Child) Apron_left: {
+	Class, ug_block,
+	Length, apron_width:,
+	Width,  Seat:Width: - 2*l_th:,
+	Height, apron_th:,
+	Origin, apron_left_origin:;
+
+};
+
 
 #LEGS
 	
