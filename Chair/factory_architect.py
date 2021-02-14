@@ -9,10 +9,6 @@ import json
 HOST_NAME = 'localhost'
 FACT_PORT_NUMBER = 2410
 
-chair_params = ['s_width', 's_depth', 'a_th', 'with_arm', 'with_back' \
-                'back_height', 'with_top', 'top_th', 'with_mid', 'mid_th'\
-                'with_bot', 'bot_th', 'leg_height', 'leg_th', 'with_taper'\
-                'spindles']
 
 def getHTMLstring(file_name):
     f = open(os.path.join(sys.path[0], file_name), "r")
@@ -30,59 +26,68 @@ class FactoryHandler(BaseHTTPRequestHandler):
         s.end_headers()
 
         jsonData = getOrder()
-        table_data = parseJson(jsonData)
-        makeDFA(table_data)
-        html_table_data = OrderOverView(table_data)
+        chair_data = parseJson(jsonData)
+        #makeDFA(table_data)
+        html_chair_data = OrderOverView(chair_data)
         html_code = getHTMLstring("factory_overview.html")
-        html_code = html_code.replace("<p> No orders yet </p>", html_table_data)
+        html_code = html_code.replace("<p> No orders yet </p>", html_chair_data)
         s.wfile.write(bytes(html_code, "utf-8"))
         
 
-        #str_path = s.path
+        str_path = s.path
 
 def getOrder():
+    chair_params = { 's_width': 0, 's_depth': 0, 'a_th': 0, 'with_arm': 0, 'with_back': 0,
+             'back_height': 0, 'with_top': 0, 'top_th': 0, 'with_mid': 0, 'mid_th': 0,
+             'with_bot': 0, 'bot_th': 0 , 'leg_height': 0, 'leg_th': 0, 'with_taper': 0,
+             'spindles': 0 }
     
+    chair_name = str(chair_params['s_width']) + "x" +str(chair_params['s_depth'])
+    where_str = '''kbe:chair_''' + chair_name +  ''' a kbe:chair. \n ''' 
+
+    for key in chair_params:    
+        where_str += 'kbe:chair_'+chair_name+ ' kbe:'+ key +' "' + ' ?'+ key+ '". \n'  
 
     URL = "http://127.0.0.1:3030/kbe/query"
     QUERY = '''
             PREFIX kbe: <http://www.kbe.com/chairs.owl#>
-            SELECT ?table_name ?tl_leg_height ?tl_leg_thickness ?tl_leg_width ?tt_depth ?tt_thickness ?tt_width
+            SELECT ?chair_name ?s_width ?s_depth ?a_th ?with_arm ?with_back ?back_height ?with_top ?top_th ?with_mid ?mid_th ?with_bot ?bot_th ?leg_height ?leg_th ?with_taper ?spindles
             WHERE {
-                ?table_name a kbe:Table.
-                ?table_name kbe:Leg_height ?tl_leg_height.
-                ?table_name kbe:Leg_thickness ?tl_leg_thickness.
-                ?table_name kbe:Leg_width ?tl_leg_width.
-                ?table_name kbe:TableTop_depth ?tt_depth.
-                ?table_name kbe:TableTop_thickness ?tt_thickness.
-                ?table_name kbe:TableTop_width ?tt_width.
+               '''+where_str+'''
             }
             '''
     PARAMS = {'query':QUERY}
     response = requests.post(URL,data=PARAMS)
     print("Result of query:", response.text)
     json_data = response.json()
-    #print("JSON", json_data)
+    print("JSON", json_data)
     return json_data
 
 def parseJson(json_data): #returns an array with parameters
-   
-    param_names = ['table_name', 'tl_leg_height', 'tl_leg_thickness', 'tl_leg_width', 'tt_depth', 'tt_thickness', 'tt_width']
-    
+    #with open(json_data) as json_file: 
+     #   chair_dictionary = json.load(json_file)
+    chair_params = ['s_width', 's_depth', 'a_th', 'with_arm', 'with_back' \
+                'back_height', 'with_top', 'top_th', 'with_mid', 'mid_th'\
+                'with_bot', 'bot_th', 'leg_height', 'leg_th', 'with_taper'\
+                'spindles']
+    #chair_dictionary = json.load(json_data)
+
+
     #get sizes
-    num_of_params = len(param_names)
-    num_of_tables = len(json_data['results']['bindings'])
+  #  num_of_params = len(chair_params)
+   # num_of_tables = len(json_data['results']['bindings'])
 
     #make empty array to store table data
-    table_data = [[0 for x in range(num_of_params)] for y in range(num_of_tables)]
+  #  table_data = [[0 for x in range(num_of_params)] for y in range(num_of_tables)]
     
     #populate array
-    for j in range(num_of_tables):
-        table_data[j][0] = json_data['results']['bindings'][j][param_names[0]]['value'].split("#")[1] #get name of table
-        for i in range(1, len(param_names)):
-            table_data[j][i] = json_data['results']['bindings'][j][param_names[i]]['value']
-    
-    print(table_data)    
-    return table_data
+  #  for j in range(num_of_tables):
+   #     table_data[j][0] = json_data['results']['bindings'][j][chair_params[0]]['value'].split("#")[1] #get name of table
+    #    for i in range(1, len(chair_params)):
+     #       table_data[j][i] = json_data['results']['bindings'][j][chair_params[i]]['value']
+    for i in range(len(chair_params)):
+        print(json_data[chair_params[i]])    
+    return json_data
 
 def OrderOverView(table_data):
     #create html string to update factory overview table
