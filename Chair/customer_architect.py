@@ -75,33 +75,26 @@ class CustomerHandler(BaseHTTPRequestHandler):
 
 
 def addChair(values):
-
-    
     chair_name = str(values['s_width']) + "x" +str(values['s_depth'])
-    
-    insert_str = 'kbe:chair_' + chair_name +   'a kbe:chair.'
+    insert_str = '''kbe:chair_''' + chair_name +  ''' a kbe:chair.
+                    kbe:chair_''' + chair_name + ''' kbe:name "'''+chair_name+ '''".\n''' 
 
     for key in values:
-        insert_str += 'kbe:chair_'+chair_name+ 'kbe:'+ key +' "' + str(values[key])+ '" ^^xsd:float.'  
-
-
+        insert_str += 'kbe:chair_'+chair_name+ ' kbe:'+ key +' "' + str(values[key])+ '"^^xsd:float. \n'  
 
     URL = "http://127.0.0.1:3030/kbe/update"
     UPDATE = '''
             PREFIX kbe: <http://www.kbe.com/chairs.owl#>
-            PREFIX ord: <http://www.kbe.com/orders.owl#>
             PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
             INSERT
             {
-             kbe:chair_'''+name+''' a kbe:chair.
-             kbe:chair_'''+name+''' kbe:s_width "''' + values['s_width'] + '''"^^xsd:float.
-            
+             '''+insert_str+'''             
             }
             WHERE
-            {
-             
+            { 
             } 
             '''
+    print("UPDATE QUERY:", UPDATE)
     PARAMS = {'update':UPDATE}
     response = requests.post(URL,data=PARAMS)
     print("Result:", response.text)
