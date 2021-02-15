@@ -38,6 +38,12 @@ The factory user interface implemented in this task is shown below. In this case
 
 ![](Figures/Fac-UI.PNG)
 
+## UML Sequence diagram
+The UML sequence diagram with the customer on the left, and production engineer on the right is shown below. The customer can submit forms which trigger a GET request and save the parameters in the link generated. The production engineer must set minimum and maximum limits through the factoryUI, which are placed on the Fuseki database. On the customer side, pressing the submit order triggers a number of events. The parameters of the chair design are parsed, and a query is sent to the Fuseki database. The return of the query are the maximum and minimum limits for each parameter against which the parameters are checked. If the parameters are within the limits, the database is updated with a chair design, and an order containing the chair design name and quantity. The customer server performs a query to the database to check the total quantity of chairs in the production queue. Finally, the order status is shown in the customer UI. On the production side, a GET request is performed upon refresh, which triggers a query that finds new orders and displays them on the factory overview screen.
+
+![](Figures/UMLsequence.png)
+
+
 
 
 ## customer_architect.py
