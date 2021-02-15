@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+    h1 {padding-left: 80px;}
+    
+    p {padding-left: 80px;}
+    div {padding-left: 80px;}
+    body {padding-left: 80px;}
+    form {padding-left: 80px; padding-right: 150px; width: 400px;}
+    </style>
+    </head>
+<body style="background-color: #ecf2f3;">
+
+
+
+
+<div style="float:left;">
+    <h1 style="font-family:verdana"> SET MIN LIMITS </h1>
+<form action="/min_limits.php" method="get">
+    <h2 style="font-family:verdana">SEAT FEATURES</h2>
+  <label for="s_width">Seat width:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+  <input type="text" class = "textbox" id="s_width" name="s_width"> cm<br><br>
+
+  <label for="s_depth">Seat depth:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+  <input type="text" id="s_depth" name="s_depth"> cm<br><br>
+
+  <label for="a_th">Apron Thickness:</label>
+  <input type="text" id="a_th" name="a_th"> cm<br><br>
+
+<h2 style="font-family:verdana">BACK FEATURES </h2>
+
+  <label for="with_back">Back height:&nbsp;&nbsp;&nbsp;</label>
+ 
+  <input type="text" id="back_height" name="back_height"> cm<br><br>
+
+  <label for="with_top">Top Rail:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+
+  <input type="text" id="top_th" name="top_th" placeholder="Enter thickness"> cm<br><br>
+
+  <label for="with_mid">Mid Rail:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+ 
+  <input type="text" id="mid_th" name="mid_th" placeholder="Enter thickness"> cm<br><br>
+
+  <label for="with_bot">Bottom Rail:&nbsp;&nbsp;&nbsp;</label>
+
+  <input type="text" id="bot_th" name="bot_th" placeholder="Enter thickness"> cm <br><br>
+  
+
+  <h2 style="font-family:verdana">LEG FEATURES</h2>
+
+  <label for="leg_height">Height: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </label>
+  <input type="text" id="leg_height" name="leg_height"> cm<br><br>
+
+  <label for="leg_th">Thickness:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+  <input type="text" id="leg_th" name="leg_th" > cm<br><br>
+
+  <input type="submit" value="Set Min Limits">
+</form> 
+</div>
+
+<div style="float:right;">
+    <h1 style="font-family:verdana"> SET MAX LIMITS </h1>
+
+    <form action="/max_limits.php" method="get">
+        <h2 style="font-family:verdana">SEAT FEATURES</h2>
+      <label for="s_width">Seat width:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+      <input type="text" class = "textbox" id="s_width" name="s_width"> cm<br><br>
+    
+      <label for="s_depth">Seat depth:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+      <input type="text" id="s_depth" name="s_depth"> cm<br><br>
+    
+      <label for="a_th">Apron Thickness:</label>
+      <input type="text" id="a_th" name="a_th"> cm<br><br>
+    
+    <h2 style="font-family:verdana">BACK FEATURES </h2>
+    
+      <label for="with_back">Back height:&nbsp;&nbsp;&nbsp;</label>
+     
+      <input type="text" id="back_height" name="back_height"> cm<br><br>
+    
+      <label for="with_top">Top Rail:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+    
+      <input type="text" id="top_th" name="top_th" placeholder="Enter thickness"> cm<br><br>
+    
+      <label for="with_mid">Mid Rail:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+     
+      <input type="text" id="mid_th" name="mid_th" placeholder="Enter thickness"> cm<br><br>
+    
+      <label for="with_bot">Bottom Rail:&nbsp;&nbsp;&nbsp;</label>
+    
+      <input type="text" id="bot_th" name="bot_th" placeholder="Enter thickness"> cm <br><br>
+      
+    
+      <h2 style="font-family:verdana">LEG FEATURES</h2>
+    
+      <label for="leg_height">Height: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </label>
+      <input type="text" id="leg_height" name="leg_height"> cm<br><br>
+    
+      <label for="leg_th">Thickness:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+      <input type="text" id="leg_th" name="leg_th" > cm<br><br>
+    
+      <input type="submit" value="Set Max Limits">
+    </form> 
+  
+</div>
+
+</body>
+</html>
