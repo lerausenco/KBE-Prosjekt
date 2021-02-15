@@ -34,7 +34,7 @@
 
 <h2 style="font-family:verdana">BACK FEATURES </h2>
 
-  <label for="with_back">Back:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+  <label for="with_back">Back height:&nbsp;&nbsp;&nbsp;</label>
   <input type='hidden' value='0' name='with_back'>
   <input type="checkbox" id="with_back" name="with_back" value="1">
   <input type="text" id="back_height" name="back_height"> cm<br><br>
@@ -42,17 +42,17 @@
   <label for="with_top">Top Rail:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
   <input type='hidden' value='0' name='with_top'>
   <input type="checkbox" id="with_top" name="with_top" value="1">
-  <input type="text" id="top_th" name="top_th"> cm<br><br>
+  <input type="text" id="top_th" name="top_th" placeholder="Enter thickness"> cm<br><br>
 
-  <label for="with_mid">Mid Rail:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+  <label for="with_mid">Mid Rail:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
   <input type='hidden' value='0' name='with_mid'>
   <input type="checkbox" id="with_mid" name="with_mid" value="1">
-  <input type="text" id="mid_th" name="mid_th"> cm<br><br>
+  <input type="text" id="mid_th" name="mid_th" placeholder="Enter thickness"> cm<br><br>
 
-  <label for="with_bot">Bottom Rail:&nbsp;</label>
+  <label for="with_bot">Bottom Rail:&nbsp;&nbsp;&nbsp;</label>
   <input type='hidden' value='0' name='with_bot'>
   <input type="checkbox" id="with_bot" name="with_bot" value="1">
-  <input type="text" id="bot_th" name="bot_th"> cm <br><br>
+  <input type="text" id="bot_th" name="bot_th" placeholder="Enter thickness"> cm <br><br>
   
 
   <h2 style="font-family:verdana">LEG FEATURES</h2>
@@ -69,7 +69,7 @@
 
   Spindles: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
   
-  <input type="radio" id="spind_2" name="spindles" value="2">
+  <input type="radio" id="spind_2" name="spindles" value="2" checked>
   <label for="spind_2">2</label>
   
   <input type="radio" id="spind_3" name="spindles" value="3">
@@ -84,7 +84,7 @@
 
 <div style="float:right;">
 
-  <img src="img/chair_w_back.jpg" width ="200" height = "200" alt="Chair with back" class="center">
+  <img src="img\\chair_w_back.jpg" width ="200" height = "200" alt="Chair with back" class="center">
     <form action="/order_info.php" method="get">
 
         <label for="quantity">Quantity: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
