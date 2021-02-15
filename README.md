@@ -124,8 +124,54 @@ URL = "http://127.0.0.1:3030/kbe/query"
 The quantity parameter is used in another function which estimates the time it takes to produce as many chairs as given in the variable quantity. The formula is arbitrary. To display the estimate, the number of days is written into the order_complete.html.
 
 ### factory_architect.py
+The factory architect updates the factory overview website (factory user interface) and create the dfa file with the customer input.
 
+### Queries and accessing data in Fuseki
+Accessing the data was automised py using the elements in a dictionary and a for-loop. The for-loop created the query for accessing the data in the database. The string for the queri was then added to the query that is used for accessing the fuseki server. The requested values are stored in a json format. A parser was made to access the differnet parameters more easily. The parser makes a list of dictionaries. The parameters for one chair are stored in the the dictionary and if there are more chairs they will be stored in the list and making a list of dictionaries.
 
+```python
+chair_params = { 'name':0, 's_width': 0, 's_depth': 0, 'a_th': 0, 'with_arm': 0, 'with_back': 0,
+             'back_height': 0, 'with_top': 0, 'top_th': 0, 'with_mid': 0, 'mid_th': 0,
+             'with_bot': 0, 'bot_th': 0 , 'leg_height': 0, 'leg_th': 0, 'with_taper': 0,
+             'spindles': 0  }    
+    where_str = '''?a_chair a kbe:chair. \n ''' 
+    select_str =""
+    for key in chair_params:
+        select_str += ' ?'+key
+        where_str += ' ?a_chair kbe:'+key+'' ' ?'+key+ '. \n'  
+
+    URL = "http://127.0.0.1:3030/kbe/query"
+    QUERY = '''
+            PREFIX kbe: <http://www.kbe.com/chairs.owl#>
+            SELECT '''+select_str+ '''
+            WHERE {
+               '''+where_str+'''
+            }
+            '''
+   # print("QUERY::", QUERY)
+    PARAMS = {'query':QUERY}
+    response = requests.post(URL,data=PARAMS)
+    #print("Result of query:", response.text)
+    json_data = response.json()
+```
+```python
+def parseJson(json_data): #returns an array with parameters
+    chair_parms = { 'name':0, 's_width': 0, 's_depth': 0, 'a_th': 0, 'with_arm': 0, 'with_back': 0,
+             'back_height': 0, 'with_top': 0, 'top_th': 0, 'with_mid': 0, 'mid_th': 0,
+             'with_bot': 0, 'bot_th': 0 , 'leg_height': 0, 'leg_th': 0, 'with_taper': 0,
+             'spindles': 0 }
+    chair_list = []
+    #get sizes
+    num_of_chairs = len(json_data['results']['bindings'])
+
+    for x in range(num_of_chairs):
+        for key in chair_parms:
+            chair_parms[key] = json_data['results']['bindings'][x][key]['value']
+        dic_copy = chair_parms.copy()
+        chair_list.append(dic_copy)
+    #print("Chair list",chair_list)    
+    return chair_list
+```
 
 ### .dfa file struture 
 The dfa template has been split up into a base template, and feature files. The base template contains the minimal parameters to be able to make a chair: seat width, seat depth, apron thickness, leg height and leg thickness. This file is of .dfa format and is called Chair_base.dfa. The rest of the features are split up into the .txt files and contain dfa code to represent the features which can be toggled using the checkboxes. It is useful to save these as .txt files because the feature files to separate working .dfa files from blocks of dfa files.
