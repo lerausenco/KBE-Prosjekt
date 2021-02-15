@@ -127,9 +127,10 @@ The quantity parameter is used in another function which estimates the time it t
 The factory architect updates the factory overview website (factory user interface) and create the dfa file with the customer input.
 
 ### Queries and accessing data in Fuseki
-Accessing the data was automised py using the elements in a dictionary and a for-loop. The for-loop created the query for accessing the data in the database. The string for the queri was then added to the query that is used for accessing the fuseki server. The requested values are stored in a json format. A parser was made to access the differnet parameters more easily. The parser makes a list of dictionaries. The parameters for one chair are stored in the the dictionary and if there are more chairs they will be stored in the list and making a list of dictionaries.
+Accessing the data was automised py using the elements in a dictionary and a for-loop. The for-loop created the query for accessing the data in the database. The string for the queri was then added to the query that is used for accessing the fuseki server. The requested values are stored in a json format. A parser was made to access the differnet parameters more easily. There were made two parsers and order funtions. One for the chair parameters and one for the order contining customer information. The parser makes a list of dictionaries. The parameters for one chair are stored in the the dictionary and if there are more chairs they will be stored in the list and making a list of dictionaries. The same principle applies for the order parser.
 
 ```python
+def getChairs():
 chair_params = { 'name':0, 's_width': 0, 's_depth': 0, 'a_th': 0, 'with_arm': 0, 'with_back': 0,
              'back_height': 0, 'with_top': 0, 'top_th': 0, 'with_mid': 0, 'mid_th': 0,
              'with_bot': 0, 'bot_th': 0 , 'leg_height': 0, 'leg_th': 0, 'with_taper': 0,
@@ -171,6 +172,61 @@ def parseJson(json_data): #returns an array with parameters
         chair_list.append(dic_copy)
     #print("Chair list",chair_list)    
     return chair_list
+
+
+def getOrder():
+    order_params = { 'name': 0, 'quantity': 0, 
+                     'email': 0, 'status': 0  }
+    
+    where_str = '''?a_order a kbe:order. \n ''' 
+    select_str =""
+    for key in order_params:
+        select_str += ' ?'+key
+        where_str += ' ?a_order kbe:'+key+'' ' ?'+key+ '. \n'  
+
+    URL = "http://127.0.0.1:3030/kbe/query"
+    QUERY = '''
+            PREFIX kbe: <http://www.kbe.com/chairs.owl#>
+            SELECT '''+select_str+ '''
+            WHERE {
+               '''+where_str+'''
+            }
+            '''
+   # print("QUERY::", QUERY)
+    PARAMS = {'query':QUERY}
+    response = requests.post(URL,data=PARAMS)
+    #print("Result of query:", response.text)
+    json_order_data = response.json()
+    #print("JSON", json_data)
+    return json_order_data
+def parseJsonOrder(json_order_data): #returns an array with parameters
+    order_params = { 'name': 0, 'quantity': 0, 
+                     'email': 0, 'status': 0  }
+    order_list = []
+    #get sizes
+    num_of_chairs = len(json_order_data['results']['bindings'])
+
+    for x in range(num_of_chairs):
+        for key in order_params:
+            order_params[key] = json_order_data['results']['bindings'][x][key]['value']
+        dic_copy = order_params.copy()
+        order_list.append(dic_copy)
+    print("order list",order_list)    
+    return order_list
+
+```
+The function that updates the factory overview UI takes the chair list and order list as parameters and write an order line containing order id, buyer name, customer email, quantity of the order and status for each order by looping through all elements in the chair list. This utilisation show the benefits av using a dictionary when only some parameters are requested.
+
+```python  
+def OrderOverView(chair_list, order_list):
+    Msg = ''
+    for x in range(len(chair_list)):
+        Msg +='<tr>'
+       # for key in chair_list[x]:
+        Msg += '<td>'+chair_list[x]['name']+'</td>''<td>'+order_list[x]['name']+'</td>''<td>'+order_list[x]['email']+'</td>''<td>'+order_list[x]['quantity']+'</td>''<td>'+order_list[x]['status']+'</td>'
+        Msg += '</tr>'
+    
+    return Msg
 ```
 
 ### .dfa file struture 
