@@ -34,9 +34,9 @@ The image below shows the actual implementation of the customer UI for this task
 ![](Figures/UI-screenshot.png)
 
 ## Factory User Interface
-The factory user interface implemented in this task is shown below. In this case it is a table displaying the orders and their status.
+The factory user interface implemented in this task is shown below. In this case it is a table displaying the orders and their status in addition to the contact information of the customer.
 
-![](Figures/NAME)
+![](Figures/Fac-UI.PNG)
 
 
 
