@@ -1,0 +1,273 @@
+#! UGNX/KF 2.0
+DefClass: Chair_60x55(%ug_create_instance ug_base_part);
+
+
+# Set of Parameters for the seat
+
+	(Number Parameter) s_width: 60;
+	(Number Parameter) s_depth: 55;
+	(Number Parameter) s_th: (s_width:+s_depth:)/80;
+	(Point Parameter)  s_origin: Point(0,0,l_height:);
+	
+	(Number Parameter) apron_th: 4;
+	(Number Parameter) apron_width: apron_th:/10;
+	
+	(Point Parameter) apron_front_origin: Point(l_th:,0,l_height:-apron_th:);
+	(Point Parameter) apron_back_origin: Point(l_th:,s_depth:-apron_width:,l_height:-apron_th:);
+	(Point Parameter) apron_right_origin: Point(0,l_th:,l_height:-apron_th:);
+	(Point Parameter) apron_left_origin: Point(s_width:-apron_width:,l_th:,l_height:-apron_th:);
+	
+#Set of parameters for legs
+	(Number Parameter) l_height: 60;
+    (Number Parameter) l_th: 6;
+	
+	(Point Parameter)  l1_origin: Point(0,0,0);
+	(Point Parameter)  l2_origin: Point(0,s_depth:-l_th:,0);
+	(Point Parameter)  l3_origin: Point(s_width:-l_th:,0,0);
+	(Point Parameter)  l4_origin: Point(s_width:-l_th:,s_depth:-l_th:,0);
+	
+
+# Set of Parameters for the back
+	(Number Parameter) b_height: 60;
+    (Number Parameter) b_th: 7;
+	(Number Parameter) b_width: 5;
+	(Point Parameter) b_left_origin: Point(0,s_depth:-b_width:,l_height:+s_th:);
+	(Point Parameter) b_right_origin: Point(s_width:-b_th:, s_depth:-b_width:, l_height:+s_th:);
+	
+	
+# Set of parameters for rails
+	
+	(Number Parameter) top_rail_th: 0;
+	(Point Parameter) top_rail_origin: Point(b_th:, s_depth:-rail_width:, l_height:+s_th:+b_height:-top_rail_th:);
+	
+	(Number Parameter) mid_rail_th: 4;
+	(Point Parameter) mid_rail_origin: Point(b_th:, s_depth:-rail_width:, l_height:+s_th: + b_height:*2/3-mid_rail_th:);
+	
+	
+	(Number Parameter) bot_rail_th: 4;
+	(Point Parameter) bot_rail_origin: Point(b_th:, s_depth:-rail_width:, l_height:+s_th: + b_height:/3-mid_rail_th:);
+	
+	(Number parameter) rail_width: 2;
+	(Number Parameter) rail_length: s_width:-2*b_th:;
+
+	(Number Parameter) taper_angle: 1.0;
+
+#spindles parameters
+
+	(Number Parameter) leg_th2: l_th:-SIN(2*taper_angle:)*l_height:*2/3; #leg thickness at spindle height 
+	(Number Parameter) side_sp_length: s_depth:-leg_th2:*2;
+	(Number Parameter) sp_height: l_height:/12;
+	(Number	Parameter) sp_th: leg_th2:*2/3;
+	
+	
+	(Number Parameter) front_sp_length: s_width:-leg_th2:*2;
+	(Number Parameter) adj: (l_th:-sp_th:)/2; #adjustment to center the spindles
+
+	(Number Parameter) arm_width:  s_width:/10;
+	(Number Parameter) arm_length: s_depth:-b_width:-arm_th:;
+	(Number Parameter) arm_th: s_width:/50;
+	(Number Parameter) arm_height: 20;
+	
+	(child) Seat: {
+	Class, ug_block,
+	Length, s_width:,
+	Width, s_depth:,
+	Height, s_th:,
+	Origin, s_origin:;
+};
+
+#APRON
+(Child) Apron_front: {
+	Class, ug_block,
+	Length, Seat:Length: - 2*l_th:,
+	Width, apron_width:,
+	Height, apron_th:, #user defined
+	Origin, apron_front_origin:;
+};
+
+(Child) Apron_back: {
+	Class, ug_block,
+	Length, Seat:Length: - 2*l_th:,
+	Width,  apron_width:,
+	Height, apron_th:,
+	Origin, apron_back_origin:;
+};
+
+(Child) Apron_right: {
+	Class, ug_block,
+	Length, apron_width:,
+	Width,  Seat:Width: - 2*l_th:,
+	Height, apron_th:,
+	Origin, apron_right_origin:;
+
+};
+(Child) Apron_left: {
+	Class, ug_block,
+	Length, apron_width:,
+	Width,  Seat:Width: - 2*l_th:,
+	Height, apron_th:,
+	Origin, apron_left_origin:;
+
+};
+
+
+#LEGS
+	
+(Child) Leg_left_front: {
+	Class, ug_block,
+			length, l_th:,
+			width, l_th:,
+			height, l_height:,
+			origin, l1_origin:;
+
+};
+(Child) Leg_left_back: {
+	Class, ug_block,
+			length, l_th:,
+			width, l_th:,
+			height, l_height:,
+			origin, l2_origin:;
+
+};
+
+(Child) Leg_right_front: {
+	Class, ug_block,
+			length, l_th:,
+			width, l_th:,
+			height, l_height:,
+			origin, l3_origin:;
+
+};
+
+(Child) Leg_right_back: {
+	Class, ug_block,
+			length, l_th:,
+			width, l_th:,
+			height, l_height:,
+			origin, l4_origin:;
+
+};
+
+#ARM SUPPORT
+
+(Child) Right_arm_front: {
+	Class, ug_block,
+	Length, arm_width:,
+	Width, arm_th:,
+	Height, arm_height:,
+	Origin, Point(0, 0, l_height:+s_th:),
+};
+
+
+(Child) Right_arm_top: {
+	Class, ug_block,
+	Length, arm_width:,
+	Width, arm_length:,
+	Height, arm_th:,
+	Origin, Point(s_width:-arm_width:, 0, l_height:+s_th:+arm_height:),
+};
+
+(Child) Left_arm_front: {
+	Class, ug_block,
+	Length, arm_width:,
+	Width, arm_th:,
+	Height, arm_height:,
+	Origin, Point(s_width:-arm_width:, 0, l_height:+s_th:),
+};
+
+
+(Child) Left_arm_top: {
+	Class, ug_block,
+	Length, arm_width:,
+	Width, arm_length:,
+	Height, arm_th:,
+	Origin, Point(0, 0, l_height:+s_th:+arm_height:),
+};
+#BACK
+	
+(Child) Back_left: {
+	Class, ug_block,
+	Length, b_th:,	#x-axis
+	Width, b_width:, #y-axis
+	Height, b_height:,
+	Origin, b_left_origin:;
+};
+
+(Child) Back_right: {
+	Class, ug_block,
+	Length, b_th:,	#x-axis
+	Width, b_width:, #y-axis
+	Height, b_height:,
+	Origin, b_right_origin:;
+
+};
+(Child) Rail_mid: {
+	Class, ug_block,
+	Length, rail_length:,
+	Width, rail_width:,
+	Height, mid_rail_th:,
+	Origin, mid_rail_origin:;
+	};
+(Child) Rail_bot: {
+	Class, ug_block,
+	Length, rail_length:,
+	Width, rail_width:,
+	Height, bot_rail_th:,
+	Origin, bot_rail_origin:;
+	};#TAPER LEGS 
+
+(Child) Taper1: {
+	Class, ug_edge_taper,
+	References, @{
+		$face << first(ug_body_askFaceClosestToPoint(Leg_left_front:, Point(0.5*l_th:, 0.5*l_th:, l_height:)));
+		ug_face_askEdges($face);
+	};
+	Taper_Angle, taper_angle:;
+	Draw_Direction, Vector(0,0,-1);
+};
+
+(Child) Taper2: {
+	Class, ug_edge_taper,
+	References, @{
+		$face << first(ug_body_askFaceClosestToPoint(Leg_left_back:, Point(0.5*l_th:, s_depth:-l_th: + 0.5*l_th:, l_height:)));
+		ug_face_askEdges($face);
+	};
+	Taper_Angle, taper_angle:;
+	Draw_Direction, Vector(0,0,-1);
+};
+
+(Child) Taper3: {
+	Class, ug_edge_taper,
+	References, @{
+		$face << first(ug_body_askFaceClosestToPoint(Leg_right_front:, Point(s_width:-l_th: + 0.5*l_th:,0.5*l_th:, l_height:)));
+		ug_face_askEdges($face);
+	};
+	Taper_Angle, taper_angle:;
+	Draw_Direction, Vector(0,0,-1);
+};
+
+(Child) Taper4: {
+	Class, ug_edge_taper,
+	References, @{
+		$face << first(ug_body_askFaceClosestToPoint(Leg_right_back:, Point(s_width:-l_th: + 0.5*l_th:, s_depth:-l_th: + 0.5*l_th:, l_height:)));
+		ug_face_askEdges($face);
+	};
+	Taper_Angle, taper_angle:;
+	Draw_Direction, Vector(0,0,-1);
+};
+(Child) Spindle_right: {
+	Class, ug_block,
+	Length, sp_th:,
+	Width, side_sp_length:,
+	Height, sp_height:,
+	Origin, Point(adj:, leg_th2:, l_height:/3);
+};
+
+(Child) Spindle_left: {
+	Class, ug_block,
+	Length, sp_th:,
+	Width, side_sp_length:,
+	Height, sp_height:,
+	Origin, Point(adj:+s_width:-l_th:, leg_th2:, l_height:/3);
+};
+
