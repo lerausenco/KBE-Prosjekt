@@ -31,7 +31,7 @@ The database ontology is defined by Chairs.owl, which holds definitions for two 
 ## Customer User Interface
 The image below shows the actual implementation of the customer UI for this task. The image of the chair is static, but represents a live model of the customer's design after pressing "Preview". The customer UI consists of three forms, with a button at the end of each form. The "preview" form is to collect the parameter values, the "quantity" form is to record the number of chairs in the order, and the "submit" form is to record the customer information and send the order.
 
-![](Figures/UI-screenshot.png)
+![](Figures/UI-screenshot.PNG)
 
 ## Factory User Interface
 The factory user interface implemented in this task is shown below. In this case it is a table displaying the orders and their status in addition to the contact information of the customer.
