@@ -71,13 +71,24 @@ class CustomerHandler(BaseHTTPRequestHandler):
             chair_name = addChair(values) #add chair to factory database
             addOrder(chair_name, quantity, name, email) #add order to factory database
 
-         #display estimated time of arrival   
-            html_code = writeTimeEstimate()
+         
+
+            json_data_max_lim = getLimit("MAX")
+            json_data_min_lim = getLimit("MIN")
+            max_list = parseJson(json_data_max_lim)
+            min_list = parseJson(json_data_min_lim)
+            
+            print("MAX LIST", max_list)
+            print("MIN LIST", min_list)
+
+            
+            ok = FeedBackToCustomer(values,min_list,max_list)
+              
+            html_code = writeMessage(ok)
             s.wfile.write(bytes(html_code, "utf-8"))
-    json_data_max_lim = getMaxLim()
-    json_data_min_lim = getMinLim()
-    max_list = parseJson(json_data_max_lim)
-    min_list = parseJson(json_data_min_lim)
+            
+
+
 
 def getQuantity():
     #get the total amount of chairs waiting to be produced
@@ -109,18 +120,53 @@ def estimateTime():
     days = quantity % 10 + 1 #can make 10 chairs a day + extra day for packing
     return days
 
-def writeTimeEstimate():
+def writeMessage(ok):
     #update the html file with the number of days
     days = estimateTime()
     html_code = getHTMLstring("order_complete.html")
-    html_code = html_code.replace("xxx", str(days))
+    if ok:
+        html_code = html_code.replace("MESSAGE", "<h2>Thank you for your order! </h2> <br> \
+            <h3>We are very busy right now, but we aim to deliver your chair in "+str(days)+" days.</h3>")
+    if not ok:
+        html_code = html_code.replace("MESSAGE", "<h2>Your order could not be processed </h2> <br> \
+            <h3>Please choose a new design.</h3>")
+
     return html_code
+
+
+def getLimit(max_or_min):
+    URL = "http://127.0.0.1:3030/kbe/query"
+    QUERY = '''
+            PREFIX kbe: <http://www.kbe.com/chairs.owl#>
+            SELECT  ?name ?s_width ?s_depth ?a_th ?back_height ?top_th ?mid_th ?bot_th ?leg_height ?leg_th
+            WHERE {
+            ?a_chair a kbe:chair.
+            ?a_chair kbe:name ?name.
+            FILTER regex(?name, "'''+max_or_min+'''") 
+            ?a_chair kbe:s_width ?s_width.
+            ?a_chair kbe:s_depth ?s_depth.
+            ?a_chair kbe:a_th ?a_th.
+            ?a_chair kbe:back_height ?back_height.
+            ?a_chair kbe:top_th ?top_th.
+            ?a_chair kbe:mid_th ?mid_th.
+            ?a_chair kbe:bot_th ?bot_th.
+            ?a_chair kbe:leg_height ?leg_height.
+            ?a_chair kbe:leg_th ?leg_th.
+            }
+    '''
+    PARAMS = {'query':QUERY}
+    response = requests.post(URL,data=PARAMS)
+    json_data = response.json()
+    return json_data
+
+
 
 def getMaxLim():
     chair_params = { 'name':0, 's_width': 0, 's_depth': 0, 'a_th': 0, 'with_arm': 0, 'with_back': 0,
              'back_height': 0, 'with_top': 0, 'top_th': 0, 'with_mid': 0, 'mid_th': 0,
              'with_bot': 0, 'bot_th': 0 , 'leg_height': 0, 'leg_th': 0, 'with_taper': 0,
-             'spindles': 0  }    
+             'spindles': 0  }  
+
     where_str = '''?a_chair a kbe:chair. \n ''' 
     select_str =""
     for key in chair_params:
@@ -171,10 +217,9 @@ def getMinLim():
     return json_data_min_lim
 
 def parseJson(json_data): #returns an array with parameters
-    chair_parms = { 'name':0, 's_width': 0, 's_depth': 0, 'a_th': 0, 'with_arm': 0, 'with_back': 0,
-             'back_height': 0, 'with_top': 0, 'top_th': 0, 'with_mid': 0, 'mid_th': 0,
-             'with_bot': 0, 'bot_th': 0 , 'leg_height': 0, 'leg_th': 0, 'with_taper': 0,
-             'spindles': 0 }
+    chair_parms = { 'name':0, 's_width': 0, 's_depth': 0, 'a_th': 0, 
+             'back_height': 0, 'top_th': 0, 'mid_th': 0,
+              'bot_th': 0 , 'leg_height': 0, 'leg_th': 0 }
     chair_list = []
     #get sizes
     num_of_chairs = len(json_data['results']['bindings'])
@@ -187,15 +232,18 @@ def parseJson(json_data): #returns an array with parameters
     #print("Chair list",chair_list)    
     return chair_list
 
+
 def FeedBackToCustomer(values,min_list,max_list):
-    Msg = ''
-    for key in values:
-        if key in values > max_list[0][key]:
-            Msg += 'Not manufactuarble'
-        elif key in values < min_list[0][key]:
-            Msg += 'Not manufactuarble'
-        else: 
-            Msg += 'Chair is ok'
+    ok = True
+    print("VALUES ", values)
+    for key in max_list[0]:
+        if key == 'name':
+            continue
+        if int(values[key]) > int(max_list[0][key]):
+            ok = False
+        elif int(values[key]) < int(max_list[0][key]):
+            ok = False
+    return ok
 
 
 
