@@ -30,7 +30,7 @@
 	Draw_Direction, Vector(0,0,-1);
 };
 
-(Child) Taper3: {
+(Child) Taper4: {
 	Class, ug_edge_taper,
 	References, @{
 		$face << first(ug_body_askFaceClosestToPoint(Leg_right_back:, Point(s_width:-l_th: + 0.5*l_th:, s_depth:-l_th: + 0.5*l_th:, l_height:)));
