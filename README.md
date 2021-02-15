@@ -35,9 +35,13 @@ The image below shows the actual implementation of the customer UI for this task
 
 ## Factory User Interface
 The factory user interface implemented in this task is shown below. In this case it is a table displaying the orders and their status in addition to the contact information of the customer.
-
 ![](Figures/Fac-UI.PNG)
 
+## Factory production manager User Interface
+A system for controlling the manufacturability was implemented. This was done by having a production manager User Interface where the prodruction manager could set maximum and mimimum limits for the chair as seen in the picture below.
+![](Figures/setting_limits.PNG)
+
+The submitted limits will be sent to the database and read in the customer_architect.py script. When a customer has submitted the form the input values will be checked up against the limit values from the production manager. If the values are ok the customer gets an order confirmation message. If they are not, the customer will get a message that the design needs to be changed.
 
 
 ## customer_architect.py
