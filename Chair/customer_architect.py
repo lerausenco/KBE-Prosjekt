@@ -74,6 +74,10 @@ class CustomerHandler(BaseHTTPRequestHandler):
          #display estimated time of arrival   
             html_code = writeTimeEstimate()
             s.wfile.write(bytes(html_code, "utf-8"))
+    json_data_max_lim = getMaxLim()
+    json_data_min_lim = getMinLim()
+    max_list = parseJson(json_data_max_lim)
+    min_list = parseJson(json_data_min_lim)
 
 def getQuantity():
     #get the total amount of chairs waiting to be produced
@@ -111,6 +115,89 @@ def writeTimeEstimate():
     html_code = getHTMLstring("order_complete.html")
     html_code = html_code.replace("xxx", str(days))
     return html_code
+
+def getMaxLim():
+    chair_params = { 'name':0, 's_width': 0, 's_depth': 0, 'a_th': 0, 'with_arm': 0, 'with_back': 0,
+             'back_height': 0, 'with_top': 0, 'top_th': 0, 'with_mid': 0, 'mid_th': 0,
+             'with_bot': 0, 'bot_th': 0 , 'leg_height': 0, 'leg_th': 0, 'with_taper': 0,
+             'spindles': 0  }    
+    where_str = '''?a_chair a kbe:chair. \n ''' 
+    select_str =""
+    for key in chair_params:
+        select_str += ' ?'+key
+        where_str += ' ?a_chair kbe:'+key+'' ' ?'+key+ '. \n'  
+
+    URL = "http://127.0.0.1:3030/kbe/query"
+    QUERY = '''
+            PREFIX kbe: <http://www.kbe.com/chairs.owl#>
+            SELECT '''+select_str+ '''
+            WHERE {
+               '''+where_str+'''
+            }
+            '''
+   # print("QUERY::", QUERY)
+    PARAMS = {'query':QUERY}
+    response = requests.post(URL,data=PARAMS)
+    #print("Result of query:", response.text)
+    json_data_max_lim = response.json()
+    #print("JSON", json_data)
+    return json_data_max_lim
+
+def getMinLim():
+    chair_params = { 'name':0, 's_width': 0, 's_depth': 0, 'a_th': 0, 'with_arm': 0, 'with_back': 0,
+             'back_height': 0, 'with_top': 0, 'top_th': 0, 'with_mid': 0, 'mid_th': 0,
+             'with_bot': 0, 'bot_th': 0 , 'leg_height': 0, 'leg_th': 0, 'with_taper': 0,
+             'spindles': 0  }    
+    where_str = '''?a_chair a kbe:chair. \n ''' 
+    select_str =""
+    for key in chair_params:
+        select_str += ' ?'+key
+        where_str += ' ?a_chair kbe:'+key+'' ' ?'+key+ '. \n'  
+
+    URL = "http://127.0.0.1:3030/kbe/query"
+    QUERY = '''
+            PREFIX kbe: <http://www.kbe.com/chairs.owl#>
+            SELECT '''+select_str+ '''
+            WHERE {
+               '''+where_str+'''
+            }
+            '''
+   # print("QUERY::", QUERY)
+    PARAMS = {'query':QUERY}
+    response = requests.post(URL,data=PARAMS)
+    #print("Result of query:", response.text)
+    json_data_min_lim = response.json()
+    #print("JSON", json_data)
+    return json_data_min_lim
+
+def parseJson(json_data): #returns an array with parameters
+    chair_parms = { 'name':0, 's_width': 0, 's_depth': 0, 'a_th': 0, 'with_arm': 0, 'with_back': 0,
+             'back_height': 0, 'with_top': 0, 'top_th': 0, 'with_mid': 0, 'mid_th': 0,
+             'with_bot': 0, 'bot_th': 0 , 'leg_height': 0, 'leg_th': 0, 'with_taper': 0,
+             'spindles': 0 }
+    chair_list = []
+    #get sizes
+    num_of_chairs = len(json_data['results']['bindings'])
+
+    for x in range(num_of_chairs):
+        for key in chair_parms:
+            chair_parms[key] = json_data['results']['bindings'][x][key]['value']
+        dic_copy = chair_parms.copy()
+        chair_list.append(dic_copy)
+    #print("Chair list",chair_list)    
+    return chair_list
+
+def FeedBackToCustomer(values,min_list,max_list):
+    Msg = ''
+    for key in values:
+        if key in values > max_list[0][key]:
+            Msg += 'Not manufactuarble'
+        elif key in values < min_list[0][key]:
+            Msg += 'Not manufactuarble'
+        else: 
+            Msg += 'Chair is ok'
+
+
 
 def addChair(values):
     #add chair design to database
