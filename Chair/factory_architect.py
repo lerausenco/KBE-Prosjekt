@@ -10,6 +10,7 @@ HOST_NAME = 'localhost'
 FACT_PORT_NUMBER = 2410
 
 
+
 def getHTMLstring(file_name):
     f = open(os.path.join(sys.path[0], file_name), "r")
     return f.read()
@@ -25,21 +26,98 @@ class FactoryHandler(BaseHTTPRequestHandler):
         s.send_header("Content-type", "text/html")
         s.end_headers()
        
-
-        jsonData = getChairs()
-        chair_list = parseJson(jsonData)
-        json_order_data = getOrder()
-        order_list = parseJsonOrder(json_order_data)
-
-        for i in range(len(chair_list)):
-           makeDFA(chair_list[i])
-
-        html_chair_data = OrderOverView(chair_list, order_list)
-        html_code = getHTMLstring("factory_overview.html")
-        html_code = html_code.replace("<p> No orders yet </p>", html_chair_data)
-        s.wfile.write(bytes(html_code, "utf-8"))
-
         str_path = s.path
+        if str_path.find("/overview") !=-1:
+        
+            jsonData = getChairs()
+            chair_list = parseJson(jsonData)
+            json_order_data = getOrder()
+            order_list = parseJsonOrder(json_order_data)
+
+            for i in range(len(chair_list)):
+                makeDFA(chair_list[i])
+
+            html_chair_data = OrderOverView(chair_list, order_list)
+            html_code = getHTMLstring("factory_overview.html")
+            html_code = html_code.replace("<p> No orders yet </p>", html_chair_data)
+            s.wfile.write(bytes(html_code, "utf-8"))
+
+        if str_path.find("/set_limits") != -1:
+
+            #page to set limits
+            html_code = getHTMLstring("factory_setLimits.html")
+            s.wfile.write(bytes(html_code, "utf-8"))
+        
+        if str_path.find("/max_limits") != -1:
+
+            max_values = {}
+
+            html_code = getHTMLstring("factory_setLimits.html")
+            #let the user know they have been updated
+            html_code = html_code.replace('<input type="submit" value="Set Max Limits">', "Max limits have been updated")
+            s.wfile.write(bytes(html_code, "utf-8"))
+
+            str_path = str_path.replace("+", "_")
+            data = str_path.split("?")
+            params = data[1]
+            pairs = params.split("&") #key value pairs
+
+            for i in range(len(pairs)):
+                param_value = pairs[i].split("=")[1]
+                if param_value == '':
+                    max_values[pairs[i].split("=")[0]] = 0
+                else:
+                    max_values[pairs[i].split("=")[0]] = param_value
+            
+            setLimits("MAX", max_values)
+        
+        if str_path.find("/min_limits") != -1:
+
+            min_values = {}
+
+            html_code = getHTMLstring("factory_setLimits.html")
+            #let the user know they have been updated
+            html_code = html_code.replace('<input type="submit" value="Set Min Limits">', "Min limits have been updated")
+            s.wfile.write(bytes(html_code, "utf-8"))
+
+            str_path = str_path.replace("+", "_")
+            data = str_path.split("?")
+            params = data[1]
+            pairs = params.split("&") #key value pairs
+
+            for i in range(len(pairs)):
+                param_value = pairs[i].split("=")[1]
+                if param_value == '':
+                    min_values[pairs[i].split("=")[0]] = 0
+                else:
+                    min_values[pairs[i].split("=")[0]] = param_value
+            
+            setLimits("MIN", min_values)
+
+
+def setLimits(max_or_min, values):
+    #add a chair_MAX for max limits and a chair_MIN for min limits
+
+    insert_str = ''' kbe:chair_'''+max_or_min+''' a kbe:chair. \n'''
+
+    for key in values:
+        insert_str += 'kbe:chair_'+max_or_min+ ' kbe:'+ key +' "' + str(values[key])+ '"^^xsd:float. \n'
+    URL = "http://127.0.0.1:3030/kbe/update"
+    UPDATE = '''
+            PREFIX kbe: <http://www.kbe.com/chairs.owl#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            INSERT
+            {
+             '''+insert_str+'''             
+            }
+            WHERE
+            { 
+            } 
+            '''
+    
+    PARAMS = {'update':UPDATE}
+    response = requests.post(URL,data=PARAMS)
+    
 
 def getChairs():
     chair_params = { 'name':0, 's_width': 0, 's_depth': 0, 'a_th': 0, 'with_arm': 0, 'with_back': 0,
