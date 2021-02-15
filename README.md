@@ -40,7 +40,7 @@ The factory user interface implemented in this task is shown below. In this case
 
 
 
-### customer_architect.py
+## customer_architect.py
 The customer architect responds to a GET-request triggered by pressing one of the buttons on the customer UI. 
 
 - Pressing the preview button parses the URL and extracts the parameters using string manipulation functions. The parameters are stored in a dictionary called 'values'.
@@ -123,7 +123,7 @@ URL = "http://127.0.0.1:3030/kbe/query"
 
 The quantity parameter is used in another function which estimates the time it takes to produce as many chairs as given in the variable quantity. The formula is arbitrary. To display the estimate, the number of days is written into the order_complete.html.
 
-### factory_architect.py
+## factory_architect.py
 The factory architect updates the factory overview website (factory user interface) and create the dfa file with the customer input.
 
 ### Queries and accessing data in Fuseki
