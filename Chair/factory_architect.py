@@ -98,8 +98,9 @@ class FactoryHandler(BaseHTTPRequestHandler):
 def setLimits(max_or_min, values):
     #add a chair_MAX for max limits and a chair_MIN for min limits
 
-    insert_str = ''' kbe:chair_'''+max_or_min+''' a kbe:chair. \n'''
-
+    insert_str = '''kbe:chair_'''+max_or_min+''' a kbe:chair. \n
+                    kbe:chair_''' + max_or_min + ''' kbe:name "'''+max_or_min+ '''".\n'''
+    
     for key in values:
         insert_str += 'kbe:chair_'+max_or_min+ ' kbe:'+ key +' "' + str(values[key])+ '"^^xsd:float. \n'
     URL = "http://127.0.0.1:3030/kbe/update"
