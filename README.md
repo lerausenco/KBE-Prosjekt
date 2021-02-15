@@ -35,15 +35,22 @@ The image below shows the actual implementation of the customer UI for this task
 
 ## Factory User Interface
 The factory user interface implemented in this task is shown below. In this case it is a table displaying the orders and their status in addition to the contact information of the customer.
-
 ![](Figures/Fac-UI.PNG)
 
+<<<<<<< HEAD
 ## UML Sequence diagram
 The UML sequence diagram with the customer on the left, and production engineer on the right is shown below. The customer can submit forms which trigger a GET request and save the parameters in the link generated. The production engineer must set minimum and maximum limits through the factoryUI, which are placed on the Fuseki database. On the customer side, pressing the submit order triggers a number of events. The parameters of the chair design are parsed, and a query is sent to the Fuseki database. The return of the query are the maximum and minimum limits for each parameter against which the parameters are checked. If the parameters are within the limits, the database is updated with a chair design, and an order containing the chair design name and quantity. The customer server performs a query to the database to check the total quantity of chairs in the production queue. Finally, the order status is shown in the customer UI. On the production side, a GET request is performed upon refresh, which triggers a query that finds new orders and displays them on the factory overview screen.
 
 ![](Figures/UMLsequence.png)
 
 
+=======
+## Factory production manager User Interface
+A system for controlling the manufacturability was implemented. This was done by having a production manager User Interface where the prodruction manager could set maximum and mimimum limits for the chair as seen in the picture below.
+![](Figures/setting_limits.PNG)
+
+The submitted limits will be sent to the database and read in the customer_architect.py script. When a customer has submitted the form, the input values will be checked up against the limit values from the production manager. If the values are ok the customer gets an order confirmation message. If they are not, the customer will get a message that the design needs to be changed.
+>>>>>>> c0799ff4f411e79d36a8e101afb71474589232b8
 
 
 ## customer_architect.py
@@ -133,7 +140,7 @@ The quantity parameter is used in another function which estimates the time it t
 The factory architect updates the factory overview website (factory user interface) and create the dfa file with the customer input.
 
 ### Queries and accessing data in Fuseki
-Accessing the data was automised py using the elements in a dictionary and a for-loop. The for-loop created the query for accessing the data in the database. The string for the queri was then added to the query that is used for accessing the fuseki server. The requested values are stored in a json format. A parser was made to access the differnet parameters more easily. There were made two parsers and order funtions. One for the chair parameters and one for the order contining customer information. The parser makes a list of dictionaries. The parameters for one chair are stored in the the dictionary and if there are more chairs they will be stored in the list and making a list of dictionaries. The same principle applies for the order parser.
+Accessing the data was automised py using the elements in a dictionary and a for-loop as seen in the code below. 
 
 ```python
 def getChairs():
@@ -160,7 +167,13 @@ chair_params = { 'name':0, 's_width': 0, 's_depth': 0, 'a_th': 0, 'with_arm': 0,
     response = requests.post(URL,data=PARAMS)
     #print("Result of query:", response.text)
     json_data = response.json()
+    return json_data
 ```
+The for-loop created the query for accessing the data in the database. The string for the query was then added to the query that is used for accessing the fuseki server. The requested values are stored in a json format by utilising the function response.json().
+
+A parser was made to access the differnet parameters more easily. The parser algorithm can be seen below. 
+
+
 ```python
 def parseJson(json_data): #returns an array with parameters
     chair_parms = { 'name':0, 's_width': 0, 's_depth': 0, 'a_th': 0, 'with_arm': 0, 'with_back': 0,
@@ -178,9 +191,10 @@ def parseJson(json_data): #returns an array with parameters
         chair_list.append(dic_copy)
     #print("Chair list",chair_list)    
     return chair_list
+```
+There were made two parsers and order funtions. One for the chair parameters and one for the order contining customer information. The parser makes a list of dictionaries. The parameters for one chair are stored in the the dictionary and if there are more chairs they will be stored in the list and making a list of dictionaries. The same principle applies for the order parser.
 
-
-def getOrder():
+```python
     order_params = { 'name': 0, 'quantity': 0, 
                      'email': 0, 'status': 0  }
     
@@ -198,13 +212,12 @@ def getOrder():
                '''+where_str+'''
             }
             '''
-   # print("QUERY::", QUERY)
-    PARAMS = {'query':QUERY}
-    response = requests.post(URL,data=PARAMS)
-    #print("Result of query:", response.text)
-    json_order_data = response.json()
-    #print("JSON", json_data)
-    return json_order_data
+```
+The difference between the order and chair accesser is what they are acceessing. The order query is a little shorter due to only four parameters as seen in the dictionary "order_params". 
+
+The parser for the orders is almost identical to the one for chairs. This one collects the ordering data and has fewer parameters to handle. The order json parser can be seen in the code below.
+```python
+
 def parseJsonOrder(json_order_data): #returns an array with parameters
     order_params = { 'name': 0, 'quantity': 0, 
                      'email': 0, 'status': 0  }
