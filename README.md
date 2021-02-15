@@ -125,3 +125,31 @@ The quantity parameter is used in another function which estimates the time it t
 
 ### factory_architect.py
 
+
+
+### .dfa file struture 
+The dfa template has been split up into a base template, and feature files. The base template contains the minimal parameters to be able to make a chair: seat width, seat depth, apron thickness, leg height and leg thickness. This file is of .dfa format and is called Chair_base.dfa. The rest of the features are split up into the .txt files and contain dfa code to represent the features which can be toggled using the checkboxes. It is useful to save these as .txt files because the feature files to separate working .dfa files from blocks of dfa files.
+
+The individual files, what features they add, and the customisable parameters of the chair are shown in the figure below.
+
+![](Figures/DFA_code_structure.png)
+
+
+A dfa file is constructed in the factory_architect.py script in the function makeDFA(chair), which takes in a chair dictionary. A new file is created for each new chair in the list of chairs. The function first iterates through the chair dictionary and replaces the customisable parameters with values, as shown below:
+
+```python
+for key in chair:
+            dfa_txt = dfa_txt.replace("<"+key+">", chair[key])
+```
+
+Then, with an if-statement for each feature that can be toggled, the function selects the appropriate .txt file containing the dfa code for the feature. An example for the arm support feature is shown below. If the chair should have arm support, the feature file for arm support is opened and appended to the model .dfa file. The same procedure is done for each selectable feature represented as a bool in the OWL class diagram further up.
+
+```python
+if (chair['with_arm']!="0"):
+            feature_file = open("DFA\\Templates\\arm_support.txt", "r")
+            feature_txt = feature_file.read()
+            order_dfa.write(feature_txt)
+```
+
+
+
