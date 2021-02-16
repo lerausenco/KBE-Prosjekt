@@ -66,26 +66,26 @@ class CustomerHandler(BaseHTTPRequestHandler):
             email = pairs[1].split("=")[1]
             email = email.replace("%40", "@")
 
-        #send an order into the database
-            quantity = values['quantity']            
-            chair_name = addChair(values) #add chair to factory database
-            addOrder(chair_name, quantity, name, email) #add order to factory database
-
+           
+            quantity = values['quantity']  
          
-
+            #get max and min values 
             json_data_max_lim = getLimit("MAX")
             json_data_min_lim = getLimit("MIN")
             max_list = parseJson(json_data_max_lim)
             min_list = parseJson(json_data_min_lim)
             
-            print("MAX LIST", max_list)
-            print("MIN LIST", min_list)
-
-            
+            #check if inputs are ok            
             ok = FeedBackToCustomer(values,min_list,max_list)
               
+            #write a messagd based on if order is ok  
             html_code = writeMessage(ok)
             s.wfile.write(bytes(html_code, "utf-8"))
+
+            #send an order into the database if inputs are ok
+            if ok:   
+                chair_name = addChair(values) #add chair to factory database
+                addOrder(chair_name, quantity, name, email) #add order to factory database
             
 
 
@@ -235,13 +235,12 @@ def parseJson(json_data): #returns an array with parameters
 
 def FeedBackToCustomer(values,min_list,max_list):
     ok = True
-    print("VALUES ", values)
     for key in max_list[0]:
         if key == 'name':
             continue
         if int(values[key]) > int(max_list[0][key]):
             ok = False
-        elif int(values[key]) < int(max_list[0][key]):
+        elif int(values[key]) < int(min_list[0][key]):
             ok = False
     return ok
 
@@ -287,9 +286,9 @@ def addOrder(chair_name, quantity, name, email):
             {
              kbe:order_''' +orderID+ ''' a kbe:order. 
              kbe:order_''' +orderID+ ''' kbe:name "'''+name+ '''".
-             kbe:order_''' +orderID+ ''' kbe:quantity "'''+str(quantity)+'''"^^xsd:float.
+             kbe:order_''' +orderID+ ''' kbe:quantity "'''+str(quantity)+'''"^^xsd:integer.
              kbe:order_''' +orderID+ ''' kbe:email "'''+email+'''".
-             kbe:order_''' +orderID+ ''' kbe:status "0"^^xsd:float.            
+             kbe:order_''' +orderID+ ''' kbe:status "0"^^xsd:boolean.            
             }
             WHERE
             { 
