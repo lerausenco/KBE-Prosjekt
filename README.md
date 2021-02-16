@@ -266,7 +266,7 @@ def OrderOverView(chair_list, order_list):
 ```
 
 ### .dfa file struture 
-The dfa template has been split up into a base template, and feature files. The base template contains the minimal parameters to be able to make a chair: seat width, seat depth, apron thickness, leg height and leg thickness. This file is of .dfa format and is called Chair_base.dfa. The rest of the features are split up into the .txt files and contain dfa code to represent the features which can be toggled using the checkboxes. It is useful to save these as .txt files because the feature files to separate working .dfa files from blocks of dfa files.
+The dfa template has been split up into a base template, and feature files. The base template contains the minimal features to be able to make a chair: seat width, seat depth, apron thickness, leg height and leg thickness. It also records all the parameters that could potentially be used in a chair design. This file is of .dfa format and is called Chair_base.dfa. The rest of the features are split up into the .txt files and contain dfa code to represent the features which can be toggled using the checkboxes. It is useful to save these as .txt files because the feature files to separate working .dfa files from blocks of dfa files.
 
 The individual files, what features they add, and the customisable parameters of the chair are shown in the figure below.
 
@@ -291,23 +291,18 @@ if (chair['with_arm']!="0"):
 
 The chair model .dfa files are saved in the folder named "Orders" with the same name as they are given in the database.
 
+The .dfa code for a complete chair can be seen in Chair_template.dfa. A parametric design approach has been used, with certain parameters which are not directly dependent on the user inputs. These parameters are calculated based on the sizes of other parameters.
+
 # Product examples
-Some product examples are shown below. The first example is the most simple design, and could be used as a bench.
+Some product examples are shown below. The first example is the most simple design, for example a bench.
 
-![](Figures/Models/bench.PNG)
+![](Figures/bench.PNG)
 
-Next are two examples of chairs of different sizes. One of the chairs con
+Next are two examples of chairs of different sizes. One of the chairs has three spindles and three rails. The other chair only had two spindles and two rails, but has arm support and tapered legs.
 
 ![](Figures/Examples.png)
 
-Finally
-
-# Development Process
-
-
-
 # Extendability and Improvements
+The code developed provides a certain degree of extendability due to multiple factors. Using a consistent naming system for parameters, combined with the use of Python dictionaries gives the opportunity to extend the system by adding more variables and designs. The same functions can be reused with different dictionaries. Another factor is that the system has been split up into many blocks. For example, HTML-files are separate from the Python scripts. This makes makes it easy to modify only the HTML file to change the web-page, rather than the Python file. Another example is the function that gives an ETA on the order. This function can easily be extended to provide a more accurate estimate by taking more parameters into account.
 
-
-
- 
+With the fundamental structure in place, many things can be improved. Firstly, the web interfaces could be improved with more interactive features. A function to select and change the status of the order should be implemented, to give more feedback to the production engineer. Secondly, more manufacturability checks should be implemented. For example, checking for combinations which do not work - e.g. no back + top rail. The customer should also get more concise feedback on specifically what makes their design not possible to manufacture. 
