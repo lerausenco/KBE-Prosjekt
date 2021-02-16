@@ -1,7 +1,5 @@
 import os
 import sys
-
-
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import time
 import requests
@@ -66,7 +64,7 @@ class CustomerHandler(BaseHTTPRequestHandler):
             email = pairs[1].split("=")[1]
             email = email.replace("%40", "@")
 
-           
+            #get quantity
             quantity = values['quantity']  
          
             #get max and min values 
@@ -78,17 +76,15 @@ class CustomerHandler(BaseHTTPRequestHandler):
             #check if inputs are ok            
             ok = FeedBackToCustomer(values,min_list,max_list)
               
-            #write a messagd based on if order is ok  
+            #write a message based on if order is ok  
             html_code = writeMessage(ok)
             s.wfile.write(bytes(html_code, "utf-8"))
 
             #send an order into the database if inputs are ok
             if ok:   
-                chair_name = addChair(values) #add chair to factory database
+                chair_name = addChair(values) #add chair design to factory database
                 addOrder(chair_name, quantity, name, email) #add order to factory database
             
-
-
 
 def getQuantity():
     #get the total amount of chairs waiting to be produced
@@ -110,18 +106,18 @@ def getQuantity():
     quantity = 0
     for i in range(num_of_orders):
         status = json_data['results']['bindings'][i]["status"]["value"]
-        if (status == "0"):
+        if (status == "0"): #only count chairs still waiting to be produced
             quantity += int(json_data['results']['bindings'][i]["quantity"]["value"])
     return quantity
 
 def estimateTime():
-    #calculate an estimate for how long the customer has to wait (arbitray formula)
+    #calculate an estimate for how long the customer has to wait 
     quantity = getQuantity()
     days = quantity % 10 + 1 #can make 10 chairs a day + extra day for packing
     return days
 
 def writeMessage(ok):
-    #update the html file with the number of days
+    #update the html file with the number of days and message
     days = estimateTime()
     html_code = getHTMLstring("order_complete.html")
     if ok:
@@ -130,11 +126,10 @@ def writeMessage(ok):
     if not ok:
         html_code = html_code.replace("MESSAGE", "<h2>Your order could not be processed </h2> <br> \
             <h3>Please choose a new design.</h3>")
-
     return html_code
 
-
 def getLimit(max_or_min):
+    #get limits from database
     URL = "http://127.0.0.1:3030/kbe/query"
     QUERY = '''
             PREFIX kbe: <http://www.kbe.com/chairs.owl#>
@@ -159,63 +154,6 @@ def getLimit(max_or_min):
     json_data = response.json()
     return json_data
 
-
-
-def getMaxLim():
-    chair_params = { 'name':0, 's_width': 0, 's_depth': 0, 'a_th': 0, 'with_arm': 0, 'with_back': 0,
-             'back_height': 0, 'with_top': 0, 'top_th': 0, 'with_mid': 0, 'mid_th': 0,
-             'with_bot': 0, 'bot_th': 0 , 'leg_height': 0, 'leg_th': 0, 'with_taper': 0,
-             'spindles': 0  }  
-
-    where_str = '''?a_chair a kbe:chair. \n ''' 
-    select_str =""
-    for key in chair_params:
-        select_str += ' ?'+key
-        where_str += ' ?a_chair kbe:'+key+'' ' ?'+key+ '. \n'  
-
-    URL = "http://127.0.0.1:3030/kbe/query"
-    QUERY = '''
-            PREFIX kbe: <http://www.kbe.com/chairs.owl#>
-            SELECT '''+select_str+ '''
-            WHERE {
-               '''+where_str+'''
-            }
-            '''
-   # print("QUERY::", QUERY)
-    PARAMS = {'query':QUERY}
-    response = requests.post(URL,data=PARAMS)
-    #print("Result of query:", response.text)
-    json_data_max_lim = response.json()
-    #print("JSON", json_data)
-    return json_data_max_lim
-
-def getMinLim():
-    chair_params = { 'name':0, 's_width': 0, 's_depth': 0, 'a_th': 0, 'with_arm': 0, 'with_back': 0,
-             'back_height': 0, 'with_top': 0, 'top_th': 0, 'with_mid': 0, 'mid_th': 0,
-             'with_bot': 0, 'bot_th': 0 , 'leg_height': 0, 'leg_th': 0, 'with_taper': 0,
-             'spindles': 0  }    
-    where_str = '''?a_chair a kbe:chair. \n ''' 
-    select_str =""
-    for key in chair_params:
-        select_str += ' ?'+key
-        where_str += ' ?a_chair kbe:'+key+'' ' ?'+key+ '. \n'  
-
-    URL = "http://127.0.0.1:3030/kbe/query"
-    QUERY = '''
-            PREFIX kbe: <http://www.kbe.com/chairs.owl#>
-            SELECT '''+select_str+ '''
-            WHERE {
-               '''+where_str+'''
-            }
-            '''
-   # print("QUERY::", QUERY)
-    PARAMS = {'query':QUERY}
-    response = requests.post(URL,data=PARAMS)
-    #print("Result of query:", response.text)
-    json_data_min_lim = response.json()
-    #print("JSON", json_data)
-    return json_data_min_lim
-
 def parseJson(json_data): #returns an array with parameters
     chair_parms = { 'name':0, 's_width': 0, 's_depth': 0, 'a_th': 0, 
              'back_height': 0, 'top_th': 0, 'mid_th': 0,
@@ -232,8 +170,8 @@ def parseJson(json_data): #returns an array with parameters
     #print("Chair list",chair_list)    
     return chair_list
 
-
 def FeedBackToCustomer(values,min_list,max_list):
+    #check if parameters are within limits
     ok = True
     for key in max_list[0]:
         if key == 'name':
@@ -244,8 +182,6 @@ def FeedBackToCustomer(values,min_list,max_list):
             ok = False
     return ok
 
-
-
 def addChair(values):
     #add chair design to database
     values.pop("quantity") #do not want to add quantity to chair class
@@ -254,7 +190,14 @@ def addChair(values):
                     kbe:chair_''' + chair_name + ''' kbe:name "'''+chair_name+ '''".\n''' 
 
     for key in values:
-        insert_str += 'kbe:chair_'+chair_name+ ' kbe:'+ key +' "' + str(values[key])+ '"^^xsd:float. \n'  
+        
+        if key.find("with")!=-1: #all boolean variables contain the word "with"
+            datatype = "boolean"
+        elif key.find("spindles")!=-1:  #spindles is the only integer in the database
+            datatype = "integer"
+        else:
+            datatype = "float" #the rest of parameters are stored as floats
+        insert_str += 'kbe:chair_'+chair_name+ ' kbe:'+ key +' "' + str(values[key])+ '"^^xsd:'+datatype+'. \n'  
 
     URL = "http://127.0.0.1:3030/kbe/update"
     UPDATE = '''
@@ -270,7 +213,6 @@ def addChair(values):
             '''
     
     PARAMS = {'update':UPDATE}
-    print("Update query:", UPDATE)
     response = requests.post(URL,data=PARAMS)
     return chair_name
 
