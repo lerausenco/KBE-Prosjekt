@@ -1,3 +1,4 @@
+# Group members: Håkon Bakke & Valeria Usenco
 # KBE Project Course - Assignment 1 - Chair
 # Introduction
 
@@ -8,6 +9,10 @@ This page describes the process of creating a KBE system for customisable chairs
 The customer interface has been designed in draw.io, to serve as a template for the HTML-code. It is important for the customer UI to be user-friendly and easy to use. With this in mind, the parameters for each part of the chair have been split up into sections, so that the user does not get overwhelmed with a long list of parameters. If the user is unsure about what each parameter refers to, they can click the help button which reveals an annotated image of a chair to inform the user about which parameter they can change. Below is a sketch of how the user interface could be designed.
 
 ![](Figures/CustomerUI.png)
+
+The image that would come up when pressing or hovering over the help button is shown below.
+
+![](Figures/chair_annotated.png)
 
 After providing the parameters and pressing the Preview button, a model should be generated and shown in the window on the right. The user can then either choose to add a number of chairs to their order, or generate a new chair by changing the parameters and pressing the Preview button again. The customer can preview and edit it in the menu in the top right corner. When the customer is ready to submit their order, they must provide their contact details, and press submit order. They are then redirected to a page where they get to know if their design is feasible, and the estimated arrival time of their order. 
 
@@ -32,6 +37,7 @@ The image below shows the actual implementation of the customer UI for this task
 
 ![](Figures/UI-screenshot.PNG)
 
+
 ## Factory User Interface
 The factory user interface implemented in this task is shown below. In this case it is a table displaying the orders and their status in addition to the contact information of the customer.
 
@@ -39,7 +45,8 @@ The factory user interface implemented in this task is shown below. In this case
 
 
 ## Factory production manager User Interface
-A system for controlling the manufacturability was implemented. This was done by having a production manager User Interface where the production manager could set maximum and mimimum limits for the chair as seen in the picture below. The submitted limits are sent to the database and read in the customer_architect.py script.
+A system for controlling the manufacturability had been implemented. This was done by having a production manager User Interface where the production manager could set maximum and mimimum limits for the chair as seen in the picture below. The submitted limits are sent to the database and read in the customer_architect.py script. The screenshot below shows the stage after the minimum limits have been set and before the maximum limits have been sent.
+
 ![](Figures/setting_limits.PNG)
 
 
@@ -62,15 +69,21 @@ The customer architect responds to a GET-request triggered by pressing one of th
 
 - Pressing the Submit button adds the chair design to the database. It also adds an order with the name of the chair design, the quantity, customer name and email. Finally, a "thank you" message is displayed, as well as an estimate of the ETA for the customer's order.
 
-The code to create the update string used to add a chair design to the database uses a for-loop to save time. One of the benefits of using a dictionary to store the parameters is that the keys can be used as parameter names to create the update string.
+The code to create the update string used to add a chair design to the database uses a for-loop to save time. One of the benefits of using a dictionary to store the parameters is that the keys can be used as parameter names to create the update string. All the boolean variables in the class contain the word "with", so the datatype is set to boolean when that word is found in the key of the values dictionary. 
 
 ```python
     chair_name = str(values['s_width']) + "x" +str(values['s_depth'])
     insert_str = '''kbe:chair_''' + chair_name +  ''' a kbe:chair.
                     kbe:chair_''' + chair_name + ''' kbe:name "'''+chair_name+ '''".\n''' 
 
-    for key in values:
-        insert_str += 'kbe:chair_'+chair_name+ ' kbe:'+ key +' "' + str(values[key])+ '"^^xsd:float. \n'  
+    for key in values: 
+        if key.find("with")!=-1: #all boolean variables contain the word "with"
+            datatype = "boolean"
+        elif key.find("spindles")!=-1:  #spindles is the only integer in the database
+            datatype = "integer"
+        else:
+            datatype = "float" #the rest of parameters are stored as floats
+        insert_str += 'kbe:chair_'+chair_name+ ' kbe:'+ key +' "' + str(values[key])+ '"^^xsd:'+datatype+'. \n'  
 
     URL = "http://127.0.0.1:3030/kbe/update"
     UPDATE = '''
@@ -137,22 +150,47 @@ URL = "http://127.0.0.1:3030/kbe/query"
 The quantity parameter is used in another function which estimates the time it takes to produce as many chairs as given in the variable quantity. The formula is arbitrary. To display the estimate, the number of days is written into the order_complete.html.
 
 ## factory_architect.py
-The factory architect updates the factory overview website (factory user interface) and create the dfa file with the customer input.
+The factory architect allows the production manager to set maximum and minimum limits for parameters, updates the factory overview website (factory user interface) and creates the dfa file with the customer input.
 
-### Queries and accessing data in Fuseki
-Accessing the data was automised py using the elements in a dictionary and a for-loop as seen in the code below. 
+### Setting Parameter Limits - Updating Fuseki Database
+The parameter limits can be set by accesing the set_limits page on the server. The limits are set in the database by performing an update on the database using the function setLimits(max_or_min, values). The parameters of this function are a string specifying whether it is the maximum or minimum being updated, and the values for the limits. The code which is used the function to create the update string is given below.
 
 ```python
-def getChairs():
-chair_params = { 'name':0, 's_width': 0, 's_depth': 0, 'a_th': 0, 'with_arm': 0, 'with_back': 0,
-             'back_height': 0, 'with_top': 0, 'top_th': 0, 'with_mid': 0, 'mid_th': 0,
-             'with_bot': 0, 'bot_th': 0 , 'leg_height': 0, 'leg_th': 0, 'with_taper': 0,
-             'spindles': 0  }    
-    where_str = '''?a_chair a kbe:chair. \n ''' 
-    select_str =""
-    for key in chair_params:
+def setLimits(max_or_min, values):
+    insert_str = '''kbe:chair_'''+max_or_min+''' a kbe:chair. \n
+                    kbe:chair_''' + max_or_min + ''' kbe:name "'''+max_or_min+ '''".\n'''
+    
+    for key in values:
+        insert_str += 'kbe:chair_'+max_or_min+ ' kbe:'+ key +' "' + str(values[key])+ '"^^xsd:float. \n'
+    URL = "http://127.0.0.1:3030/kbe/update"
+    UPDATE = '''
+            PREFIX kbe: <http://www.kbe.com/chairs.owl#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            INSERT
+            {
+             '''+insert_str+'''             
+            }
+            WHERE
+            { 
+            } 
+            '''
+```
+Calling the function as follows would create a chair called "chair_MIN" in the database, which would be accessed by  customer_architect.py to check the parameter limits.
+
+```python
+setLimits("MIN", min_values)
+```
+
+### Queries and Accessing Data in Fuseki Database
+Accessing the data is automised py using the elements in a dictionary and a for-loop as seen in the code below. The for-loop created the query for accessing the data in the database. The string for the query was then added to the query that is used for accessing the fuseki server. The requested values are stored in a json format by utilising the function response.json(). The function is used both to access the chair designs and the orders. By taking the class name in the form of the string into the function, the class name can be used to form a query.
+
+```python
+def makeQuery(class_name,dictionary):
+    where_str = '?a_'+ class_name +' a kbe:'+ class_name + '.\n'
+    select_str = ""
+    for key in dictionary:
         select_str += ' ?'+key
-        where_str += ' ?a_chair kbe:'+key+'' ' ?'+key+ '. \n'  
+        where_str += ' ?a_'+class_name+' kbe:'+key+'' ' ?'+key+ '. \n'  
 
     URL = "http://127.0.0.1:3030/kbe/query"
     QUERY = '''
@@ -162,79 +200,31 @@ chair_params = { 'name':0, 's_width': 0, 's_depth': 0, 'a_th': 0, 'with_arm': 0,
                '''+where_str+'''
             }
             '''
-   # print("QUERY::", QUERY)
+    
     PARAMS = {'query':QUERY}
     response = requests.post(URL,data=PARAMS)
-    #print("Result of query:", response.text)
     json_data = response.json()
     return json_data
 ```
-The for-loop created the query for accessing the data in the database. The string for the query was then added to the query that is used for accessing the fuseki server. The requested values are stored in a json format by utilising the function response.json().
 
-A parser was made to access the differnet parameters more easily. The parser algorithm can be seen below. 
+A parser was made to access the differnet parameters more easily. The parser algorithm can be seen below. The parser works for both queries as they take in a dictionary and json_data as parameters and returns a list of dictionaries. For example, the parameters for one chair are stored in the dictionary and if there are more chairs they will be stored in the list and making a list of dictionaries. The same principle applies for orders.
 
 
 ```python
-def parseJson(json_data): #returns an array with parameters
-    chair_parms = { 'name':0, 's_width': 0, 's_depth': 0, 'a_th': 0, 'with_arm': 0, 'with_back': 0,
-             'back_height': 0, 'with_top': 0, 'top_th': 0, 'with_mid': 0, 'mid_th': 0,
-             'with_bot': 0, 'bot_th': 0 , 'leg_height': 0, 'leg_th': 0, 'with_taper': 0,
-             'spindles': 0 }
+def parseJson(json_data,dictionary): #returns an array with parameters
     chair_list = []
     #get sizes
     num_of_chairs = len(json_data['results']['bindings'])
-
     for x in range(num_of_chairs):
-        for key in chair_parms:
-            chair_parms[key] = json_data['results']['bindings'][x][key]['value']
-        dic_copy = chair_parms.copy()
+        for key in dictionary:
+            dictionary[key] = json_data['results']['bindings'][x][key]['value']
+        dic_copy = dictionary.copy()
         chair_list.append(dic_copy)
     #print("Chair list",chair_list)    
     return chair_list
 ```
-There were made two parsers and order funtions. One for the chair parameters and one for the order contining customer information. The parser makes a list of dictionaries. The parameters for one chair are stored in the the dictionary and if there are more chairs they will be stored in the list and making a list of dictionaries. The same principle applies for the order parser.
 
-```python
-    order_params = { 'name': 0, 'quantity': 0, 
-                     'email': 0, 'status': 0  }
-    
-    where_str = '''?a_order a kbe:order. \n ''' 
-    select_str =""
-    for key in order_params:
-        select_str += ' ?'+key
-        where_str += ' ?a_order kbe:'+key+'' ' ?'+key+ '. \n'  
-
-    URL = "http://127.0.0.1:3030/kbe/query"
-    QUERY = '''
-            PREFIX kbe: <http://www.kbe.com/chairs.owl#>
-            SELECT '''+select_str+ '''
-            WHERE {
-               '''+where_str+'''
-            }
-            '''
-```
-The difference between the order and chair accesser is what they are acceessing. The order query is a little shorter due to only four parameters as seen in the dictionary "order_params". 
-
-The parser for the orders is almost identical to the one for chairs. This one collects the ordering data and has fewer parameters to handle. The order json parser can be seen in the code below.
-```python
-
-def parseJsonOrder(json_order_data): #returns an array with parameters
-    order_params = { 'name': 0, 'quantity': 0, 
-                     'email': 0, 'status': 0  }
-    order_list = []
-    #get sizes
-    num_of_chairs = len(json_order_data['results']['bindings'])
-
-    for x in range(num_of_chairs):
-        for key in order_params:
-            order_params[key] = json_order_data['results']['bindings'][x][key]['value']
-        dic_copy = order_params.copy()
-        order_list.append(dic_copy)
-    print("order list",order_list)    
-    return order_list
-
-```
-The function that updates the factory overview UI takes the chair list and order list as parameters and write an order line containing order id, buyer name, customer email, quantity of the order and status for each order by looping through all elements in the chair list. This utilisation show the benefits av using a dictionary when only some parameters are requested.
+The function that updates the factory overview UI HTML code takes the chair list and order list as parameters and write an order line containing order id, buyer name, customer email, quantity of the order and status for each order by looping through all elements in the chair list. This utilisation shows the benefits av using a dictionary when only some parameters are requested.
 
 ```python  
 def OrderOverView(chair_list, order_list):
@@ -272,9 +262,13 @@ if (chair['with_arm']!="0"):
             order_dfa.write(feature_txt)
 ```
 
+The chair model .dfa files are saved in the folder named "Orders" with the same name as they are given in the database.
+
+# Development Process
 
 
 
+# Critique and Extendability
 
 
-
+ 
