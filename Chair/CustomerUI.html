@@ -17,7 +17,8 @@
 
 <div style="float:left;">
 <form action="/product_info.php" method="get">
-    <h2 style="font-family:verdana">SEAT FEATURES (* = must be chosen)</h2>
+    <h2 style="font-family:verdana">SEAT FEATURES </h2>
+    <p>* = dimensions must be specified</p>
   <label for="s_width">*Seat width:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
   <input type="text" class = "textbox" id="s_width" name="s_width"> cm<br><br>
 
@@ -32,8 +33,8 @@
   <input type="checkbox" id="with_arm" name="with_arm" value="1">
 
 
-<h2 style="font-family:verdana">BACK FEATURES (Unticked = not chosen) </h2>
-
+<h2 style="font-family:verdana">BACK FEATURES </h2>
+<p>Tick the features you would like</p>
   <label for="with_back">Back height:&nbsp;&nbsp;&nbsp;</label>
   <input type='hidden' value='0' name='with_back'>
   <input type="checkbox" id="with_back" name="with_back" value="1">
@@ -55,8 +56,8 @@
   <input type="text" id="bot_th" name="bot_th" placeholder="Enter thickness"> cm <br><br>
   
 
-  <h2 style="font-family:verdana">LEG FEATURES (* = must be chosen)</h2>
-
+  <h2 style="font-family:verdana">LEG FEATURES</h2>
+  <p>* = dimensions must be specified</p>
   <label for="leg_height">*Height: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </label>
   <input type="text" id="leg_height" name="leg_height"> cm<br><br>
 
@@ -84,7 +85,7 @@
 
 <div style="float:right;">
 
-  <img src="img\\chair_w_back.jpg" width ="200" height = "200" alt="Chair with back" class="center">
+  <img src="img/chair_w_back.png" width ="200" height = "200" alt="Chair with back" class="center">
     <form action="/order_info.php" method="get">
 
         <label for="quantity">Quantity: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
