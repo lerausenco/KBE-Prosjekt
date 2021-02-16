@@ -28,11 +28,16 @@ class FactoryHandler(BaseHTTPRequestHandler):
        
         str_path = s.path
         if str_path.find("/overview") !=-1:
-        
+            chair_params = { 'name':0, 's_width': 0, 's_depth': 0, 'a_th': 0, 'with_arm': 0, 'with_back': 0,
+             'back_height': 0, 'with_top': 0, 'top_th': 0, 'with_mid': 0, 'mid_th': 0,
+             'with_bot': 0, 'bot_th': 0 , 'leg_height': 0, 'leg_th': 0, 'with_taper': 0,
+             'spindles': 0 }
+            order_params = { 'name': 0, 'quantity': 0, 
+                     'email': 0, 'status': 0  }
             jsonData = getChairs()
-            chair_list = parseJson(jsonData)
+            chair_list = parseJson(jsonData, chair_params)
             json_order_data = getOrder()
-            order_list = parseJsonOrder(json_order_data)
+            order_list = parseJson(json_order_data, order_params)
 
             for i in range(len(chair_list)):
                 makeDFA(chair_list[i])
@@ -148,19 +153,14 @@ def getChairs():
     return json_data
 
 
-def parseJson(json_data): #returns an array with parameters
-    chair_parms = { 'name':0, 's_width': 0, 's_depth': 0, 'a_th': 0, 'with_arm': 0, 'with_back': 0,
-             'back_height': 0, 'with_top': 0, 'top_th': 0, 'with_mid': 0, 'mid_th': 0,
-             'with_bot': 0, 'bot_th': 0 , 'leg_height': 0, 'leg_th': 0, 'with_taper': 0,
-             'spindles': 0 }
+def parseJson(json_data,dictionary): #returns an array with parameters
     chair_list = []
     #get sizes
     num_of_chairs = len(json_data['results']['bindings'])
-
     for x in range(num_of_chairs):
-        for key in chair_parms:
-            chair_parms[key] = json_data['results']['bindings'][x][key]['value']
-        dic_copy = chair_parms.copy()
+        for key in dictionary:
+            dictionary[key] = json_data['results']['bindings'][x][key]['value']
+        dic_copy = dictionary.copy()
         chair_list.append(dic_copy)
     #print("Chair list",chair_list)    
     return chair_list
@@ -190,20 +190,6 @@ def getOrder():
     json_order_data = response.json()
     #print("JSON", json_data)
     return json_order_data
-def parseJsonOrder(json_order_data): #returns an array with parameters
-    order_params = { 'name': 0, 'quantity': 0, 
-                     'email': 0, 'status': 0  }
-    order_list = []
-    #get sizes
-    num_of_chairs = len(json_order_data['results']['bindings'])
-
-    for x in range(num_of_chairs):
-        for key in order_params:
-            order_params[key] = json_order_data['results']['bindings'][x][key]['value']
-        dic_copy = order_params.copy()
-        order_list.append(dic_copy)
-    print("order list",order_list)    
-    return order_list
 
 def OrderOverView(chair_list, order_list):
     
