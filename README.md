@@ -121,11 +121,40 @@ Next, the order update code is similar to the chair database update code, but do
             }  
     '''
 ```
-
-To provide the customer with an estimate for when their order will arrive, the customer_architect.py script performs a query on the database. The output of this query is the number of chairs in the production queue at the factory. To calculate the number of chairs in the queue, the quantity from one order is only added to the total quantity if the status of the order is "0", representing an unprocessed order. The code is shown below.
+The first query function in customer_architect.py is to access the maximum and minimum parameter limits. The function receives a string "MAX" or "MIN", so that it can be re-used to get both the maximum and minimum parameters. The code for the getLimit(max_or_min) function is shown below.
 
 ```python
-URL = "http://127.0.0.1:3030/kbe/query"
+def getLimit(max_or_min):
+    #get limits from database
+    URL = "http://127.0.0.1:3030/kbe/query"
+    QUERY = '''
+            PREFIX kbe: <http://www.kbe.com/chairs.owl#>
+            SELECT  ?name ?s_width ?s_depth ?a_th ?back_height ?top_th ?mid_th ?bot_th ?leg_height ?leg_th
+            WHERE {
+            ?a_chair a kbe:chair.
+            ?a_chair kbe:name ?name.
+            FILTER regex(?name, "'''+max_or_min+'''") 
+            ?a_chair kbe:s_width ?s_width.
+            ?a_chair kbe:s_depth ?s_depth.
+            ?a_chair kbe:a_th ?a_th.
+            ?a_chair kbe:back_height ?back_height.
+            ?a_chair kbe:top_th ?top_th.
+            ?a_chair kbe:mid_th ?mid_th.
+            ?a_chair kbe:bot_th ?bot_th.
+            ?a_chair kbe:leg_height ?leg_height.
+            ?a_chair kbe:leg_th ?leg_th.
+            }
+    '''
+    PARAMS = {'query':QUERY}
+    response = requests.post(URL,data=PARAMS)
+    json_data = response.json()
+    return json_data
+```
+
+Another query function is used to provide the customer with an estimate for when their order will arrive, the customer_architect.py script performs a query on the database. The output of this query is the number of chairs in the production queue at the factory. To calculate the number of chairs in the queue, the quantity from one order is only added to the total quantity if the status of the order is "0", representing an unprocessed order. The code is shown below. The quantity parameter is used in another function which estimates the time it takes to produce as many chairs as given in the variable quantity. The formula is arbitrary. To display the estimate, the number of days is written into the order_complete.html.
+
+```python
+    URL = "http://127.0.0.1:3030/kbe/query"
     QUERY =    '''
             PREFIX kbe: <http://www.kbe.com/chairs.owl#>
             SELECT ?quantity ?status
@@ -147,13 +176,11 @@ URL = "http://127.0.0.1:3030/kbe/query"
             quantity += int(json_data['results']['bindings'][i]["quantity"]["value"])
 ```
 
-The quantity parameter is used in another function which estimates the time it takes to produce as many chairs as given in the variable quantity. The formula is arbitrary. To display the estimate, the number of days is written into the order_complete.html.
-
 ## factory_architect.py
 The factory architect allows the production manager to set maximum and minimum limits for parameters, updates the factory overview website (factory user interface) and creates the dfa file with the customer input.
 
 ### Setting Parameter Limits - Updating Fuseki Database
-The parameter limits can be set by accesing the set_limits page on the server. The limits are set in the database by performing an update on the database using the function setLimits(max_or_min, values). The parameters of this function are a string specifying whether it is the maximum or minimum being updated, and the values for the limits. The code which is used the function to create the update string is given below.
+The parameter limits can be set by accesing the set_limits page on the server and submitting the forms. The limits are set in the database by performing an update on the database using the function setLimits(max_or_min, values). The parameters of this function are a string specifying whether it is the maximum or minimum being updated, and the values for the limits. The code which is used the function to create the update string is given below.
 
 ```python
 def setLimits(max_or_min, values):
@@ -264,11 +291,23 @@ if (chair['with_arm']!="0"):
 
 The chair model .dfa files are saved in the folder named "Orders" with the same name as they are given in the database.
 
+# Product examples
+Some product examples are shown below. The first example is the most simple design, and could be used as a bench.
+
+![](Figures/Models/bench.PNG)
+
+Next are two examples of chairs of different sizes. One of the chairs con
+
+![](Figures/Examples.png)
+
+Finally
+
 # Development Process
 
 
 
-# Critique and Extendability
+# Extendability and Improvements
+
 
 
  
