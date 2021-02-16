@@ -34,9 +34,11 @@ class FactoryHandler(BaseHTTPRequestHandler):
              'spindles': 0 }
             order_params = { 'name': 0, 'quantity': 0, 
                      'email': 0, 'status': 0  }
-            jsonData = getChairs()
+
+
+            jsonData = makeQuery("chair", chair_params)
             chair_list = parseJson(jsonData, chair_params)
-            json_order_data = getOrder()
+            json_order_data = makeQuery("order", order_params)
             order_list = parseJson(json_order_data, order_params)
 
             for i in range(len(chair_list)):
@@ -123,34 +125,6 @@ def setLimits(max_or_min, values):
     
     PARAMS = {'update':UPDATE}
     response = requests.post(URL,data=PARAMS)
-    
-
-def getChairs():
-    chair_params = { 'name':0, 's_width': 0, 's_depth': 0, 'a_th': 0, 'with_arm': 0, 'with_back': 0,
-             'back_height': 0, 'with_top': 0, 'top_th': 0, 'with_mid': 0, 'mid_th': 0,
-             'with_bot': 0, 'bot_th': 0 , 'leg_height': 0, 'leg_th': 0, 'with_taper': 0,
-             'spindles': 0  }    
-    where_str = '''?a_chair a kbe:chair. \n ''' 
-    select_str =""
-    for key in chair_params:
-        select_str += ' ?'+key
-        where_str += ' ?a_chair kbe:'+key+'' ' ?'+key+ '. \n'  
-
-    URL = "http://127.0.0.1:3030/kbe/query"
-    QUERY = '''
-            PREFIX kbe: <http://www.kbe.com/chairs.owl#>
-            SELECT '''+select_str+ '''
-            WHERE {
-               '''+where_str+'''
-            }
-            '''
-   # print("QUERY::", QUERY)
-    PARAMS = {'query':QUERY}
-    response = requests.post(URL,data=PARAMS)
-    #print("Result of query:", response.text)
-    json_data = response.json()
-    #print("JSON", json_data)
-    return json_data
 
 
 def parseJson(json_data,dictionary): #returns an array with parameters
@@ -165,15 +139,13 @@ def parseJson(json_data,dictionary): #returns an array with parameters
     #print("Chair list",chair_list)    
     return chair_list
 
-def getOrder():
-    order_params = { 'name': 0, 'quantity': 0, 
-                     'email': 0, 'status': 0  }
-    
-    where_str = '''?a_order a kbe:order. \n ''' 
-    select_str =""
-    for key in order_params:
+def makeQuery(class_name,dictionary):
+
+    where_str = '?a_'+ class_name +' a kbe:'+ class_name + '.\n'
+    select_str = ""
+    for key in dictionary:
         select_str += ' ?'+key
-        where_str += ' ?a_order kbe:'+key+'' ' ?'+key+ '. \n'  
+        where_str += ' ?a_'+class_name+' kbe:'+key+'' ' ?'+key+ '. \n'  
 
     URL = "http://127.0.0.1:3030/kbe/query"
     QUERY = '''
@@ -183,10 +155,10 @@ def getOrder():
                '''+where_str+'''
             }
             '''
-   # print("QUERY::", QUERY)
+    print("QUERY::", QUERY)
     PARAMS = {'query':QUERY}
     response = requests.post(URL,data=PARAMS)
-    #print("Result of query:", response.text)
+    print("Result of query:", response.text)
     json_order_data = response.json()
     #print("JSON", json_data)
     return json_order_data
