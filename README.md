@@ -121,11 +121,40 @@ Next, the order update code is similar to the chair database update code, but do
             }  
     '''
 ```
-
-To provide the customer with an estimate for when their order will arrive, the customer_architect.py script performs a query on the database. The output of this query is the number of chairs in the production queue at the factory. To calculate the number of chairs in the queue, the quantity from one order is only added to the total quantity if the status of the order is "0", representing an unprocessed order. The code is shown below.
+The first query function in customer_architect.py is to access the maximum and minimum parameter limits. The function receives a string "MAX" or "MIN", so that it can be re-used to get both the maximum and minimum parameters. The code for the getLimit(max_or_min) function is shown below.
 
 ```python
-URL = "http://127.0.0.1:3030/kbe/query"
+def getLimit(max_or_min):
+    #get limits from database
+    URL = "http://127.0.0.1:3030/kbe/query"
+    QUERY = '''
+            PREFIX kbe: <http://www.kbe.com/chairs.owl#>
+            SELECT  ?name ?s_width ?s_depth ?a_th ?back_height ?top_th ?mid_th ?bot_th ?leg_height ?leg_th
+            WHERE {
+            ?a_chair a kbe:chair.
+            ?a_chair kbe:name ?name.
+            FILTER regex(?name, "'''+max_or_min+'''") 
+            ?a_chair kbe:s_width ?s_width.
+            ?a_chair kbe:s_depth ?s_depth.
+            ?a_chair kbe:a_th ?a_th.
+            ?a_chair kbe:back_height ?back_height.
+            ?a_chair kbe:top_th ?top_th.
+            ?a_chair kbe:mid_th ?mid_th.
+            ?a_chair kbe:bot_th ?bot_th.
+            ?a_chair kbe:leg_height ?leg_height.
+            ?a_chair kbe:leg_th ?leg_th.
+            }
+    '''
+    PARAMS = {'query':QUERY}
+    response = requests.post(URL,data=PARAMS)
+    json_data = response.json()
+    return json_data
+```
+
+Another query function is used to provide the customer with an estimate for when their order will arrive, the customer_architect.py script performs a query on the database. The output of this query is the number of chairs in the production queue at the factory. To calculate the number of chairs in the queue, the quantity from one order is only added to the total quantity if the status of the order is "0", representing an unprocessed order. The code is shown below. The quantity parameter is used in another function which estimates the time it takes to produce as many chairs as given in the variable quantity. The formula is arbitrary. To display the estimate, the number of days is written into the order_complete.html.
+
+```python
+    URL = "http://127.0.0.1:3030/kbe/query"
     QUERY =    '''
             PREFIX kbe: <http://www.kbe.com/chairs.owl#>
             SELECT ?quantity ?status
@@ -147,13 +176,11 @@ URL = "http://127.0.0.1:3030/kbe/query"
             quantity += int(json_data['results']['bindings'][i]["quantity"]["value"])
 ```
 
-The quantity parameter is used in another function which estimates the time it takes to produce as many chairs as given in the variable quantity. The formula is arbitrary. To display the estimate, the number of days is written into the order_complete.html.
-
 ## factory_architect.py
 The factory architect allows the production manager to set maximum and minimum limits for parameters, updates the factory overview website (factory user interface) and creates the dfa file with the customer input.
 
 ### Setting Parameter Limits - Updating Fuseki Database
-The parameter limits can be set by accesing the set_limits page on the server. The limits are set in the database by performing an update on the database using the function setLimits(max_or_min, values). The parameters of this function are a string specifying whether it is the maximum or minimum being updated, and the values for the limits. The code which is used the function to create the update string is given below.
+The parameter limits can be set by accesing the set_limits page on the server and submitting the forms. The limits are set in the database by performing an update on the database using the function setLimits(max_or_min, values). The parameters of this function are a string specifying whether it is the maximum or minimum being updated, and the values for the limits. The code which is used the function to create the update string is given below.
 
 ```python
 def setLimits(max_or_min, values):
@@ -239,7 +266,7 @@ def OrderOverView(chair_list, order_list):
 ```
 
 ### .dfa file struture 
-The dfa template has been split up into a base template, and feature files. The base template contains the minimal parameters to be able to make a chair: seat width, seat depth, apron thickness, leg height and leg thickness. This file is of .dfa format and is called Chair_base.dfa. The rest of the features are split up into the .txt files and contain dfa code to represent the features which can be toggled using the checkboxes. It is useful to save these as .txt files because the feature files to separate working .dfa files from blocks of dfa files.
+The dfa template has been split up into a base template, and feature files. The base template contains the minimal features to be able to make a chair: seat width, seat depth, apron thickness, leg height and leg thickness. It also records all the parameters that could potentially be used in a chair design. This file is of .dfa format and is called Chair_base.dfa. The rest of the features are split up into the .txt files and contain dfa code to represent the features which can be toggled using the checkboxes. It is useful to save these as .txt files because the feature files to separate working .dfa files from blocks of dfa files.
 
 The individual files, what features they add, and the customisable parameters of the chair are shown in the figure below.
 
@@ -264,11 +291,18 @@ if (chair['with_arm']!="0"):
 
 The chair model .dfa files are saved in the folder named "Orders" with the same name as they are given in the database.
 
-# Development Process
+The .dfa code for a complete chair can be seen in Chair_template.dfa. A parametric design approach has been used, with certain parameters which are not directly dependent on the user inputs. These parameters are calculated based on the sizes of other parameters.
 
+# Product examples
+Some product examples are shown below. The first example is the most simple design, for example a bench.
 
+![](Figures/Models/bench.PNG)
 
-# Critique and Extendability
+Next are two examples of chairs of different sizes. One of the chairs has three spindles and three rails. The other chair only had two spindles and two rails, but has arm support and tapered legs.
 
+![](Figures/Examples.png)
 
- 
+# Extendability and Improvements
+The code developed provides a certain degree of extendability due to multiple factors. Using a consistent naming system for parameters, combined with the use of Python dictionaries gives the opportunity to extend the system by adding more variables and designs. The same functions can be reused with different dictionaries.Another factor is that the system has been split up into many blocks. For example, HTML-files are separate from the Python scripts. This makes makes it easy to modify only the HTML file to change the web-page, rather than the Python file. Another example is the function that gives an ETA on the order. This function can easily be extended to provide a more accurate estimate by taking more parameters into account.
+
+With the fundamental structure in place, many things can be improved. Firstly, the web interfaces could be improved with more interactive features. A function to select and change the status of the order should be implemented, to give more feedback to the production engineer. Secondly, more manufacturability checks should be implemented. For example, checking for combinations which do not work - e.g. no back + top rail. The customer should also get more concise feedback on specifically what makes their design not possible to manufacture. 
