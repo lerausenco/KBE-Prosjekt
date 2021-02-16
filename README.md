@@ -296,7 +296,7 @@ The .dfa code for a complete chair can be seen in Chair_template.dfa. A parametr
 # Product examples
 Some product examples are shown below. The first example is the most simple design, for example a bench.
 
-![](Figures/Models/bench.PNG)
+![](Figures/bench.PNG)
 
 Next are two examples of chairs of different sizes. One of the chairs has three spindles and three rails. The other chair only had two spindles and two rails, but has arm support and tapered legs.
 
