@@ -1,7 +1,7 @@
 # KBE Project Course - Assignment 1 - Chair
 # Introduction
 
-This page describes the process of creating a KBE system for customisable chairs. The system should allow customers to design their own chair through a web-based user interface (UI). 
+This page describes the process of creating a KBE system for customisable chairs. The system should allow customers to design their own chair through a web-based user interface (UI) and provide the manufacturer with an interface that allows them to set the manufacturing limits. The customer should also receive feedback on their order, for example stating if their order is feasible.  
 
 # Development Overview
 ## Customer Interface
@@ -9,15 +9,14 @@ The customer interface has been designed in draw.io, to serve as a template for 
 
 ![](Figures/CustomerUI.png)
 
-After providing the parameters and pressing the Preview button, a model should be generated and shown in the window on the right. The user can then either choose to add a number of chairs to their order, or generate a new chair by changing the parameters and pressing the Preview button again. The customer can preview and edit it in the menu in the top right corner. When the customer is ready to submit their order, they must provide their contact details, and press submit order. They are then redirected to a page where they get to know the estimated arrival time of their order. The steps of a customer order are shown in the flowchart below.
-
-![](Figures/Process.png)
-
+After providing the parameters and pressing the Preview button, a model should be generated and shown in the window on the right. The user can then either choose to add a number of chairs to their order, or generate a new chair by changing the parameters and pressing the Preview button again. The customer can preview and edit it in the menu in the top right corner. When the customer is ready to submit their order, they must provide their contact details, and press submit order. They are then redirected to a page where they get to know if their design is feasible, and the estimated arrival time of their order. 
 
 ## Factory Interface
 The factory could also have a simple interface showing the order overview. A suggestion is shown in the figure below. The production manager could for example log into the factory web interface and view the orders that have come in from the customers. The suggestion below also shows a menu to be able to edit the order status or view the design.
 
 ![](Figures/factoryUI.png)
+
+The factory should also have another interface that allows the production manager to set limits on the parameters for the chair.
 
 ## Architecture
 
@@ -25,7 +24,7 @@ A KBE architecture suggestion is shown in the figure below. The customer interac
 
 ![](Figures/Architecture.png)
 
-The database ontology is defined by Chairs.owl, which holds definitions for two classes, Order and Chair. Next, the factory_architect.py script serves for several purposes. The architect creates .dfa files from incoming orders by using the Chair_base.dfa file along with the 'features' files containing features that can be selected with the checkboxes. The features are stored as .txt files because they are only used to fill out the base .dfa file. The resulting output is the Chair_order.dfa file which can be viewed in Siemens NX. The factory_architect.py script also displays an order overview, and serves as a user interface for the production manager, who can use it to mark orders as complete.
+The database ontology is defined by Chairs.owl, which holds definitions for two classes, Order and Chair. Next, the factory_architect.py script serves for several purposes. The architect creates .dfa files from incoming orders by using the Chair_base.dfa file along with the 'features' files containing features that can be selected with the checkboxes. The features are stored as .txt files because they are only used to fill out the base .dfa file. The resulting output is the Chair_order.dfa file which can be viewed in Siemens NX. The factory_architect.py script also displays an order overview, and serves as a user interface for the production manager, who can use it to set the parameter limits.
 
 # Implementation
 ## Customer User Interface
@@ -35,23 +34,24 @@ The image below shows the actual implementation of the customer UI for this task
 
 ## Factory User Interface
 The factory user interface implemented in this task is shown below. In this case it is a table displaying the orders and their status in addition to the contact information of the customer.
+
 ![](Figures/Fac-UI.PNG)
 
-<<<<<<< HEAD
+
+## Factory production manager User Interface
+A system for controlling the manufacturability was implemented. This was done by having a production manager User Interface where the production manager could set maximum and mimimum limits for the chair as seen in the picture below. The submitted limits are sent to the database and read in the customer_architect.py script.
+![](Figures/setting_limits.PNG)
+
+
 ## UML Sequence diagram
 The UML sequence diagram with the customer on the left, and production engineer on the right is shown below. The customer can submit forms which trigger a GET request and save the parameters in the link generated. The production engineer must set minimum and maximum limits through the factoryUI, which are placed on the Fuseki database. On the customer side, pressing the submit order triggers a number of events. The parameters of the chair design are parsed, and a query is sent to the Fuseki database. The return of the query are the maximum and minimum limits for each parameter against which the parameters are checked. If the parameters are within the limits, the database is updated with a chair design, and an order containing the chair design name and quantity. The customer server performs a query to the database to check the total quantity of chairs in the production queue. Finally, the order status is shown in the customer UI. On the production side, a GET request is performed upon refresh, which triggers a query that finds new orders and displays them on the factory overview screen.
 
 ![](Figures/UMLsequence.png)
 
+## Web-Ontology
+The chairs.owl file defines the ontology of the classes Order and Chair. The parameters they contain are shown below.
 
-=======
-## Factory production manager User Interface
-A system for controlling the manufacturability was implemented. This was done by having a production manager User Interface where the prodruction manager could set maximum and mimimum limits for the chair as seen in the picture below.
-![](Figures/setting_limits.PNG)
-
-The submitted limits will be sent to the database and read in the customer_architect.py script. When a customer has submitted the form, the input values will be checked up against the limit values from the production manager. If the values are ok the customer gets an order confirmation message. If they are not, the customer will get a message that the design needs to be changed.
->>>>>>> c0799ff4f411e79d36a8e101afb71474589232b8
-
+![](Figures/OWL_diagram.png)
 
 ## customer_architect.py
 The customer architect responds to a GET-request triggered by pressing one of the buttons on the customer UI. 
