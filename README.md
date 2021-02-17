@@ -2,7 +2,7 @@
 # KBE Project Course - Assignment 1 - Chair
 # Introduction
 
-This page describes the process of creating a KBE system for customisable chairs. The system should allow customers to design their own chair through a web-based user interface (UI) and provide the manufacturer with an interface that allows them to set the manufacturing limits. The customer should also receive feedback on their order, for example stating if their order is feasible.  
+This page describes the process of creating a KBE system for customisable chairs utilising a Fuseki database with SPARQL. The system should allow customers to design their own chair through a web-based user interface (UI) and provide the manufacturer with an interface that allows them to set the manufacturing limits. The customer should also receive feedback on their order, for example stating if their order is feasible.  
 
 # Development Overview
 ## Customer Interface
