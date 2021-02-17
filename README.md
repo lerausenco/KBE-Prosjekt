@@ -180,7 +180,7 @@ Another query function is used to provide the customer with an estimate for when
 The factory architect allows the production manager to set maximum and minimum limits for parameters, updates the factory overview website (factory user interface) and creates the dfa file with the customer input.
 
 ### Setting Parameter Limits - Updating Fuseki Database
-The parameter limits can be set by accesing the set_limits page on the server and submitting the forms. The limits are set in the database by performing an update on the database using the function setLimits(max_or_min, values). The parameters of this function are a string specifying whether it is the maximum or minimum being updated, and the values for the limits. The code which is used the function to create the update string is given below.
+The parameter limits can be set by accesing the set_limits page on the server and submitting the forms. The limits are set in the database by performing an update on the database using the function setLimits(max_or_min, values). The parameters of this function are a string specifying whether it is the maximum or minimum being updated, and the values for the limits. The code which is used in the function to create the update string is given below.
 
 ```python
 def setLimits(max_or_min, values):
@@ -251,7 +251,7 @@ def parseJson(json_data,dictionary): #returns an array with parameters
     return chair_list
 ```
 
-The function that updates the factory overview UI HTML code takes the chair list and order list as parameters and write an order line containing order id, buyer name, customer email, quantity of the order and status for each order by looping through all elements in the chair list. This utilisation shows the benefits av using a dictionary when only some parameters are requested.
+The function that updates the factory overview UI HTML code takes the chair list and order list as parameters and write an order line containing order id, buyer name, customer email, quantity of the order and status for each order by looping through all elements in the chair list. This utilisation shows the benefits of using a dictionary when only some parameters are requested.
 
 ```python  
 def OrderOverView(chair_list, order_list):
@@ -303,6 +303,6 @@ Next are two examples of chairs of different sizes. One of the chairs has three 
 ![](Figures/Examples.png)
 
 # Extendability and Improvements
-The code developed provides a certain degree of extendability due to multiple factors. Using a consistent naming system for parameters, combined with the use of Python dictionaries gives the opportunity to extend the system by adding more variables and designs. The same functions can be reused with different dictionaries. Another factor is that the system has been split up into many blocks. For example, HTML-files are separate from the Python scripts. This makes makes it easy to modify only the HTML file to change the web-page, rather than the Python file. Another example is the function that gives an ETA on the order. This function can easily be extended to provide a more accurate estimate by taking more parameters into account.
+The code developed provides a certain degree of extendability due to multiple factors. Using a consistent naming system for parameters, combined with the use of Python dictionaries gives the opportunity to extend the system by adding more variables and designs. The same functions can be reused with different dictionaries. Another factor is that the system has been split up into many blocks. For example, HTML-files are separate from the Python scripts. This makes makes it easy to modify only the HTML file to change the web-page, rather than the Python file. Another example is the function that gives an ETA on the order. This function can easily be extended to provide a more accurate estimate by taking more parameters into account. The order overview page is independent of what type of product that was ordered so. It just takes the order ID and is therefore easily extendable for other types of products/designs.
 
 With only the fundamental structure in place, many things can be improved. Firstly, the web interfaces could be improved with more interactive features. A function to select and change the status of the order should be implemented, to give more feedback to the production engineer. Secondly, more manufacturability checks should be implemented. For example, checking for combinations which do not work - e.g. no back + top rail. The customer should also get more concise feedback on specifically what makes their design not possible to manufacture. 
