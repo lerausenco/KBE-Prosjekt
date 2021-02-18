@@ -124,7 +124,7 @@ Next, the order update code is similar to the chair database update code, but do
 The first query function in customer_architect.py is to access the maximum and minimum parameter limits. The function receives a string "MAX" or "MIN", so that it can be re-used to get both the maximum and minimum parameters. The code for the getLimit(max_or_min) function is shown below.
 
 ```python
-def getLimit(max_or_min):
+def get_limit(max_or_min):
     #get limits from database
     URL = "http://127.0.0.1:3030/kbe/query"
     QUERY = '''
@@ -183,12 +183,12 @@ The factory architect allows the production manager to set maximum and minimum l
 The parameter limits can be set by accesing the set_limits page on the server and submitting the forms. The limits are set in the database by performing an update on the database using the function setLimits(max_or_min, values). The parameters of this function are a string specifying whether it is the maximum or minimum being updated, and the values for the limits. The code which is used in the function to create the update string is given below.
 
 ```python
-def setLimits(max_or_min, values):
-    insert_str = '''kbe:chair_'''+max_or_min+''' a kbe:chair. \n
-                    kbe:chair_''' + max_or_min + ''' kbe:name "'''+max_or_min+ '''".\n'''
+def set_limits(max_or_min, values):
+    insert_str = '''kbe:chair_''' + max_or_min + ''' a kbe:chair. \n
+                    kbe:chair_''' + max_or_min + ''' kbe:name "''' + max_or_min + '''".\n'''
     
     for key in values:
-        insert_str += 'kbe:chair_'+max_or_min+ ' kbe:'+ key +' "' + str(values[key])+ '"^^xsd:float. \n'
+        insert_str += 'kbe:chair_' + max_or_min + ' kbe:' + key +' "' + str(values[key]) + '"^^xsd:float. \n'
     URL = "http://127.0.0.1:3030/kbe/update"
     UPDATE = '''
             PREFIX kbe: <http://www.kbe.com/chairs.owl#>
@@ -205,14 +205,14 @@ def setLimits(max_or_min, values):
 Calling the function as follows would create a chair called "chair_MIN" in the database, which would be accessed by  customer_architect.py to check the parameter limits.
 
 ```python
-setLimits("MIN", min_values)
+set_limits_("MIN", min_values)
 ```
 
 ### Queries and Accessing Data in Fuseki Database
 Accessing the data is automised py using the elements in a dictionary and a for-loop as seen in the code below. The for-loop created the query for accessing the data in the database. The string for the query was then added to the query that is used for accessing the fuseki server. The requested values are stored in a json format by utilising the function response.json(). The function is used both to access the chair designs and the orders. By taking the class name in the form of the string into the function, the class name can be used to form a query.
 
 ```python
-def makeQuery(class_name,dictionary):
+def make_query(class_name,dictionary):
     where_str = '?a_'+ class_name +' a kbe:'+ class_name + '.\n'
     select_str = ""
     for key in dictionary:
@@ -238,7 +238,7 @@ A parser was made to access the differnet parameters more easily. The parser alg
 
 
 ```python
-def parseJson(json_data,dictionary): #returns an array with parameters
+def parse_json(json_data,dictionary): #returns an array with parameters
     chair_list = []
     #get sizes
     num_of_chairs = len(json_data['results']['bindings'])
@@ -254,15 +254,15 @@ def parseJson(json_data,dictionary): #returns an array with parameters
 The function that updates the factory overview UI HTML code takes the chair list and order list as parameters and write an order line containing order id, buyer name, customer email, quantity of the order and status for each order by looping through all elements in the chair list. This utilisation shows the benefits of using a dictionary when only some parameters are requested.
 
 ```python  
-def OrderOverView(chair_list, order_list):
-    Msg = ''
+def order_overview(chair_list, order_list):
+    msg = ''
     for x in range(len(chair_list)):
-        Msg +='<tr>'
+        msg +='<tr>'
        # for key in chair_list[x]:
-        Msg += '<td>'+chair_list[x]['name']+'</td>''<td>'+order_list[x]['name']+'</td>''<td>'+order_list[x]['email']+'</td>''<td>'+order_list[x]['quantity']+'</td>''<td>'+order_list[x]['status']+'</td>'
-        Msg += '</tr>'
+        msg += '<td>'+chair_list[x]['name']+'</td>''<td>'+order_list[x]['name']+'</td>''<td>'+order_list[x]['email']+'</td>''<td>'+order_list[x]['quantity']+'</td>''<td>'+order_list[x]['status']+'</td>'
+        msg += '</tr>'
     
-    return Msg
+    return msg
 ```
 
 ### .dfa file struture 
@@ -305,4 +305,4 @@ Next are two examples of chairs of different sizes. One of the chairs has three 
 # Extendability and Improvements
 The code developed provides a certain degree of extendability due to multiple factors. Using a consistent naming system for parameters, combined with the use of Python dictionaries gives the opportunity to extend the system by adding more variables and designs. The same functions can be reused with different dictionaries. Another factor is that the system has been split up into many blocks. For example, HTML-files are separate from the Python scripts. This makes makes it easy to modify only the HTML file to change the web-page, rather than the Python file. Another example is the function that gives an ETA on the order. This function can easily be extended to provide a more accurate estimate by taking more parameters into account. The order overview page is independent of what type of product that was ordered. It only takes the order ID and is therefore easily extendable for other types of products/designs.
 
-With only the fundamental structure in place, many things can be improved. Firstly, the web interfaces could be improved with more interactive features. A function to select and change the status of the order should be implemented, to give more feedback to the production engineer. Secondly, more manufacturability checks should be implemented. For example, checking for combinations which do not work - e.g. no back + top rail. The customer should also get more concise feedback on specifically what makes their design not possible to manufacture. 
+With only the fundamental structure in place, many things can be improved. Firstly, the web interfaces could be improved with more interactive features. A function to select and change the status of the order should be implemented, to give more feedback to the production engineer. It could also be useful for the prodcution manager to see what the parameter limits already are from before, before changing them. Secondly, more manufacturability checks should be implemented. For example, checking for combinations which do not work - e.g. no back + top rail. The customer should also get more concise feedback on specifically what makes their design not possible to manufacture. 
