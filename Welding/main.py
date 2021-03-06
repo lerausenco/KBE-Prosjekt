@@ -6,7 +6,7 @@ from wall_extraction import extract_walls
 np.set_printoptions(threshold=np.inf)
 np.set_printoptions(linewidth=180)
 
-img = open_image('maze.png')
+img = open_image('img/maze.png')
 img_array = preprocess(img)
 
 wall_list = extract_walls(img_array)
