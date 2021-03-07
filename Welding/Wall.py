@@ -1,4 +1,14 @@
 class Wall():
+
+    """
+        Class to store wall objects extracted from picture
+        Constructor args:
+            x - x pixel position
+            y - y pixel position
+            width - dimension of wall in x direction
+            height - dimension of wall in y direction
+            
+    """
     def __init__(self, x,y, width, height):
         self.x = x
         self.y = y
