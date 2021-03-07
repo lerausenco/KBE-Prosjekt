@@ -6,7 +6,7 @@ class Wall():
         self.height = height
     
     def params(self):
-        return [x,y,width,height]
+        return self.x, self.y, self.width, self.height
     
     def print(self):
         print("[X,Y]: ", self.x, self.y, "Width: ", self.width, " Height:", self.height)

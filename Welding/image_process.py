@@ -19,7 +19,8 @@ def preprocess(img):
         args: image to be preprocessed - Image
         returns: preprocessed image - numpy array
     """
-    img = img.resize((50,38), Image.ANTIALIAS) #width, height
+    print(img.size)
+    img = img.resize((50,50), Image.ANTIALIAS) #width, height
 
     #add zero padding
     img = ImageOps.expand(img,border=1,fill='white')
@@ -36,7 +37,7 @@ def preprocess(img):
 
     new_img = Image.fromarray(img_array)
     #new_img.show()
-    plt.imshow(img_array)
+    print(img_array)
 
     #normalise
     img_array = img_array/255

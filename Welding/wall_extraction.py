@@ -1,13 +1,14 @@
-from PIL import Image, ImageOps
+#from PIL import Image, ImageOps
 import numpy as np
-import sys
-import matplotlib.pyplot as plt
+#import sys
+#import matplotlib.pyplot as plt
 
 #printing options for debugging
-np.set_printoptions(threshold=np.inf)
-np.set_printoptions(linewidth=180)
+#np.set_printoptions(threshold=np.inf)
+#np.set_printoptions(linewidth=180)
 
 from Wall import Wall
+
 
 def left_edge(sec):
     """ 
