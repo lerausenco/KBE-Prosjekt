@@ -15,4 +15,4 @@
    
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Extendability and Improvements](https://github.com/lerausenco/KBE-Prosjekt/blob/main/A1%20-%20Chair.md#extendability-and-improvements)
 
-[A2 - Weldability Check]()
+[A2 - Weldability Check](https://github.com/lerausenco/KBE-Prosjekt/blob/main/A2%20-%20Weldability%20Check.md)
