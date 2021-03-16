@@ -27,9 +27,9 @@ A more in-depth description of the architecture is shown in the class diagram be
 # Implementation
 The figures below shows the actual design of the web-interface for the task.  
 
-![](Figures/A2/UI-home.png)
+![](Figures/A2/UI-home.PNG)
 
-![](Figures/A2/UI-results.png)
+![](Figures/A2/UI-results.PNG)
 
 
 
