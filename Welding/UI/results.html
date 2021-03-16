@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+    h1 {padding-left: 80px;}
+    h2 {font-family: verdana}
+    p {padding-left: 80px; font-family: verdana}
+    b {font-family:verdana}
+    div {font-family: verdana}
+    body {padding-left: 80px;}
+    input[type=text], select 
+    {height:20px; 
+    width:200px;
+    border-radius:4px;
+    color:black;}
+    input[type=submit] {
+      height:30px; 
+      width:100px; 
+      font-size:14pt; 
+      background-color:rgb(218, 232, 252); 
+      cursor: pointer;
+      border-radius:10px; 
+      border-color: rgb(108, 142, 191);
+    }
+    input[type=submit]:hover {
+    background-color:rgb(235, 242, 252);
+    }
+    button {
+    background-color:rgb(218, 232, 252);
+    border: none;
+    color:black;
+    padding: 12px 30px;
+    cursor: pointer;
+    border-radius:10px; 
+    font-size: 20px;
+    border: 2px solid rgb(108, 142, 191);
+}
+    button:hover{
+        background-color:rgb(235, 242, 252);
+    }
+    
+    </style>
+    </head>
+<body style="background-color: #ffffff;">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+<div style="float:left; width: 300px ;">
+
+    <h2> Weldability check results </h2>
+    <hr>
+    The image shows the regions in your design that are weldable and not. Download your results or receive a copy by email.<br>
+    <hr>
+    <br> <br><br><br>
+    <h2>Get results by email </h2>
+    <hr>
+    Provide contact information to receive a copy by email.
+
+<form id=get_results action="/get_results.php" method="get">  
+  <label for="cust_name"><b>Name</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label><br>
+  <input type="text" class = "textbox" id="cust_name" name="cust_name">  <br><br>
+
+  <label for="cust_email"><b>Email</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label><br>
+  <input type="text" id="cust_email" name="cust_email"> <br><br>
+
+  <div style="text-align:right;">
+  <input style=" height:40px; width:150px; " 
+    type="submit" value="Send results" form=get_results >
+  </div>
+  <hr>
+</form>
+</div>
+
+<br><br><br><br>
+
+
+<div style="float:right;">
+    
+    <img src="../img/thin-line.jpg" width ="320" height = "320" alt="Results" class="center"><br>
+    <img src="colors.png" width ="350" height = "125" alt="color_legend" class="center"><br>
+    
+    <button class="btn" style="width:100%"><i class="fa fa-download"></i> Download</button>
+
+
+</body>
+</html>
