@@ -35,7 +35,7 @@
 
 
 <div style="float:left; width:320px">
-<form id=weld_dims_form action="/weld_dims.php" method="get">
+<form id=weld_dims_form action="/weld_dims.php" method="post">
     <h2> Weld Area Dimensions </h2>
     Please fill in all dimensions for the welding plan and welding robot.<br>
     <hr>
@@ -65,17 +65,17 @@
     Please upload an image of the image geometry.
     <hr>
     
-    <img src="info_img.png" width ="350" height = "320" alt="Info_image" class="center"><br>
+    <img src="UI/info_img.png" width ="350" height = "320" alt="Info_image" class="center"><br>
     
     
-    <form style="width:400px" enctype="multipart/form-data" name="upload_pic" action="/weld_geom.php" method="get"></form>      
+    <form style="width:400px" enctype="multipart/form-data" name="upload_pic" action="/weld_geom.php" method="post">     
     <input style="background-color:rgb(213, 214, 216); :200px; height:30px; font-family:veranda; font-size:14px;" 
     id="fileupload" name="myfile" type="file" value="Browse..."/>  <br>
     Supported files: .jpg, .png &nbsp;&nbsp;&nbsp;
 
     <input type="submit" value="Upload" id="submit" />
     <br><br><br>
-
+  </form> 
     <div style="text-align:right;">
 
     <input style="margin-left:100px; height:60px; width:150px; " 
