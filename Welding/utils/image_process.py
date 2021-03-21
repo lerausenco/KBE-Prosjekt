@@ -19,7 +19,7 @@ def preprocess(img):
         args: image to be preprocessed - Image
         returns: preprocessed image - numpy array
     """
-    print(img.size)
+    print("image size: ", img.size)
     img = img.resize((50,50), Image.ANTIALIAS) #width, height
 
     #add zero padding
@@ -37,12 +37,16 @@ def preprocess(img):
 
     new_img = Image.fromarray(img_array)
     #new_img.show()
-    print(img_array)
+    #print("Image array with 255s: ")
+    #print(img_array)
 
     #normalise
     img_array = img_array/255
 
     #flip 0s and 1s so 1 is where wall is
     img_array = np.logical_not(img_array)
+
+    #print("Image array with 1s: ")
+    #print(img_array)
 
     return img_array

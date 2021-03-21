@@ -7,23 +7,26 @@ from utils.my_handler import myHandler, ThreadedHTTPServer
 import time
 import argparse
 import threading
+from space_for_welding_gun import find_space_for_welder
 
 
 #printing options for debugging
 np.set_printoptions(threshold=np.inf)
 np.set_printoptions(linewidth=180)
 
-#img = open_image('img/maze.png')
-#img_array = preprocess(img)
+img = open_image('img/maze.png')
+img_array = preprocess(img)
 
-#wall_list = extract_walls(img_array)
+print(find_space_for_welder(img_array,10,10))
+
+wall_list = extract_walls(img_array)
 
 
-scaling_fac = 10
+#scaling_fac = 10
 #f = open("param_vals.txt", "a")
 
 #for wall in wall_list:
- #   f.write(str(wall.params()) + "\n")
+#    f.write(str(wall.params()) + "\n")
 
 
 def main():

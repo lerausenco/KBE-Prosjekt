@@ -2,7 +2,7 @@ from Shapes.Block import Block
 
 scaling_fac = 10
 
-f = open("C:/Users/lera_/OneDrive/Dokumenter/NTNU/KBE/KBE-Prosjekt/Welding/param_vals.txt", "r")
+f = open("C:/Users/haako/Google Drive/Håkon Skole/Automatisering i ingeniørarbied-prosjekt/Assignment 2/Params/param_vals.txt", "r")
 
 text = f.read()
 #text = text.replace("(", "")
