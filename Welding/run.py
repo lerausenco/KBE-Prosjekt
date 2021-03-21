@@ -1,5 +1,5 @@
 import numpy as np
-from utils.image_process import open_image, preprocess
+from utils.image_process import open_image, preprocess, make_feedback
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from Wall import Wall
 from utils.wall_extraction import extract_walls
@@ -14,12 +14,21 @@ from space_for_welding_gun import find_space_for_welder
 np.set_printoptions(threshold=np.inf)
 np.set_printoptions(linewidth=180)
 
-img = open_image('img/maze.png')
+img = open_image("img/maze.jpg")
 img_array = preprocess(img)
 
-print(find_space_for_welder(img_array,10,10))
 
-wall_list = extract_walls(img_array)
+feedback_array = find_space_for_welder(
+    img_array,
+    model_height=4,
+    model_length=3,
+    wall_height=2,
+    gun_diam=400,
+    gun_length=4)
+
+make_feedback(feedback_array, img_array)
+
+#wall_list = extract_walls(img_array)
 
 
 #scaling_fac = 10
