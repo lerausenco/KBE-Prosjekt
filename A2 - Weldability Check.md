@@ -32,6 +32,13 @@ The figures below shows the actual design of the web-interface for the task.
 ![](Figures/A2/UI-results.PNG)
 
 
+## Finding space for the welding gun
+### Feedback array
+The generated algorithm for checking if a welding gun can fit has two checkpoints. Firstly it checks if the walls are longer than the robots reachable length. If so, the whole model is not weldable. After confirming that the walls are ok the space is investigated section by section. A zeros array for the space of the robot arm is created and it is scaled down to represent it in pixels. The algorithms loops through the image array in sections of the robot array. If a section of the image array is equal to the robot section then that section is changed to a number representing the colour green. This ends up in a "feedback array"
+
+Next the feedback array is fed into an image processing unit to create the feedback image with red and green spots indicating weldability in addition to the walls.
+
+
 
 
 
