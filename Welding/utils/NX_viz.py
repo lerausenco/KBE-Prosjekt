@@ -7,15 +7,17 @@ import NXOpen.GeometricUtilities
 
 f = open("C:/Users/lera_/OneDrive/Dokumenter/NTNU/KBE/KBE-Prosjekt/Welding/param_vals.txt", "r")
 
-x_max = 0
-y_max = 0
+
 
 text = f.read()
 #text = text.replace("(", "")
 #text = text.replace(")", "")
 
 lines = text.split("\n")
-lines = lines[:-1]
+
+x_max = lines[0]
+y_max = lines[1]
+lines = lines[2:-1]
 num_lines = 0
 for line in lines:
     line = line.replace("(", "")
@@ -24,11 +26,7 @@ for line in lines:
     params = line.split(",") #x #y #width #height #wall height
 
     x = float(params[0])
-    if x > x_max:
-        x_max = x
     y = float(params[1] )
-    if y > y_max:
-        y_max = y
     width = float(params[2] )
     height = float(params[3] )
     wall_height = float(params[4])
