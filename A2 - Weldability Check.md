@@ -125,7 +125,8 @@ Below is another example with a more complex geometry. The algorithm seem to wor
 
 ![](Figures/A2/maze_example2.png)
 
-![](Figures/A2/maze_example3.png)
+![](Figures/A2/maze3_example.png)
+
 
 # Video
 ![](Figures/A2/A2-video.gif)
