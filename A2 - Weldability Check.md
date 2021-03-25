@@ -58,7 +58,58 @@ The class to store Wall-objects, with helper functions to print and return the p
 A class used in NXOpen to make Block objects.
 
 ### wall_extraction.py
-The main use of this module is to find walls in the image array and create a list of Wall objects that are used to create the NX model. The main function in the module is called extract_walls() and works by finding "walls" in the image array. Walls are represented as 1's in the image array. 
+The main use of this module is to find walls in the image array and create a list of Wall objects that are used to create the NX model. The main function in the module is called extract_walls() and works by finding "walls" in the image array. Walls are represented as 1's in the image array. Below is a section of code which checks for horizontal walls. The image array is parsed row by row. When an edge is encountered, the function starts counting the length of the horizontal wall until it sees the end of the wall. Once the end of the wall is reached, it is added to the list of walls and the counter is reset. The same principle is used for finding vertical walls.
+
+```python 
+for row in range(img_array.shape[0]):
+        for col in  range(img_array.shape[1]):
+            
+            sec = img_array.astype(int)[row:row+2,col:col+2]
+            
+            if left_edge(sec):
+                #check two steps to the right
+                next_sec = img_array.astype(int)[row:row+2, col+1:col+3]
+                next_next_sec = img_array.astype(int)[row:row+2, col+2:col+4]
+
+                #if horizontal wall, get coordinates and count length
+                if is_wall(next_sec) and not right_edge(next_next_sec): 
+                    #record corner coordinates
+                    x = col +1
+                    y = row
+                    while is_wall(next_sec):
+                    #start counting length across, until right edge found
+                        length +=1
+                        col +=1
+                        next_sec = img_array.astype(int)[row:row+2, col:col+2]
+                    #create wall object and store in list    
+                    new_wall = Wall(x*x_scale,y*y_scale,length*x_scale,wall_th*y_scale,wall_height)
+                    wall_list.append(new_wall)
+                    length = 0
+
+```
+
+The "edge" functions return booleans based on whether an edge or wall is seen. Walls are represented as 1's, whereas empty space is represented as zeros. Therefore the code to find a left-edge is as follows. Functions were made for each type of edge so that the code would be more readable.
+
+```python
+def left_edge(sec):
+    """ 
+        args: 
+            sec (np.array[2x2]) - section of the matrix 
+        returns: 
+            bool - True if left edge encountered
+    """
+
+    left_edge = np.array([  [0,1],
+                            [0,1]])
+
+    if np.array_equal(sec, left_edge):
+        return True
+    else:
+        return False
+
+```
+
+
 
 ### NX_viz.py
 This is the NX-visualisation module. The model information is read from a text-file. This is to separate NXOpen from other Python modules to avoid errors. Each part of the wall is drawn as a block in the model. Thereafter, all the blocks are united using NXOpen code. The basic building blocks for the code that unites all the blocks was obtained by using the Record function in NX.
@@ -77,6 +128,7 @@ Below is another example with a more complex geometry.
 # Video
 ![](Figures/A2/A2-video.gif)
 Note: the upload button is pre-programmed to receive the image locally. 
-# Extendability and Improvements
 
+# Extendability and Improvements
+-Walls are counted twice, should really have a system for determining wall thickness in pixels - e.g. the user can enter wall thickness themselves. Also implement more flexible edge functions - i.e. so that the section size could be varied based on wall thickness.
 
