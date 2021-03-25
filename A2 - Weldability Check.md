@@ -30,7 +30,7 @@ The UML sequence diagram below shows a run through of a complete system. The use
 
 # Implementation
 ## UI
-The figures below shows the actual design of the web-interface for the task. The upload/download buttons were not implemented. 
+The figures below shows the actual design of the web-interface for the task. The upload/download buttons were not implemented. Another feature that was not implemented was the shading patterns on the actual figure in the results.
 
 ![](Figures/A2/UI-home.PNG)
 
@@ -114,7 +114,7 @@ def left_edge(sec):
 ### NX_viz.py
 This is the NX-visualisation module. The model information is read from a text-file. This is to separate NXOpen from other Python modules to avoid errors. Each part of the wall is drawn as a block in the model. Thereafter, all the blocks are united using NXOpen code. The basic building blocks for the code that unites all the blocks was obtained by using the Record function in NX.
 
-:star: In this assignment, the POST request was also used, as opposed to just using the GET request. The POST request is the more correct approach for updating/inserting remote data. In addition, a threaded HTTP server is used, so that a new thread is made for each new request. That is to say that the server should be able to handle multiple requests simultaneously. Another improvement is that the web-page also manages to displays pictures correctly, as opposed to the previous assignment, where the alternate text was displayed instead. To achieve this, the correct header must be chosen in the GET-request. This is done in the send_image() function in my_handler.py.
+:star: In this assignment, the POST request was also used, as opposed to just using the GET request. The POST request is the more correct approach for updating/inserting remote data. In addition, a threaded HTTP server is used, so that a new thread is made for each new request. That is to say that the server should be able to handle multiple requests simultaneously. Another improvement is that the web-page also manages to display pictures correctly, as opposed to the previous assignment, where the alternate text was displayed instead. To achieve this, the correct header must be chosen in the GET-request. This is done in the send_image() function in my_handler.py.
 
 # Examples from run-through
 The example below shows the outputs that can be produced from an input image based on what welding gun diameter is submitted. In the first picture, the welding gun can fit everywhere, in the middle it cannot fit where the wall "turns" and in the last picture it cannot fit anywhere. The model generated with NXOpen is also shown.
@@ -127,10 +127,10 @@ Below is another example with a more complex geometry.
 
 # Video
 ![](Figures/A2/A2-video.gif)
-Note: the upload button is pre-programmed to receive the image locally. Please note that the model takes a little while to load at the end, but is shown at the end.
+Note: the upload button is pre-programmed to receive the image locally. Please note at the end of the video, that the model takes a little while to load, but is shown at the end.
 
 # Extendability and Improvements
-There are a few notes features that could be improved for an even more extandable solution. The first one is that the walls are counted twice which is unneccesary. A more elegant solution would be to have a system for determining the wall thickness in pixels - e.g. the user can enter wall thickness themselves. 
+There are a few features that could be improved for an even more extandable solution. The first one is that the walls are counted twice which is unneccesary. A more elegant solution would be to have a system for determining the wall thickness in pixels - e.g. the user can enter wall thickness themselves. 
 Another feauture would be to implement more flexible edge functions - i.e. so that the section size could be varied based on wall thickness.
 
 In a real user case, the upload image function coupled with a database would also be working.
