@@ -7,6 +7,8 @@ import os
 from os import curdir, sep
 import sys
 
+#import weld_geom
+from get_image_from_website import mainfunc
 
 def parse_path(param_line):
     values = {}
@@ -96,6 +98,36 @@ class myHandler(BaseHTTPRequestHandler):
             param_line = self.get_params_from_path()
             customer_info = parse_path(param_line)
             print("Customer info: ", customer_info)
+            html_code = ""
+            html_code = get_HTML_string("UI/results.html")
+            old = '''<hr>
+                    Provide contact information to receive a copy by email. 
+                    <form id=get_results action="/get_results.php" method="POST">  
+                    <label for="cust_name"><b>Name</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label><br>
+                    <input type="text" class = "textbox" id="cust_name" name="cust_name">  <br><br>
+                    <label for="cust_email"><b>Email</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label><br>
+                    <input type="text" id="cust_email" name="cust_email"> <br><br>
+                    <div style="text-align:right;">
+                    <input style=" height:40px; width:150px; "     
+                    type="submit" value="Send results" form=get_results >  '''
+            new =  ''' <hr>
+                    Information sent. Have a nice day!  '''
+            html_code.replace(old,new)
+            self.wfile.write(bytes(html_code, "utf-8"))
+
+  #      if self.path.find("weld_geom") !=-1:
+   #         print("found weld geom")
+   #         self.send_response(200)
+   #         self.send_header("Content-type", "text/html")
+   #         self.end_headers()
+   #         html_code = get_HTML_string("UI/home.html")
+   #         self.wfile.write(bytes(html_code, "utf-8"))
+           # url = "http://localhost:1024/weld_geom.php"
+            #mainfunc(url, "Uploaded_images")
+            #print("image upploaded ")
+        
+
+        
             
             
 
