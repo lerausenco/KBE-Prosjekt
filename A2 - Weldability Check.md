@@ -121,9 +121,11 @@ The example below shows the outputs that can be produced from an input image bas
 
 ![](Figures/A2/simple_maze_example.png)
 
-Below is another example with a more complex geometry.
+Below is another example with a more complex geometry. The algorithm seem to work best a the more simple "mazes". In the image below, there can be observed regions which should be weldable, but are marked not weldable. This issue is thought to be due to difficulties when scaling and pre-processing the image. 
 
 ![](Figures/A2/maze_example2.png)
+
+![](Figures/A2/maze_example3.png)
 
 # Video
 ![](Figures/A2/A2-video.gif)
