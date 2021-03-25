@@ -68,12 +68,12 @@
     <img src="UI/info_img.png" width ="350" height = "320" alt="Info_image" class="center"><br>
     
     
-    <form style="width:400px" enctype="multipart/form-data" name="upload_pic" action="/weld_geom.php" method="post">     
+    <form id=weld_geom_form style="width:400px" enctype="multipart/form-data" name="upload_pic" action="/weld_geom.php" method="post">     
     <input style="background-color:rgb(213, 214, 216); :200px; height:30px; font-family:veranda; font-size:14px;" 
     id="fileupload" name="myfile" type="file" value="Browse..."/>  <br>
     Supported files: .jpg, .png &nbsp;&nbsp;&nbsp;
 
-    <input type="submit" value="Upload" id="submit" />
+    <input type="submit" value="Upload" id="submit" form=weld_geom_form />
     <br><br><br>
   </form> 
     <div style="text-align:right;">
