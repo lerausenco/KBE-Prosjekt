@@ -103,9 +103,6 @@ def extract_walls(img_array,x_scale,y_scale,wall_height):
 
     wall_th = 2
     length = 0
-    #row = 0
-    #col = 0
-
     wall_list = []
 
     #check for horizontal walls first
