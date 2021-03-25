@@ -114,7 +114,8 @@ def left_edge(sec):
 ### NX_viz.py
 This is the NX-visualisation module. The model information is read from a text-file. This is to separate NXOpen from other Python modules to avoid errors. Each part of the wall is drawn as a block in the model. Thereafter, all the blocks are united using NXOpen code. The basic building blocks for the code that unites all the blocks was obtained by using the Record function in NX.
 
-:star: In this assignment, the POST request was also used, as opposed to just using the GET request. The POST request is the more correct approach for updating/inserting remote data. In addition, a threaded HTTP server is used, so that a new thread is made for each new request. That is to say that the server should be able to handle multiple requests simultaneously. Another improvement is that the web-page also manages to display pictures correctly, as opposed to the previous assignment, where the alternate text was displayed instead. To achieve this, the correct header must be chosen in the GET-request. This is done in the send_image() function in my_handler.py.
+:star: In this assignment, the POST request was also used, as opposed to just using the GET request. The POST request is the more correct approach for updating/inserting remote data. In addition, a threaded HTTP server is used, so that a new thread is made for each new request. That is to say that the server should be able to handle multiple requests simultaneously. Another improvement is that the web-page also manages to display pictures correctly, as opposed to the previous assignment, where the alternate text was displayed instead. To achieve this, the correct header must be chosen in the GET-request. This is done in the send_image() function in my_handler.py. A general improvement is that the code has been divided up into more and smaller modules. This makes the code easier to navigate.
+
 
 # Examples from run-through
 The example below shows the outputs that can be produced from an input image based on what welding gun diameter is submitted. In the first picture, the welding gun can fit everywhere, in the middle it cannot fit where the wall "turns" and in the last picture it cannot fit anywhere. The model generated with NXOpen is also shown.
@@ -131,18 +132,17 @@ The algorithm seem to work best at the more simple "mazes". Both in the image ab
 
 
 # Video
-![](Figures/A2/A2-video.gif)
+![](Figures/A2/A2-video2.gif)
 Note: the upload button is pre-programmed to receive the image locally. Please note at the end of the video, that the model takes a little while to load, but is shown at the end.
 
 # Conclusion
-A system for checking the weldability was developed. The computer vision part of the task worked successfully. Uploading an image to an HTML website and getting it to communicate with python proved difficult and was not implemented.
-Improvements from assignment one had been taken into account and utilised in the development of this assignment. To conclude, the system has the key features needed for a local weldability checker application, but lack the online integration. 
+A system for checking the weldability was developed. The computer vision part of the task worked successfully, and it was possible to create an NX-model automatically with NXOpen. Uploading an image to an HTML website and getting it to communicate with python proved difficult and was not implemented.
+Improvements from assignment one have been taken into account and utilised in the development of this assignment. To conclude, the system has the key features needed for a local weldability checker application, but lacks an image-handling server for full online integration. 
 
 # Extendability and Improvements
-There are a few features that could be improved for an even more extandable solution. The first one is that the walls are counted twice which is unneccesary. A more elegant solution would be to have a system for determining the wall thickness in pixels - e.g. the user can enter wall thickness themselves. 
-Another feauture would be to implement more flexible edge functions - i.e. so that the section size could be varied based on wall thickness.
+There are a few features that could be improved for an even more extendable solution. The first one is that some walls are counted twice which is unneccesary. A more elegant solution would be to have a system for determining the wall thickness in pixels - e.g. the user can enter wall thickness themselves. 
+Another feauture would be to implement more flexible edge-detection functions - i.e. so that the section size could be varied based on wall thickness.
 
-In a real user case, the upload image function coupled with a database would also be working.
+In a real user case, the upload/download image function coupled with a database would also be working.
 
-Of note, the code developed for finding space for the welding gun is utilising three nested for-loops in python which is not ideal for a fast response and extendable system. This would probably have been swapped out with a function from a library written in a faster programming language when integrating this system in a real user case. 
-
+Of note, the code developed for finding space for the welding gun uses three nested for-loops in python which is not ideal for a fast response and extendable system. This would probably have been swapped out with a function from a library written in a faster programming language when integrating this system in a real user case.
