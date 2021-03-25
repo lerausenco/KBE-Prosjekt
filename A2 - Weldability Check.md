@@ -121,16 +121,22 @@ The example below shows the outputs that can be produced from an input image bas
 
 ![](Figures/A2/simple_maze_example.png)
 
-Below is another example with a more complex geometry. The algorithm seem to work best a the more simple "mazes". In the image below, there can be observed regions which should be weldable, but are marked not weldable. This issue is thought to be due to difficulties when scaling and pre-processing the image. 
+Below are two more examples with a more complex geometry. 
+![](Figures/A2/maze3-example.png)
+
+The algorithm seem to work best at the more simple "mazes". Both in the image above and below, there can be observed regions which should be weldable, but are marked not weldable. This issue is thought to be due to difficulties when scaling and pre-processing the images which are of different resolutions. A coarse image scaling is being used in the processing in order to get a result in a reasonable amount of time. This can limit the resolution of the image array when representing it as an array.
 
 ![](Figures/A2/maze_example2.png)
 
-![](Figures/A2/maze3_example.png)
 
 
 # Video
 ![](Figures/A2/A2-video.gif)
 Note: the upload button is pre-programmed to receive the image locally. Please note at the end of the video, that the model takes a little while to load, but is shown at the end.
+
+# Conclusion
+A system for checking the weldability was developed. The computer vision part of the task worked successfully. Uploading an image to an HTML website and getting it to communicate with python proved difficult and was not implemented.
+Improvements from assignment one had been taken into account and utilised in the development of this assignment. To conclude, the system has the key features needed for a local weldability checker application, but lack the online integration. 
 
 # Extendability and Improvements
 There are a few features that could be improved for an even more extandable solution. The first one is that the walls are counted twice which is unneccesary. A more elegant solution would be to have a system for determining the wall thickness in pixels - e.g. the user can enter wall thickness themselves. 
