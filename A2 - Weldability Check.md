@@ -74,6 +74,9 @@ Below is another example with a more complex geometry.
 
 ![](Figures/A2/maze_example2.png)
 
+# Video
+![](Figures/A2/A2-video.gif)
+Note: the upload button is pre-programmed to receive the image locally. 
 # Extendability and Improvements
 
 
