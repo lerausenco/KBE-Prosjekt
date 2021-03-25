@@ -43,7 +43,7 @@ The code is divided into several modules which can be found in the utils folder.
 The modules are described here.
 
 ### space_for_welding_gun.py
-The weldability check is performed here. After confirming that the walls are ok the space is investigated section by section. A zeros array for the space of the robot arm is created and it is scaled down to represent it in pixels. The algorithms loops through the image array in sections of the robot array. If a section of the image array is equal to the robot section then that section is changed to a number representing the colour green. This ends up in a "feedback array". Next the feedback array is fed into an image processing unit to create the feedback image with red and green spots indicating weldability in addition to the walls.
+The weldability check is performed here. After confirming that the walls are ok the space is investigated section by section. A zeros array for the space of the robot arm is created and it is scaled down to represent it in pixels. The algorithm loops through the image array in sections of the robot array. If a section of the image array is equal to the robot section then that section is changed to a number representing the colour green. This ends up in a "feedback array". Next the feedback array is fed into an image processing unit to create the feedback image with red and green spots indicating weldability in addition to the walls.
  
 ### image_process.py
 This module contains functions for handling images. One function is used to pre-process an image into a numpy array, another is used to make the feedback image from the array containing which areas are weldable or not.
@@ -127,8 +127,11 @@ Below is another example with a more complex geometry.
 
 # Video
 ![](Figures/A2/A2-video.gif)
-Note: the upload button is pre-programmed to receive the image locally. 
+Note: the upload button is pre-programmed to receive the image locally. Please note that the model takes a little while to load at the end, but is shown at the end.
 
 # Extendability and Improvements
--Walls are counted twice, should really have a system for determining wall thickness in pixels - e.g. the user can enter wall thickness themselves. Also implement more flexible edge functions - i.e. so that the section size could be varied based on wall thickness.
+There are a few notes features that could be improved for an even more extandable solution. The first one is that the walls are counted twice which is unneccesary. A more elegant solution would be to have a system for determining the wall thickness in pixels - e.g. the user can enter wall thickness themselves. 
+Another feauture would be to implement more flexible edge functions - i.e. so that the section size could be varied based on wall thickness.
+
+The upload and download image functions with a database connection would also be working in a real user case.
 
