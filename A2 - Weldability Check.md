@@ -25,19 +25,41 @@ A more in-depth description of the architecture is shown in the class diagram be
 ![](Figures/A2/class_diagram.png)
 
 # Implementation
-The figures below shows the actual design of the web-interface for the task.  
+## UI
+The figures below shows the actual design of the web-interface for the task. The upload/download buttons were not implemented. 
 
 ![](Figures/A2/UI-home.PNG)
 
 ![](Figures/A2/UI-results.PNG)
 
+:star: A big improvement compared to the last assignment is that the UI resembles the initial UI sketch more closely. 
 
-## Finding space for the welding gun
-### Feedback array
-The generated algorithm for checking if a welding gun can fit has two checkpoints. Firstly it checks if the walls are longer than the robots reachable length. If so, the whole model is not weldable. After confirming that the walls are ok the space is investigated section by section. A zeros array for the space of the robot arm is created and it is scaled down to represent it in pixels. The algorithms loops through the image array in sections of the robot array. If a section of the image array is equal to the robot section then that section is changed to a number representing the colour green. This ends up in a "feedback array"
+## Modules
+The code is divided into several modules which can be found in the utils folder. 
+The modules are described here.
 
-Next the feedback array is fed into an image processing unit to create the feedback image with red and green spots indicating weldability in addition to the walls.
+### space_for_welding_gun.py
+The weldability check is performed here. After confirming that the walls are ok the space is investigated section by section. A zeros array for the space of the robot arm is created and it is scaled down to represent it in pixels. The algorithms loops through the image array in sections of the robot array. If a section of the image array is equal to the robot section then that section is changed to a number representing the colour green. This ends up in a "feedback array". Next the feedback array is fed into an image processing unit to create the feedback image with red and green spots indicating weldability in addition to the walls.
+ 
+### image_process.py
+This module contains functions for handling images. One function is used to pre-process an image into a numpy array, another is used to make the feedback image from the array containing which areas are weldable or not.
 
+### my_handler.py
+The class to handle HTTP requests is implemented here, along with some helper functions to parse the results and read HTML files. Both do_GET() and do_POST() requests are implemented. The handler also calls the weldability checker and the function which creates the feedback array. It also writes the parameter values into a text file, so that the NX-visualiser can read them.
+
+### Wall.py
+The class to store Wall-objects, with helper functions to print and return the parameters.
+
+### Block.py
+A class used in NXOpen to make Block objects.
+
+### wall_extraction.py
+The main use of this module is to find walls in the image array and create a list of Wall objects that are used to create the NX model. The main function in the module is called extract_walls() and works by finding "walls" in the image array. Walls are represented as 1's in the image array. 
+
+### NX_viz.py
+This is the NX-visualisation module. The model information is read from a text-file. This is to separate NXOpen from other Python modules to avoid errors. Each part of the wall is drawn as a block in the model. Thereafter, all the blocks are united using NXOpen code. The basic building blocks for the code that unites all the blocks was obtained by using the Record function in NX.
+
+:star: In this assignment, the POST request was also used, as opposed to just using the GET request. The POST request is the more correct approach for updating/inserting remote data. In addition, a threaded HTTP server is used, so that a new thread is made for each new request. That is to say that the server should be able to handle multiple requests simultaneously. Another improvement is that the web-page also manages to displays pictures correctly, as opposed to the previous assignment, where the alternate text was displayed instead. To achieve this, the correct header must be chosen in the GET-request. This is done in the send_image() function in my_handler.py.
 
 
 
