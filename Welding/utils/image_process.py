@@ -4,7 +4,7 @@ import sys
 import matplotlib.pyplot as plt
 import cv2
 
-scaling = 0.125
+scaling = 0.25
 
 def open_image(filename):
     """
@@ -107,9 +107,3 @@ def make_feedback(feedback_array, img):
     
     combined_pic = cv2.resize(combined_pic, None, fx=8,fy=8, interpolation=cv2.INTER_LINEAR)
     cv2.imwrite("img/customer_feedback.png", combined_pic)
-
-
-    
-
-
-
