@@ -21,7 +21,7 @@ def find_space_for_welder(img_array,model_height,model_length, wall_height ,gun_
   #convert welding gun size to pixel size
   d_pixels_x = int((gun_diam/1000)/model_length * img_array.shape[0])
   d_pixels_y = int((gun_diam/1000)/model_height * img_array.shape[1])
-  print("gun size", d_pixels_x, " ", d_pixels_y)
+  #print("gun size", d_pixels_x, " ", d_pixels_y)
  
   #if gun is so small, take up one pixel
   if d_pixels_x == 0:
