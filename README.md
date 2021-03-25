@@ -27,4 +27,6 @@
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Video](https://github.com/lerausenco/KBE-Prosjekt/blob/main/A2%20-%20Weldability%20Check.md#video)
 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Conclusion](https://github.com/lerausenco/KBE-Prosjekt/blob/main/A2%20-%20Weldability%20Check.md#conclusion)
+
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Extendability and Improvements](https://github.com/lerausenco/KBE-Prosjekt/blob/main/A2%20-%20Weldability%20Check.md#extendability-and-improvements)
