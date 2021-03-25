@@ -133,5 +133,7 @@ Note: the upload button is pre-programmed to receive the image locally. Please n
 There are a few notes features that could be improved for an even more extandable solution. The first one is that the walls are counted twice which is unneccesary. A more elegant solution would be to have a system for determining the wall thickness in pixels - e.g. the user can enter wall thickness themselves. 
 Another feauture would be to implement more flexible edge functions - i.e. so that the section size could be varied based on wall thickness.
 
-The upload and download image functions with a database connection would also be working in a real user case.
+In a real user case, the upload image function coupled with a database would also be working.
+
+Of note, the code developed for finding space for the welding gun is utilising three nested for-loops in python which is not ideal for a fast response and extendable system. This would probably have been swapped out with a function from a library written in a faster programming language when integrating this system in a real user case. 
 
