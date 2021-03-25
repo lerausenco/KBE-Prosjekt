@@ -124,7 +124,7 @@ The example below shows the outputs that can be produced from an input image bas
 Below are two more examples with a more complex geometry. 
 ![](Figures/A2/maze3-example.png)
 
-The algorithm seem to work best at the more simple "mazes". Both in the image above and below, there can be observed regions which should be weldable, but are marked not weldable. This issue is thought to be due to difficulties when scaling and pre-processing the images. A coarse image scaling is being used in the processing in order to get a quick reslut. This can limit the resolution of the image array when representing it as an aray.
+The algorithm seem to work best at the more simple "mazes". Both in the image above and below, there can be observed regions which should be weldable, but are marked not weldable. This issue is thought to be due to difficulties when scaling and pre-processing the images which are of different resolutions. A coarse image scaling is being used in the processing in order to get a result in a reasonable amount of time. This can limit the resolution of the image array when representing it as an array.
 
 ![](Figures/A2/maze_example2.png)
 
