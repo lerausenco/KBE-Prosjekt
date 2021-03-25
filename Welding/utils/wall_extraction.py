@@ -1,13 +1,6 @@
-#from PIL import Image, ImageOps
+
 import numpy as np
-#import sys
-#import matplotlib.pyplot as plt
-
-#printing options for debugging
-#np.set_printoptions(threshold=np.inf)
-#np.set_printoptions(linewidth=180)
-
-from Wall import Wall
+from utils.Wall import Wall
 
 
 def left_edge(sec):
@@ -95,12 +88,15 @@ def top_edge(sec):
         return False
 
 
-def extract_walls(img_array):
+def extract_walls(img_array,x_scale,y_scale,wall_height):
 
     """
         Finds walls in an image and makes a list of them.
         args:
             img_array (numpy array) - normalised numpy array storing image
+            x_scale (float) - x-direction scale
+            y_scale (float) - y-direction scale
+            wall_height (float) - height of wall from user
         returns:
             wall_list (list<Wall>) - list of Wall objects 
    """
@@ -134,7 +130,7 @@ def extract_walls(img_array):
                         col +=1
                         next_sec = img_array.astype(int)[row:row+2, col:col+2]
                     #create wall object and store in list    
-                    new_wall = Wall(x,y,length,wall_th)
+                    new_wall = Wall(x*x_scale,y*y_scale,length*x_scale,wall_th*y_scale,wall_height)
                     wall_list.append(new_wall)
                     length = 0
 
@@ -159,7 +155,7 @@ def extract_walls(img_array):
                         row += 1
                         next_sec = img_array.astype(int)[row:row+2, col:col+2]
                     #create wall object and store in list
-                    new_wall = Wall(x,y,wall_th,length)
+                    new_wall = Wall(x*x_scale,y*y_scale,wall_th*x_scale,length*y_scale, wall_height)
                     wall_list.append(new_wall)
                     length = 0
 

@@ -33,11 +33,11 @@ for line in lines:
     height = float(params[3] )
     wall_height = float(params[4])
 
-    blockN = Block(x,y,0,width,height,15)
+    blockN = Block(x,y,0,width,height,wall_height)
     blockN.initForNX()
     num_lines+=1
 
-bottom_plate = Block(0,0,-wall_height,x_max, y_max, wall_height)
+bottom_plate = Block(0,0,-2,x_max, y_max, 2)
 bottom_plate.initForNX()
 
 theSession  = NXOpen.Session.GetSession()
