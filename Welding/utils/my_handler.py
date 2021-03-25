@@ -10,7 +10,7 @@ import os
 from os import curdir, sep
 import sys
 
-img_path = "img/maze.png"
+img_path = "img/maze3.png"
 
 def parse_path(param_line):
     """
@@ -99,6 +99,7 @@ class myHandler(BaseHTTPRequestHandler):
             self.wfile.write(bytes(html_code, "utf-8"))
             return
         else:
+            time.sleep(1.5)
             self.send_image(self.path[-3])
             return
 
@@ -146,6 +147,7 @@ class myHandler(BaseHTTPRequestHandler):
 
                 #make feedback file
                 make_feedback(feedback_array, img_array)
+                print("picture made")
 
                 #extract walls and write to txt file
                 x_scale=float(values['x_scale'])/img.size[0]*1000*4
@@ -166,6 +168,8 @@ class myHandler(BaseHTTPRequestHandler):
                 f.write(str(max_y_length) + "\n") #x length
                 for wall in wall_list:
                     f.write(str(wall.params()) + "\n")
+
+                
             #------------------------------------------------------
 
             
@@ -197,8 +201,11 @@ class myHandler(BaseHTTPRequestHandler):
                 new_code = html_code.replace('''src="UI/info_img.png"''', '''src="'''+img_path+'''"''')
                 self.wfile.write(bytes(new_code, "utf-8"))
 
+                return
+
         else: #if image, make image header based on file type
             self.send_image(self.path[-3])
+            return
            
 
                     
