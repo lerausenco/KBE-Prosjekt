@@ -16,13 +16,17 @@ The feedback is given in the form of a picture, using red and green colours. An 
 :star: To highlight some improvements compared to the last assignment, the user interface is more interactive with direct visual feedback to the user in the form of changing colours or changing the cursor. The new UI is still plain, but uses some colours to make the buttons stand out more. In addition to this, common icons are used so reassure the user of the meaning of the buttons such as upload and download.
 
 ## Architecture
-A high-level suggestion for the architecture is shown in the figure below. The customer interacts with the home page, which is hosted by customer_architect.py on the weldability check server. The architect is the main code block which unites the code utilities. The weldability check server also interacts with the knowledge-base server to store information. 
+A high-level suggestion for the architecture is shown in the figure below. The customer interacts with the home page, which is hosted by run.py through the use of my_handler.py. run.py is the main code block which unites the code utilities. The weldability check server also interacts with the weldability check module to perform the weldability check. 
 
 ![](Figures/A2/Block_architecture.png)
 
-A more in-depth description of the architecture is shown in the class diagram below. The process starts with an input image, which is preprocessed before the walls are extracted from it. Wall objects store the length and position of each wall found in the picture. They are turned into Block objects and combined to create an NX_model, and used to create a plot signifying which areas are weldable or not.  
+A more in-depth description of the architecture is shown in the class diagram below. The process starts with an input image, which is preprocessed before the walls are extracted from it using the wall extraction module. Wall objects store the length and position of each wall found in the picture. They are turned into Block objects and combined to create an NX_model, and used to create an image signifying which areas are weldable or not.  
 
 ![](Figures/A2/class_diagram.png)
+
+The UML sequence diagram below shows a run through of a complete system. The user interacts with a web-browser to send welding geometry and dimensions to the weldability check server. In return, the user receives feedback messages after their information has been receieved. After the user presses "Submit" on the home page, the weldability check server uses the corresponding module to check the weldability, make an NX model and feedback image. The NX model and feedback image are sent to the user and displayed on the results page. The user then has the option to download the image and/or request for it to be sent by email.
+
+![](Figures/A2/UML-sequence.png)
 
 # Implementation
 ## UI
@@ -48,19 +52,83 @@ This module contains functions for handling images. One function is used to pre-
 The class to handle HTTP requests is implemented here, along with some helper functions to parse the results and read HTML files. Both do_GET() and do_POST() requests are implemented. The handler also calls the weldability checker and the function which creates the feedback array. It also writes the parameter values into a text file, so that the NX-visualiser can read them.
 
 ### Wall.py
-The class to store Wall-objects, with helper functions to print and return the parameters.
+The class to store Wall-objects, with helper functions to print and return the parameters in a structured way.
 
 ### Block.py
 A class used in NXOpen to make Block objects.
 
 ### wall_extraction.py
-The main use of this module is to find walls in the image array and create a list of Wall objects that are used to create the NX model. The main function in the module is called extract_walls() and works by finding "walls" in the image array. Walls are represented as 1's in the image array. 
+The main use of this module is to find walls in the image array and create a list of Wall objects that are used to create the NX model. The main function in the module is called extract_walls() and works by finding "walls" in the image array. Walls are represented as 1's in the image array. Below is a section of code which checks for horizontal walls. The image array is parsed row by row. When an edge is encountered, the function starts counting the length of the horizontal wall until it sees the end of the wall. Once the end of the wall is reached, it is added to the list of walls and the counter is reset. The same principle is used for finding vertical walls.
+
+```python 
+for row in range(img_array.shape[0]):
+        for col in  range(img_array.shape[1]):
+            
+            sec = img_array.astype(int)[row:row+2,col:col+2]
+            
+            if left_edge(sec):
+                #check two steps to the right
+                next_sec = img_array.astype(int)[row:row+2, col+1:col+3]
+                next_next_sec = img_array.astype(int)[row:row+2, col+2:col+4]
+
+                #if horizontal wall, get coordinates and count length
+                if is_wall(next_sec) and not right_edge(next_next_sec): 
+                    #record corner coordinates
+                    x = col +1
+                    y = row
+                    while is_wall(next_sec):
+                    #start counting length across, until right edge found
+                        length +=1
+                        col +=1
+                        next_sec = img_array.astype(int)[row:row+2, col:col+2]
+                    #create wall object and store in list    
+                    new_wall = Wall(x*x_scale,y*y_scale,length*x_scale,wall_th*y_scale,wall_height)
+                    wall_list.append(new_wall)
+                    length = 0
+
+```
+
+The "edge" functions return booleans based on whether an edge or wall is seen. Walls are represented as 1's, whereas empty space is represented as zeros. Therefore the code to find a left-edge is as follows. Functions were made for each type of edge so that the code would be more readable.
+
+```python
+def left_edge(sec):
+    """ 
+        args: 
+            sec (np.array[2x2]) - section of the matrix 
+        returns: 
+            bool - True if left edge encountered
+    """
+
+    left_edge = np.array([  [0,1],
+                            [0,1]])
+
+    if np.array_equal(sec, left_edge):
+        return True
+    else:
+        return False
+
+```
+
+
 
 ### NX_viz.py
 This is the NX-visualisation module. The model information is read from a text-file. This is to separate NXOpen from other Python modules to avoid errors. Each part of the wall is drawn as a block in the model. Thereafter, all the blocks are united using NXOpen code. The basic building blocks for the code that unites all the blocks was obtained by using the Record function in NX.
 
 :star: In this assignment, the POST request was also used, as opposed to just using the GET request. The POST request is the more correct approach for updating/inserting remote data. In addition, a threaded HTTP server is used, so that a new thread is made for each new request. That is to say that the server should be able to handle multiple requests simultaneously. Another improvement is that the web-page also manages to displays pictures correctly, as opposed to the previous assignment, where the alternate text was displayed instead. To achieve this, the correct header must be chosen in the GET-request. This is done in the send_image() function in my_handler.py.
 
+# Examples from run-through
+The example below shows the outputs that can be produced from an input image based on what welding gun diameter is submitted. In the first picture, the welding gun can fit everywhere, in the middle it cannot fit where the wall "turns" and in the last picture it cannot fit anywhere. The model generated with NXOpen is also shown.
 
+![](Figures/A2/simple_maze_example.png)
 
+Below is another example with a more complex geometry.
+
+![](Figures/A2/maze_example2.png)
+
+# Video
+![](Figures/A2/A2-video.gif)
+Note: the upload button is pre-programmed to receive the image locally. 
+
+# Extendability and Improvements
+-Walls are counted twice, should really have a system for determining wall thickness in pixels - e.g. the user can enter wall thickness themselves. Also implement more flexible edge functions - i.e. so that the section size could be varied based on wall thickness.
 
