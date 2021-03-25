@@ -20,3 +20,11 @@
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Introduction](https://github.com/lerausenco/KBE-Prosjekt/blob/main/A2%20-%20Weldability%20Check.md#introduction)
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Design Overview](https://github.com/lerausenco/KBE-Prosjekt/blob/main/A2%20-%20Weldability%20Check.md#design-overview)
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Implementation](https://github.com/lerausenco/KBE-Prosjekt/blob/main/A2%20-%20Weldability%20Check.md#implementation)
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Examples from run-through](https://github.com/lerausenco/KBE-Prosjekt/blob/main/A2%20-%20Weldability%20Check.md#examples-from-run-through)
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Video](https://github.com/lerausenco/KBE-Prosjekt/blob/main/A2%20-%20Weldability%20Check.md#video)
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Extendability and Improvements](https://github.com/lerausenco/KBE-Prosjekt/blob/main/A2%20-%20Weldability%20Check.md#extendability-and-improvements)
