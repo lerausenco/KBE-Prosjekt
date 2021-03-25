@@ -9,14 +9,15 @@ class Wall():
             height - dimension of wall in y direction
             
     """
-    def __init__(self, x,y, width, height):
+    def __init__(self, x,y, width, height, z_height):
         self.x = x
         self.y = y
         self.width = width
         self.height = height
+        self.z_height = z_height
     
     def params(self):
-        return self.x, self.y, self.width, self.height
+        return self.x, self.y, self.width, self.height, self.z_height
     
     def print(self):
-        print("[X,Y]: ", self.x, self.y, "Width: ", self.width, " Height:", self.height)
+        print("[X,Y]: ", self.x, self.y, "Width: ", self.width, " Height:", self.height, "Z_height", self.z_height)
