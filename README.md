@@ -30,3 +30,5 @@
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Conclusion](https://github.com/lerausenco/KBE-Prosjekt/blob/main/A2%20-%20Weldability%20Check.md#conclusion)
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Extendability and Improvements](https://github.com/lerausenco/KBE-Prosjekt/blob/main/A2%20-%20Weldability%20Check.md#extendability-and-improvements)
+
+[A3 - Nodes](https://github.com/lerausenco/KBE-Prosjekt/blob/main/A3%20-%20Nodes.md)
