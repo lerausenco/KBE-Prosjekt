@@ -32,9 +32,13 @@ class Block:
 		blockfeaturebuilder1.Type = NXOpen.Features.BlockFeatureBuilder.Types.OriginAndEdgeLengths
 
 		origBlock = NXOpen.Point3d(float(x), float(y), float(z))
+		xAxis=NXOpen.Vector3d(float(1), float(0), float(0))
+		yAxis=NXOpen.Vector3d(float(0), float(0), float(1))
+		blockfeaturebuilder1.SetOrientation(xAxis, 0)
 		blockfeaturebuilder1.SetOriginAndLengths(origBlock, str(length), str(width), str(height))
 		blockfeaturebuilder1.BooleanOption.Type = NXOpen.GeometricUtilities.BooleanOperation.BooleanType.Create
-		blockfeaturebuilder1.Direction = NXOpen.Vector3d(float(self.direction[0]),float(self.direction[1]),float(self.direction[2]))
+		
+		#blockfeaturebuilder1.Direction = NXOpen.Vector3d(float(self.direction[0]),float(self.direction[1]),float(self.direction[2]))
 		self.body = blockfeaturebuilder1.Commit().GetBodies()[0]
 		origBlock.SetName("The Block")
 		blockfeaturebuilder1.Destroy() 
@@ -60,7 +64,7 @@ class Block:
 		
 		subtractfeaturebuilder1 = workPart.Features.CreateBooleanBuilder(NXOpen.Features.BooleanFeature.Null)
 	
-		subtractfeaturebuilder1.Target = self.body  #bodyTarget_.GetBodies()[0] # From where to subtract
+		subtractfeaturebuilder1.Target = self.body.GetBodies()[0]  #bodyTarget_.GetBodies()[0] # From where to subtract
 		subtractfeaturebuilder1.Tool = tool.body # What to subtract
 		subtractfeaturebuilder1.Operation = NXOpen.Features.FeatureBooleanType.Subtract
 		

@@ -6,7 +6,7 @@ import NXOpen.GeometricUtilities
 import NXOpen.Preferences
 class Cone:      
     
-    def __init__(self, x, y, z, baseDiameter, topDiameter, height, direction, color, material):
+    def __init__(self,x, y, z, baseDiameter, topDiameter, height, direction, color, material):
         self.baseDiameter = baseDiameter    # instance variable unique to each instance
         self.topDiameter = topDiameter
         self.height = height
@@ -24,7 +24,6 @@ class Cone:
         workPart = theSession.Parts.Work
         
         conebuilder1 = workPart.Features.CreateConeBuilder(NXOpen.Features.Cone.Null)
-
         conebuilder1.BaseDiameter.RightHandSide = str(self.baseDiameter) # Writing the right hand side of the expression
         conebuilder1.TopDiameter.RightHandSide = str(self.topDiameter)
         conebuilder1.Height.RightHandSide = str(self.height)
@@ -54,3 +53,6 @@ class Cone:
         
         subtractfeaturebuilder1.Commit()
         subtractfeaturebuilder1.Destroy()
+
+
+
