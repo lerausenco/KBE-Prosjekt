@@ -302,6 +302,10 @@ Next are two examples of chairs of different sizes. One of the chairs has three 
 
 ![](Figures/Examples.png)
 
+# Video 
+
+![](Figures/A1-runthru.gif)
+
 # Extendability and Improvements
 The code developed provides a certain degree of extendability due to multiple factors. Using a consistent naming system for parameters, combined with the use of Python dictionaries gives the opportunity to extend the system by adding more variables and designs. The same functions can be reused with different dictionaries. Another factor is that the system has been split up into many blocks. For example, HTML-files are separate from the Python scripts. This makes makes it easy to modify only the HTML file to change the web-page, rather than the Python file. Another example is the function that gives an ETA on the order. This function can easily be extended to provide a more accurate estimate by taking more parameters into account. The order overview page is independent of what type of product that was ordered. It only takes the order ID and is therefore easily extendable for other types of products/designs.
 
