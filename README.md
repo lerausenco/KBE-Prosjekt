@@ -12,10 +12,13 @@
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Implementation](https://github.com/lerausenco/KBE-Prosjekt/blob/main/A1%20-%20Chair.md#implementation)
    
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Product Examples](https://github.com/lerausenco/KBE-Prosjekt/blob/main/A1%20-%20Chair.md#product-examples)
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Video](https://github.com/lerausenco/KBE-Prosjekt/blob/main/A1%20-%20Chair.md#video)
    
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Extendability and Improvements](https://github.com/lerausenco/KBE-Prosjekt/blob/main/A1%20-%20Chair.md#extendability-and-improvements)
 
 [A2 - Weldability Check](https://github.com/lerausenco/KBE-Prosjekt/blob/main/A2%20-%20Weldability%20Check.md)
+
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Introduction](https://github.com/lerausenco/KBE-Prosjekt/blob/main/A2%20-%20Weldability%20Check.md#introduction)
 
