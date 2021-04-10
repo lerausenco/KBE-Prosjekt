@@ -102,7 +102,7 @@ class Analyzer:
 		
 		baseTemplateManager1 = theSession.XYPlotManager.TemplateManager
 		
-		nXObject1 = femFile.Commit()
+		#nXObject1 = femFile.Commit()
 		
 		workPart = NXOpen.Part.Null
 		workFemPart = theSession.Parts.BaseWork
