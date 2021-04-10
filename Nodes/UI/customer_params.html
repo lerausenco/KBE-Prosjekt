@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+    h1 {padding-left: 80px;}
+    h2 {font-family: verdana}
+    p {padding-left: 80px; font-family: verdana}
+    b {font-family:verdana}
+    div {font-family: verdana}
+    body {padding-left: 80px;}
+    input[type=text], select 
+    {height:20px; 
+    width:70px;
+    border-radius:4px;
+    color:black;}
+    input[type=submit] {
+      height:30px; 
+      width:100px; 
+      font-size:14pt; 
+      background-color:rgb(218, 232, 252); 
+      border-radius:10px; 
+      border-color: rgb(108, 142, 191);
+      cursor: pointer;
+    }
+    input[type=submit]:hover {
+    background-color:rgb(235, 242, 252);
+    }
+    .center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  
+}
+    
+    
+    </style>
+    </head>
+<body style="background-color: #ffffff;">
+
+
+<div style="float:left; width:600px">
+<form id=params action="/params.php" method="post">
+    <h2> Enter forces and moment </h2>
+    <hr>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;
+  Max [kN] &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Min [kN] <br>
+
+  <label for="N_max"><b>Axial force (N) </b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+  <input type="text" id="N_max" name="N_max"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <input type="text" id="N_min" name="N_min">  <br><br>
+
+  <label for="V_max"><b>Shear force (V) </b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+  <input type="text" id="V_max" name="V_max"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <input type="text" id="V_min" name="V_min">  <br><br>
+
+
+
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;
+  Max [kNcm] &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Min [kNcm] <br>
+
+
+  <label for="M_max"><b>Bending moment (M) </b>&nbsp;&nbsp;&nbsp;</label>
+  <input type="text" id="M_max" name="M_max"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <input type="text" id="M_min" name="M_min">  <br><br>
+  
+
+  <hr><br><br>
+  <h2>Enter profile dimensions</h2>
+    <hr>
+  <label for="pipe_diam"><b>Diameter (d) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b></label>
+  <input type="text" id="pipe_diam" name="pipe_diam" > [mm]<br><br>
+
+  <label for="wall_th"><b>Wall thickness (t) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b></label>
+  <input type="text" id="wall_th" name="wall_th"> [mm]<br><br>
+  <hr>
+
+</div>
+  
+  <div style="float:right; width: 350px;">
+    
+    
+    <img src="UI\\forces_info.png" width ="379" height = "341" alt="forces_img" class="center"><br>
+    <img src="UI\\pipe_geom.png" width ="184" height = "181" alt="pipe_img" class="center"><br>
+    
+    <input style="margin-left:100px; height:60px; width:150px; " 
+    type="submit" value="Submit" form=params >
+
+    </form>
+    </div>    
+    
+    
+</body>
+</html>
