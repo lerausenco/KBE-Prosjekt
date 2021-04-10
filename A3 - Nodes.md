@@ -13,3 +13,6 @@ The image below shows an overview of the user interface for the node calculation
 ![](Figures/A3/UI.png)
 
 The feedback is given in the form of bullet points in addition to an image of an FEA simulation.
+
+# Extendability and Improvements
+Topology optimisation
