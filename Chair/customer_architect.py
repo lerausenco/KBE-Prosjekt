@@ -1,6 +1,7 @@
 import os
 import sys
 from http.server import BaseHTTPRequestHandler, HTTPServer
+from os import curdir, sep
 import time
 import requests
 
@@ -18,6 +19,20 @@ def get_HTML_string(file_name):
 
 
 class CustomerHandler(BaseHTTPRequestHandler):
+
+    def send_image(self,img_type):
+        """
+            Creates the correct header for image type.
+            args:
+                img_type [string] - file ending for image 
+        """
+        f = open(curdir + sep + self.path, 'rb')
+        self.send_response(200)
+        self.send_header("Content-type","image/"+img_type)
+        self.end_headers()
+        self.wfile.write(f.read())
+        f.close()
+
     def do_HEAD(self):
         self.send_response(200)
         self.send_header("Content-type", "text/html")
@@ -25,69 +40,72 @@ class CustomerHandler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         """Respond to a GET request."""
-        self.send_response(200)
-        self.send_header("Content-type", "text/html")
-        self.end_headers()
-
-        html_code = get_HTML_string("CustomerUI.html")
-        self.wfile.write(bytes(html_code, "utf-8"))
-
-        str_path = self.path
-
-        # extract chair dimensions on "Preview button press"
-        if str_path.find("product_info") != -1:
-            str_path = str_path.replace("+", "_")
-            data = str_path.split("?")
-            params = data[1]
-            pairs = params.split("&")  # key value pairs
-
-            for i in range(len(pairs)):
-                param_value = pairs[i].split("=")[1]
-                if param_value == "":
-                    values[pairs[i].split("=")[0]] = 0
-                else:
-                    values[pairs[i].split("=")[0]] = param_value
-
-        # add quantity
-        if str_path.find("order_info") != -1:
-            quantity_key_pair = str_path.split("?")[1]
-            quantity = quantity_key_pair.split("=")[1]
-            values["quantity"] = quantity
-
-        # get customer info
-        if str_path.find("customer_info") != -1:
-            str_path = str_path.replace("+", "_")
-            data = str_path.split("?")
-            params = data[1]
-            pairs = params.split("&")
-
-            name = pairs[0].split("=")[1]
-            email = pairs[1].split("=")[1]
-            email = email.replace("%40", "@")
-
-            # get quantity
-            quantity = values["quantity"]
-
-            # get max and min values
-            json_data_max_lim = get_limit("MAX")
-            json_data_min_lim = get_limit("MIN")
-            max_list = parse_json(json_data_max_lim)
-            min_list = parse_json(json_data_min_lim)
-
-            # check if inputs are ok
-            ok = feedback_to_customer(values, min_list, max_list)
-
-            # write a message based on if order is ok
-            html_code = write_message(ok)
+        if not self.path.endswith(".png") and not self.path.endswith(".jpg"):
+            self.send_response(200)
+            self.send_header("Content-type", "text/html")
+            self.end_headers()
+        
+            html_code = get_HTML_string("CustomerUI.html")
             self.wfile.write(bytes(html_code, "utf-8"))
 
-            # send an order into the database if inputs are ok
-            if ok:
-                # add chair design to factory database
-                chair_name = add_chair(values)
-                add_order(
-                    chair_name, quantity, name, email
-                )  # add order to factory database
+            str_path = self.path
+
+            # extract chair dimensions on "Preview button press"
+            if str_path.find("product_info") != -1:
+                str_path = str_path.replace("+", "_")
+                data = str_path.split("?")
+                params = data[1]
+                pairs = params.split("&")  # key value pairs
+
+                for i in range(len(pairs)):
+                    param_value = pairs[i].split("=")[1]
+                    if param_value == "":
+                        values[pairs[i].split("=")[0]] = 0
+                    else:
+                        values[pairs[i].split("=")[0]] = param_value
+
+            # add quantity
+            if str_path.find("order_info") != -1:
+                quantity_key_pair = str_path.split("?")[1]
+                quantity = quantity_key_pair.split("=")[1]
+                values["quantity"] = quantity
+
+            # get customer info
+            if str_path.find("customer_info") != -1:
+                str_path = str_path.replace("+", "_")
+                data = str_path.split("?")
+                params = data[1]
+                pairs = params.split("&")
+
+                name = pairs[0].split("=")[1]
+                email = pairs[1].split("=")[1]
+                email = email.replace("%40", "@")
+
+                # get quantity
+                quantity = values["quantity"]
+
+                # get max and min values
+                json_data_max_lim = get_limit("MAX")
+                json_data_min_lim = get_limit("MIN")
+                max_list = parse_json(json_data_max_lim)
+                min_list = parse_json(json_data_min_lim)
+
+                # check if inputs are ok
+                ok = feedback_to_customer(values, min_list, max_list)
+
+                # write a message based on if order is ok
+                html_code = write_message(ok)
+                self.wfile.write(bytes(html_code, "utf-8"))
+
+                # send an order into the database if inputs are ok
+                if ok:
+                    # add chair design to factory database
+                    chair_name = add_chair(values)
+                    add_order(
+                        chair_name, quantity, name, email
+                    )  # add order to factory database
+        else:
+            self.send_image(self.path[-3])
 
 
 def get_quantity():
