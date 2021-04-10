@@ -3,7 +3,7 @@
 
 ## Table of Contents
 
-[A1 - Chair](https://github.com/lerausenco/KBE-Prosjekt/blob/test/A1%20-%20Chair.md)
+[A1 - Chair](https://github.com/lerausenco/KBE-Prosjekt/blob/main/A1%20-%20Chair.md#kbe-project-course---assignment-1---chair)
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Introduction](https://github.com/lerausenco/KBE-Prosjekt/blob/main/A1%20-%20Chair.md#introduction)
    
