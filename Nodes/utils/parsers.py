@@ -13,10 +13,9 @@ values = {
     "M_max": 0,
     "M_min": 0,
     "pipe_diam": 0,
-    "wall_th":0
+    "wall_th":0, 
+    "material_pref": 0
 }
-
-
 
 
 def parse_path(param_line):
@@ -56,7 +55,13 @@ def get_HTML_string(file_name):
 
 
 def query_fuseki():
-    # get limits from database
+    """
+        Get node limits from fuseki.
+        ret:
+            json_data [dictionary] - contains all query data
+    """
+    
+
     URL = "http://127.0.0.1:3030/kbe/query"
 
     QUERY = """PREFIX kbe: <http://www.kbe.com/node.owl#>
@@ -82,6 +87,13 @@ def query_fuseki():
     return json_data
 
 def parse_json(json_data):  # returns an array with parameters
+    """
+        Parses json data.
+        args: 
+            json_data <dictionary> - dictionary containing node limit data
+        ret:
+            node_list list<dictionary> - dictionary containing node limit data, filtered for useless things
+    """
 
     node_list = []
     # get sizes
@@ -114,7 +126,10 @@ def update_fuseki(values):
 
     #extract values from dictionary
     for key in values:
-        insert_str += "kbe:Node"+ ID + " kbe:" + key + ' "' + str(values[key]) + '"^^xsd:float. \n'
+        if key.find("material_pref") != -1:
+            insert_str += "kbe:Node"+ ID + " kbe:" + key + ' "' + str(values[key]) + '". \n'
+        else:
+            insert_str += "kbe:Node"+ ID + " kbe:" + key + ' "' + str(values[key]) + '"^^xsd:float. \n'
 
     URL = "http://127.0.0.1:3030/kbe/update"
     UPDATE = (
