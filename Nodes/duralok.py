@@ -8,6 +8,18 @@ from math import sin, cos, radians
 import time
 import random
 
+import NXOpen
+import NXOpen.Features
+import NXOpen.GeometricUtilities
+
+import math
+import NXOpen
+import NXOpen.Assemblies
+import NXOpen.CAE
+import NXOpen.Fields
+import NXOpen.MenuBar
+import NXOpen.PhysMat
+
 parts_list = []
 
 pipe_diam = 40
@@ -38,12 +50,11 @@ hollow_top_cone = Cylinder(
 parts_list.append(hollow_top_cone)
 
 
-
 #TOP CYL
 top_cyl = Cylinder(
     x=0,y=0,z=top_cone.z+top_cone.height,
     diameter=top_cone.topDiameter,
-    height=pipe_diam/2,
+    height=pipe_diam/5,
     direction=[0,0,1],
     color="BLUE",
     material="Steel"
@@ -279,9 +290,11 @@ side_pipe_2_2 = Cylinder(
 
 parts_list.append(side_pipe_2_2)
 
-for part in parts_list:
-    part.initForNX()
+print("NEW NAMES-----------")
 
+
+for part in parts_list:
+    body = part.initForNX()
 
 #subtractions
 hollow_top_cone.subtractFrom(top_cone)
@@ -304,8 +317,114 @@ side_pipe_1_1.subtractFrom(side_opening_2)
 side_pipe_1.subtractFrom(middle_cyl)
 side_pipe_2.subtractFrom(middle_cyl)
 
-
 hollow_cross_1.subtractFrom(side_opening_1)
 hollow_cross_2.subtractFrom(side_opening_2)
 
 
+####Unite everything
+
+theSession  = NXOpen.Session.GetSession()
+workPart = theSession.Parts.Work
+
+# list to store journal identifiers
+# journal identifier - name which NX gives the part
+jid = []
+
+objects = workPart.Layers.GetAllObjectsOnLayer(1)
+for object in objects:
+    try:			
+        if object.IsSolidBody:
+            jid.append(str(object.JournalIdentifier))
+    except Exception as e:
+            pass
+"""
+objects2 = workPart.Layers.GetAllObjectsOnLayer(2)
+for object in objects2:
+    try:			
+        if object.IsSolidBody:
+            jid.append(str(object.JournalIdentifier))
+    except Exception as e:
+            pass
+"""
+
+#remove "entities" from list, they are not needed for unite operation
+jid = [x for x in jid if not "ENTITY" in x]
+print("JID LIST ", jid)
+
+
+booleanBuilder1 = workPart.Features.CreateBooleanBuilderUsingCollector(NXOpen.Features.BooleanFeature.Null)
+scCollector1 = booleanBuilder1.ToolBodyCollector
+booleanRegionSelect1 = booleanBuilder1.BooleanRegionSelect
+booleanBuilder1.Tolerance = 0.01
+booleanBuilder1.Operation = NXOpen.Features.Feature.BooleanType.Unite
+
+
+
+#assign the first body in the list as the target body
+body1 = workPart.Bodies.FindObject(jid[0])
+added1 = booleanBuilder1.Targets.Add(body1)
+targets1 = [NXOpen.TaggedObject.Null] * 1 
+targets1[0] = body1
+booleanRegionSelect1.AssignTargets(targets1)
+
+
+#collect the rest of the bodies to unite them
+scCollector2 = workPart.ScCollectors.CreateCollector()
+bodies1 = [NXOpen.Body.Null] * (len(jid) - 1)
+
+
+for i in range(0,len(bodies1)):
+    body = workPart.Bodies.FindObject(jid[i])
+    bodies1[i] = body
+
+#complete the unite operation
+bodyDumbRule1 = workPart.ScRuleFactory.CreateRuleBodyDumb(bodies1, True)
+rules1 = [None] * 1 
+rules1[0] = bodyDumbRule1
+scCollector2.ReplaceRules(rules1, False)
+
+booleanBuilder1.ToolBodyCollector = scCollector2
+targets2 = [NXOpen.TaggedObject.Null] * 1 
+targets2[0] = body1
+booleanRegionSelect1.AssignTargets(targets2)
+
+nXObject1 = booleanBuilder1.Commit()
+booleanBuilder1.Destroy()
+
+
+#save the part 
+theSession  = NXOpen.Session.GetSession()
+workPart = theSession.Parts.Work
+displayPart = theSession.Parts.Display
+
+partSaveStatus1 = workPart.SaveAs("C:\\Users\\lera_\\OneDrive\\Dokumenter\\NTNU\\KBE\\KBE-Prosjekt\\Nodes\\Parts\\myduralok3.prt")
+partSaveStatus1.Dispose()
+
+
+def getFaces(self):
+    theSession  = NXOpen.Session.GetSession()
+    #workPart = theSession.Parts.Work
+    
+    for partObject in theSession.Parts:
+        self.processPart(partObject)
+    
+def processPart(self, partObject):
+    for bodyObject in partObject.Bodies:
+        self.processBodyFaces(bodyObject)
+        #processBodyEdges(bodyObject)
+        
+def processBodyFaces(self, bodyObject):
+    for faceObject in bodyObject.GetFaces():
+        self.processFace(faceObject)
+        
+def processFace(self, faceObject):
+    print("Face found.")
+    for edgeObject in faceObject.GetEdges():
+        self.processEdge(edgeObject)
+    
+def processEdge(self, edgeObject):
+    #Printing vertices
+    v1 = edgeObject.GetVertices()[0]
+    v2 = edgeObject.GetVertices()[1] 
+    print("Vertex 1:", v1)
+    print("Vertex 2:", v2)
