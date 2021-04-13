@@ -27,21 +27,23 @@ lock_th = pipe_diam/10
 
 class Duralok:
 
-    def __init__(self, pipe_diam, lock_th):
+    def __init__(self, name, pipe_diam, lock_th):
 
         """
             Constructor. Initialises arguments and creates the part from cylinders and cones.
                 args:
+                    name [string] - name of part file
                     pipe_diam [float] - diameter of scaffolding pipes
                     lock_th [float] - thickness of "lock"
         """
-
+        self.name = name
         self.pipe_diam = pipe_diam
         self.lock_th = lock_th
         self.session = NXOpen.Session.GetSession()
         self.workPart = self.session.Parts.Work
         self.jid = []
 
+        self.make_new_file()
 
         #make shapes needed to create model
         #TOP CONE
@@ -379,17 +381,42 @@ class Duralok:
 
         nXObject1 = booleanBuilder1.Commit()
         booleanBuilder1.Destroy()
-    
-    def save_part(self, name):
+
+    def make_new_file(self):
         displayPart = self.session.Parts.Display
-        self.workPart.SaveAs("C:\\Users\\lera_\\OneDrive\\Dokumenter\\NTNU\\KBE\\KBE-Prosjekt\\Nodes\\Parts\\" + name + ".prt")
+        fileNew1 = self.session.Parts.FileNew()
+           
+        fileNew1.TemplateFileName = "model-plain-1-mm-template.prt"
+        fileNew1.UseBlankTemplate = False
+        fileNew1.ApplicationName = "ModelTemplate"
+        fileNew1.Units = NXOpen.Part.Units.Millimeters
+        fileNew1.RelationType = ""
+        fileNew1.UsesMasterModel = "No"
+        fileNew1.TemplateType = NXOpen.FileNewTemplateType.Item
+        fileNew1.TemplatePresentationName = "Model"
+        fileNew1.ItemType = ""
+        fileNew1.Specialization = ""
+        fileNew1.SetCanCreateAltrep(False)
+        fileNew1.NewFileName = "C:\\Users\\lera_\\OneDrive\\Dokumenter\\NTNU\\KBE\\KBE-Prosjekt\\Nodes\\Parts\\temp_" + self.name + ".prt"
+        fileNew1.MasterFileName = ""
+        fileNew1.MakeDisplayedPart = True
+        fileNew1.DisplayPartOption = NXOpen.DisplayPartOption.AllowAdditional
+        nXObject1 = fileNew1.Commit()
+        
+        self.workPart = self.session.Parts.Work # model2
+        #displayPart = theSession.Parts.Display # model2
+        fileNew1.Destroy()
+    
+    def save_part(self):
+        displayPart = self.session.Parts.Display
+        self.workPart.SaveAs("C:\\Users\\lera_\\OneDrive\\Dokumenter\\NTNU\\KBE\\KBE-Prosjekt\\Nodes\\Parts\\" + self.name + ".prt")
 
         #alternative path
-        #self.workPart.SaveAs("C:\\Users\\lera_\\OneDrive\\Dokumenter\\NTNU\\KBE\\KBE-Prosjekt\\Nodes\\Parts\\" + name + ".prt")
+        #self.workPart.SaveAs("C:\\Users\\lera_\\OneDrive\\Dokumenter\\NTNU\\KBE\\KBE-Prosjekt\\Nodes\\Parts\\" + self.name + ".prt")
 
-
-myduralok = Duralok(pipe_diam, lock_th)
-myduralok.save_part("mynamedduralok2")
+name = "aaaaaaaaaa"
+myduralok = Duralok(name, pipe_diam, lock_th)
+myduralok.save_part()
 
 """
 def getFaces(self):
