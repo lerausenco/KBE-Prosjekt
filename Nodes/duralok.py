@@ -341,10 +341,12 @@ class Duralok:
                 if object.IsSolidBody:
                     self.jid.append(str(object.JournalIdentifier))
             except Exception as e:
-                    pass
+                pass
         #remove all objects containing string "ENTITY" as they are not used in
         # unite operation        
+        
         self.jid = [x for x in self.jid if not "ENTITY" in x]
+        print("JID LIST  ", self.jid)
 
     def unite_all(self):
         booleanBuilder1 = self.workPart.Features.CreateBooleanBuilderUsingCollector(NXOpen.Features.BooleanFeature.Null)
@@ -362,10 +364,16 @@ class Duralok:
 
         #collect the rest of the bodies to unite them
         scCollector2 = self.workPart.ScCollectors.CreateCollector()
-        bodies1 = [NXOpen.Body.Null] * (len(self.jid) - 1)
+
+        # make a list with the target body removed,
+        # containing only the tool bodies
+        self.tool_body_jid = self.jid[1:]
+
+        bodies1 = [NXOpen.Body.Null] * len(self.tool_body_jid)
 
         for i in range(0,len(bodies1)):
-            body = self.workPart.Bodies.FindObject(self.jid[i])
+            print("BODY ADDED: ", self.tool_body_jid[i])
+            body = self.workPart.Bodies.FindObject(self.tool_body_jid[i])
             bodies1[i] = body
 
         #complete the unite operation
@@ -404,7 +412,6 @@ class Duralok:
         nXObject1 = fileNew1.Commit()
         
         self.workPart = self.session.Parts.Work # model2
-        #displayPart = theSession.Parts.Display # model2
         fileNew1.Destroy()
     
     def save_part(self):
@@ -414,7 +421,7 @@ class Duralok:
         #alternative path
         #self.workPart.SaveAs("C:\\Users\\lera_\\OneDrive\\Dokumenter\\NTNU\\KBE\\KBE-Prosjekt\\Nodes\\Parts\\" + self.name + ".prt")
 
-name = "aaaaaaaaaa"
+name = "nicePartz"
 myduralok = Duralok(name, pipe_diam, lock_th)
 myduralok.save_part()
 
