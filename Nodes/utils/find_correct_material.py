@@ -1,5 +1,7 @@
 from extract_data_from_website import find_dollar_cost_per_kg, web_table_to_dictionary
+
 data = web_table_to_dictionary()
+
 materials=[]
 materials.append( {'name':'Steel'                 , 'rho':7.8, 'E1': 210, 'E2':220,'XT':600, 'priceUSD_per_kg':find_dollar_cost_per_kg(data,"Steel"), 'fracture_thoughness':55, 'yield_strength':300} )
 materials.append( {'name':'Aluminium'             , 'rho':2.7, 'E1':  70, 'E2': 70,'XT':310, 'priceUSD_per_kg':find_dollar_cost_per_kg(data,"Aluminium"), 'fracture_thoughness':33, 'yield_strength':270} )
@@ -81,6 +83,18 @@ def find_stiff_and_cheap(mat1,mat2):
 print(find_stiff_and_cheap(materials[0],materials[1]))
 
 def compare_materials(names,xdata,ydata,xlabel,ylabel):
+    """
+           Makes a scatter plot of the different material values inputted.
+           
+           Inspired by https://folk.ntnu.no/nilspv/TMM4175/plot-gallery.html
+
+           args: 
+                names: name of material
+                xdata: data along x-axis
+                ydata: data along y-axis
+                xlabel: label for x-axis
+                ylabel: label for y-axis
+    """
     import numpy as np
     import matplotlib.pyplot as plt
     fig,ax=plt.subplots(figsize=(10,6))
@@ -92,20 +106,3 @@ def compare_materials(names,xdata,ydata,xlabel,ylabel):
     ax.set_ylabel(ylabel)
     plt.show()
 
-
-names,xdata,ydata=[],[],[]
-for mat in materials:
-    names.append(mat['name'])
-    xdata.append(mat['E1']/mat['rho'])
-    ydata.append(mat['XT']/mat['rho'])
-
-names2,xdata2,ydata2=[],[],[]
-for mat in materials:
-    names2.append(mat['name'])
-    xdata2.append(mat['rho'] * mat['priceUSD_per_kg'])
-    ydata2.append(mat['E1'])
-
-#%matplotlib inline
-
-compare_materials(names,xdata,ydata,'Specific stiffness', 'Specific strength')
-compare_materials(names2,xdata2,ydata2,'Price * density ', 'Stiffness')
