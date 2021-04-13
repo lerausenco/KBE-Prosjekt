@@ -9,43 +9,47 @@
   <owl:Class rdf:about="http://www.kbe.com/node.owl#Node">
     <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
   </owl:Class>
-  <owl:DatatypeProperty rdf:about="http://www.kbe.com/node.owl#M_min">
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
-    <rdfs:domain rdf:resource="http://www.kbe.com/node.owl#Node"/>
-    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
-  </owl:DatatypeProperty>
-  <owl:DatatypeProperty rdf:about="http://www.kbe.com/node.owl#wall_th">
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
-    <rdfs:domain rdf:resource="http://www.kbe.com/node.owl#Node"/>
-    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
-  </owl:DatatypeProperty>
-  <owl:DatatypeProperty rdf:about="http://www.kbe.com/node.owl#V_min">
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
-    <rdfs:domain rdf:resource="http://www.kbe.com/node.owl#Node"/>
-    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
-  </owl:DatatypeProperty>
-  <owl:DatatypeProperty rdf:about="http://www.kbe.com/node.owl#V_max">
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
-    <rdfs:domain rdf:resource="http://www.kbe.com/node.owl#Node"/>
-    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
-  </owl:DatatypeProperty>
-  <owl:DatatypeProperty rdf:about="http://www.kbe.com/node.owl#M_max">
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
-    <rdfs:domain rdf:resource="http://www.kbe.com/node.owl#Node"/>
-    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
-  </owl:DatatypeProperty>
-  <owl:DatatypeProperty rdf:about="http://www.kbe.com/node.owl#N_max">
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
-    <rdfs:domain rdf:resource="http://www.kbe.com/node.owl#Node"/>
-    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
-  </owl:DatatypeProperty>
-  <owl:DatatypeProperty rdf:about="http://www.kbe.com/node.owl#N_min">
+  <rdf:Property rdf:about="http://www.kbe.com/node.owl#M_min">
     <rdfs:domain rdf:resource="http://www.kbe.com/node.owl#Node"/>
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
-    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
-  </owl:DatatypeProperty>
-  <owl:DatatypeProperty rdf:about="http://www.kbe.com/node.owl#pipe_diameter">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+  </rdf:Property>
+  <rdf:Property rdf:about="http://www.kbe.com/node.owl#wall_th">
+    <rdfs:domain rdf:resource="http://www.kbe.com/node.owl#Node"/>
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+  </rdf:Property>
+  <rdf:Property rdf:about="http://www.kbe.com/node.owl#V_min">
+    <rdfs:domain rdf:resource="http://www.kbe.com/node.owl#Node"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+  </rdf:Property>
+  <rdf:Property rdf:about="http://www.kbe.com/node.owl#V_max">
+    <rdfs:domain rdf:resource="http://www.kbe.com/node.owl#Node"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+  </rdf:Property>
+  <rdf:Property rdf:about="http://www.kbe.com/node.owl#M_max">
+    <rdfs:domain rdf:resource="http://www.kbe.com/node.owl#Node"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+  </rdf:Property>
+  <rdf:Property rdf:about="http://www.kbe.com/node.owl#N_max">
+    <rdfs:domain rdf:resource="http://www.kbe.com/node.owl#Node"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+  </rdf:Property>
+  <rdf:Property rdf:about="http://www.kbe.com/node.owl#N_min">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+    <rdfs:domain rdf:resource="http://www.kbe.com/node.owl#Node"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+  </rdf:Property>
+  <rdf:Property rdf:about="http://www.kbe.com/node.owl#pipe_diameter">
+    <rdfs:domain rdf:resource="http://www.kbe.com/node.owl#Node"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+  </rdf:Property>
+  <owl:DatatypeProperty rdf:about="http://www.kbe.com/node.owl#material_pref">
     <rdfs:domain rdf:resource="http://www.kbe.com/node.owl#Node"/>
     <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
   </owl:DatatypeProperty>
