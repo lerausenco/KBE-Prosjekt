@@ -71,7 +71,21 @@
 
   <label for="wall_th"><b>Wall thickness (t) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b></label>
   <input type="text" id="wall_th" name="wall_th"> [mm]<br><br>
+  <hr><br><br>
+
+  <h2>Material preferences:</h2>
   <hr>
+  <input type="radio" id="stiff_light" name="material_pref" value="stiff_light" checked>
+  <label for="stiff_light">Stiff and light</label><br>
+  
+  <input type="radio" id="strong_light" name="material_pref" value="strong_light">
+  <label for="strong_light">Strong and light</label><br>
+
+  <input type="radio" id="stiff_cheap" name="material_pref" value="stiff_cheap">
+  <label for="stiff_cheap">Stiff and Cheap</label><br><br>
+    <hr>
+
+
 
 </div>
   
@@ -83,6 +97,8 @@
     
     <input style="margin-left:100px; height:60px; width:150px; " 
     type="submit" value="Submit" form=params >
+
+
 
     </form>
     </div>    
