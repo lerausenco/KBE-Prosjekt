@@ -1,7 +1,6 @@
 from shapes.Block import Block
 from shapes.Cylinder import Cylinder
 from shapes.Cone import Cone
-from utils.Analyzer import Analyzer
 from datetime import datetime
 import math
 from math import sin, cos, radians
@@ -347,7 +346,8 @@ class Duralok:
         # unite operation        
         
         self.jid = [x for x in self.jid if not "ENTITY" in x]
-        print("JID LIST  ", self.jid)
+        print("JID LIST", self.jid)
+
 
     def unite_all(self):
         booleanBuilder1 = self.workPart.Features.CreateBooleanBuilderUsingCollector(NXOpen.Features.BooleanFeature.Null)
@@ -390,6 +390,22 @@ class Duralok:
 
         nXObject1 = booleanBuilder1.Commit()
         booleanBuilder1.Destroy()
+
+
+        #try to get all JIDS
+        objects = self.workPart.Layers.GetAllObjectsOnLayer(1)
+
+        for object in objects:
+            try:			
+                #if object.IsSolidBody:
+                self.jid.append(str(object.JournalIdentifier))
+            except Exception as e:
+                pass
+        #remove all objects containing string "ENTITY" as they are not used in
+        # unite operation        
+        
+        self.jid = [x for x in self.jid if not "ENTITY" in x]
+        print("JID LIST AFTER UNITE", self.jid)
 
     def make_new_file(self):
         displayPart = self.session.Parts.Display
@@ -674,7 +690,8 @@ class Duralok:
        
         objects2 = [None] * 1 
         objects2[0] = NXOpen.CAE.SetObject()
-        component1 = workSimPart.ComponentAssembly.RootComponent.FindObject("COMPONENT fem_"+self.name+" 1")
+        component1 = workSimPart.ComponentAssembly.RootComponent.FindObject("COMPONENT fem_"+self.name+" 1") 
+        print("OBJ IDENTIFIER ", component1.JournalIdentifier)
         cAEFace1 = component1.FindObject("PROTO#CAE_Body(1)|CAE_Face(17)")
         objects2[0].Obj = cAEFace1
         objects2[0].SubType = NXOpen.CAE.CaeSetObjectSubType.NotSet
