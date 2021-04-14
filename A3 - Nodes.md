@@ -18,7 +18,7 @@ The architecture is shown in blocks in the figure below, with a short descriptio
 
 Below is a UML sequence diagram which shows the a typical usage scenario for the system from both the customer and manufacturer side. The user can enter loads and dimensions and receives results through a web-browser, while the manufacturer only needs to start the server and play the NX journal.
 
-![](Figures/A2/UML3.png)
+![](Figures/A3/UML3.png)
 
 A more detailed description of the architecture is shown in the class diagram below. The diagram shows that myHandler is a class based on the BaseHTTPRequestHandler, which is a parent class for customer_handler and NASTRAN_handler. These both utilise functions in parsers.py which contains parser-functions and query-functions. NASTRAN_handler also calls the functions to choose the correct material through the use of external modules. The Duralok class is made up of Cylinders and Cones, which are NXOpen Features. The geometry of the duralok joint is defined there, along with the functions needed to perform an automatic FEA.
 
