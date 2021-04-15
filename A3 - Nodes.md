@@ -84,7 +84,12 @@ Below is a video of the run-through, sped up 2x.
 ![](Figures/A3/fast-video.gif)
 
 # Conclusion
+A KBE system for proposing node material was sucseffully implemented. The system proposes the best-fit material based on input as load and wishes from the user. The system connects many different modules and information/knowledge is flowing inbetween them.
 
+To conclude, the system was sucseffully implemnted.
 # Extendability and Improvements
-Topology optimisation
-Automatic start of NX
+The systsm now requires the "node calculator" to have an operator with NX running. This is for running the analysis script. In the future this feature would be changed such that python opens NX automatically.
+
+Another feature that can be implemented in the future is topology optimization. The user can then input the design space and loads in the UI and the computer performs a topology optimisation and FEA on the geometry.
+
+It is ieasy to implement new materials, if the designer should be interested in working with other standard metals. Furthermore, the live cost for all the most common metals is already stored in a dictionary
