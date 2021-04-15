@@ -69,7 +69,7 @@ A more detailed description of the architecture is shown in the class diagram be
 
 ## Example 3
 
-### Inputs from user and generated part, this time the material will be Steel:
+### Inputs from user and generated part.
 
 ![](Figures/A3/node_example3.png)
 
