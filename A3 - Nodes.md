@@ -47,6 +47,19 @@ A more detailed description of the architecture is shown in the class diagram be
 
 # Examples from run-through
 
+## Example 1
+Inputs from user and generated part:
+
+![](Figures/A3/node_example1.png)
+
+Results:
+
+<img src="Figures/A3/node1_max.gif" width="470" height="400"> <img src="Figures/A3/node1_min.gif" width="470" height="400">
+
+
+## Example 2
+
+
 # Video
 
 # Conclusion
