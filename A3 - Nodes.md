@@ -29,8 +29,6 @@ A more detailed description of the architecture is shown in the class diagram be
 
 # Implementation
 
-## UI
-
 ## Code Modules
 
 * duralok.py - This contains the class for the duralok node. The class has all the functions needed for the node to be built up from cones and cylinders, perform FEA simulations and make a gif. 
@@ -45,6 +43,8 @@ A more detailed description of the architecture is shown in the class diagram be
 * run_customer_server.py - script to run the customer server.
 * run_NASTRAN_server.py - script to run the NASTRAN server.
 
+:star: As in assignments 1 and 2, the use of dictionaries makes it easy to add new attributes to the ontology. To add a new attribute, all that needs to be done with the code is the 'values' dictionary in parsers.py needs to be updated with the new attribute as a key. The .owl file must also be updated.
+
 # Examples from run-through
 
 ## Example 1
@@ -55,7 +55,6 @@ A more detailed description of the architecture is shown in the class diagram be
 ### Results:
 
 <img src="Figures/A3/node1_max.gif" width="470" height="400"> <img src="Figures/A3/node1_min.gif" width="470" height="400">
-
 
 ## Example 2
 
@@ -79,8 +78,9 @@ The deformation legend shows that the deformation is much larger.
 <img src="Figures/A3/node3_max.gif" width="470" height="400"> <img src="Figures/A3/node3_min.gif" width="470" height="400">
 
 
-
 # Video
+Below is a video of the run-through, sped up 2x.
+![](Figures/A3/fast-video.gif)
 
 # Conclusion
 
