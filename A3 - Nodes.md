@@ -29,21 +29,22 @@ A more detailed description of the architecture is shown in the class diagram be
 
 # Implementation
 
-## UI
-
 ## Code Modules
 
-* duralok.py - This contains the class for the duralok node. The class has all the functions needed for the node to be built up from cones and cylinders, perform FEA simulations and make a gif. 
+* duralok.py - This contains the class for the duralok node. The class has all the functions needed for the node to be built up from cones and cylinders, perform FEA simulations and make a gif.
 * myHandler.py - Custom handler with helper functions, derived from BaseHTTPRequestHandler.
-* customer_handler.py - Child of myHandler with redefined do_POST() and do_GET() methods to host customer server.
-* NASTRAN_handler.py - Child of myHandler with redefined do_POST() and do_GET() methods to host NASTRAN server.
+* customer_handler.py - Child of myHandler with redefined do_POST() and do_GET() methods to host customer server. Uploads the loads and dimensions defined by the customer to the fuseki database.
+* NASTRAN_handler.py - Child of myHandler with redefined do_POST() and do_GET() methods to host NASTRAN server. Queries the fuseki database and finds the most recent addition. Writes the parameters of the most recent addition to params.txt, so that the play_NX scripts can read them.
 * parsers.py - helper functions to parse json data and generate query text.
 * extract_data_from_website.py - scripts to extract live material information from a website.
 * find_correct_material.py - scripts to find the correct material based on specified criteria.
 * play_NX_min.py - journal to be played in NX to generate analysis with minimum loads.
 * play_NX_max.py - journal to be played in NX to generate analysis with maximum loads.
-* run_customer_server.py - script to run the customer server.
-* run_NASTRAN_server.py - script to run the NASTRAN server.
+* run_customer_server.py - script to run the customer server in the terminal.
+* run_NASTRAN_server.py - script to run the NASTRAN server in the terminal.
+
+:star: As in assignments 1 and 2, the use of dictionaries makes it easy to add new attributes to the ontology. To add a new attribute, all that needs to be done with the code is the 'values' dictionary in parsers.py needs to be updated with the new attribute as a key. The update/query functions then take care of the rest. However, the .owl file must also be updated. 
+An improvement concerning the database is the new naming system for node entries. The name of the node in this assignment is the data and time which the user submitted the order in the following format <YYMMDDHHMMSS>. This allows for NASTRAN_handler to easily sort the entries by time, and perform simulations on the newest entry, contrary to the first assignment, where the NX-generating module checked if a part with the same name existed, before generating it.
 
 # Examples from run-through
 
@@ -55,7 +56,6 @@ A more detailed description of the architecture is shown in the class diagram be
 ### Results:
 
 <img src="Figures/A3/node1_max.gif" width="470" height="400"> <img src="Figures/A3/node1_min.gif" width="470" height="400">
-
 
 ## Example 2
 
@@ -79,8 +79,9 @@ The deformation legend shows that the deformation is much larger.
 <img src="Figures/A3/node3_max.gif" width="470" height="400"> <img src="Figures/A3/node3_min.gif" width="470" height="400">
 
 
-
 # Video
+Below is a video of the run-through, sped up 2x.
+![](Figures/A3/fast-video.gif)
 
 # Conclusion
 
