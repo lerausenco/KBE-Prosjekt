@@ -31,6 +31,7 @@ class Duralok:
         """
             Constructor. Initialises arguments and creates the part from cylinders and cones.
                 args:
+                    material [string] - material for part
                     name [string] - name of part file
                     pipe_diam [float] - diameter of scaffolding pipes
                     lock_th [float] - thickness of "lock"
@@ -333,6 +334,12 @@ class Duralok:
         self.unite_all()
         
     def get_objects_to_unite(self):
+
+        """
+            Gets all objects in the work part and puts their "journal identifier" into a list.
+            returns:
+                self.jid [list<string>] - list containing journal identifiers for all solid bodies
+        """
         
         objects = self.workPart.Layers.GetAllObjectsOnLayer(1)
 
@@ -346,10 +353,16 @@ class Duralok:
         # unite operation        
         
         self.jid = [x for x in self.jid if not "ENTITY" in x]
+        return self.jid
         print("JID LIST", self.jid)
 
-
     def unite_all(self):
+
+        """
+            Unites all the objects using their journal identifiers
+            to make one solid model.
+        """
+
         booleanBuilder1 = self.workPart.Features.CreateBooleanBuilderUsingCollector(NXOpen.Features.BooleanFeature.Null)
         scCollector1 = booleanBuilder1.ToolBodyCollector
         booleanRegionSelect1 = booleanBuilder1.BooleanRegionSelect
@@ -408,6 +421,11 @@ class Duralok:
         print("JID LIST AFTER UNITE", self.jid)
 
     def make_new_file(self):
+
+        """
+            Creates new part file for united part.
+        """
+
         displayPart = self.session.Parts.Display
         fileNew1 = self.session.Parts.FileNew()
            
@@ -432,6 +450,11 @@ class Duralok:
         fileNew1.Destroy()
     
     def save_part(self):
+
+        """
+            Saves the part.
+        """
+
         displayPart = self.session.Parts.Display
         self.workPart.SaveAs("C:\\Users\\lera_\\OneDrive\\Dokumenter\\NTNU\\KBE\\KBE-Prosjekt\\Nodes\\Parts\\" + self.name + ".prt")
 
@@ -439,6 +462,11 @@ class Duralok:
         #self.workPart.SaveAs("C:\\Users\\lera_\\OneDrive\\Dokumenter\\NTNU\\KBE\\KBE-Prosjekt\\Nodes\\Parts\\" + self.name + ".prt")
 
     def make_fem_model(self):
+
+        """
+            Makes new fem file, meshes the part.
+        """
+
         self.session  = NXOpen.Session.GetSession()
         self.workPart = self.session.Parts.Work
         displayPart = self.session.Parts.Display
@@ -588,6 +616,15 @@ class Duralok:
         mesh3dTetBuilder1.Destroy()
 
     def do_sim(self, NFORCE, VFORCE, MOMENT):
+
+        """
+            Performs simulation.
+            args:
+                NFORCE [float] - axial force
+                VFORCE [float] - shear force
+                MOMENT [float] - moment
+        """
+
         self.session  = NXOpen.Session.GetSession()
         workFemPart = self.session.Parts.BaseWork
         displayFemPart = self.session.Parts.BaseDisplay
@@ -692,7 +729,7 @@ class Duralok:
         objects2[0] = NXOpen.CAE.SetObject()
         component1 = workSimPart.ComponentAssembly.RootComponent.FindObject("COMPONENT fem_"+self.name+" 1") 
         print("OBJ IDENTIFIER ", component1.JournalIdentifier)
-        cAEFace1 = component1.FindObject("PROTO#CAE_Body(1)|CAE_Face(17)")
+        cAEFace1 = component1.FindObject("PROTO#CAE_Body(1)|CAE_Face(18)")
         objects2[0].Obj = cAEFace1
         objects2[0].SubType = NXOpen.CAE.CaeSetObjectSubType.NotSet
         objects2[0].SubId = 0
@@ -729,6 +766,9 @@ class Duralok:
         simBCBuilder2 = simSimulation3.CreateBcBuilderForLoadDescriptor("magnitudeDirectionForce", "Force(1)", 1)
         propertyTable4 = simBCBuilder2.PropertyTable
         setManager2 = simBCBuilder2.TargetSetManager
+
+
+        
         
         
         
@@ -742,7 +782,7 @@ class Duralok:
         direction1 = workSimPart.Directions.CreateDirection(origin1, vector1, NXOpen.SmartObject.UpdateOption.AfterModeling)
         objects3 = [None] * 1 
         objects3[0] = NXOpen.CAE.SetObject()
-        cAEFace2 = component1.FindObject("PROTO#CAE_Body(1)|CAE_Face(30)")
+        cAEFace2 = component1.FindObject("PROTO#CAE_Body(1)|CAE_Face(19)")
         objects3[0].Obj = cAEFace2
         objects3[0].SubType = NXOpen.CAE.CaeSetObjectSubType.NotSet
         objects3[0].SubId = 0
@@ -776,7 +816,7 @@ class Duralok:
         # ----------------------------------------------
         #   Dialog Begin Force
         # ----------------------------------------------
-
+        
         #AXIAL FORCE
         expression4 = workSimPart.Expressions.CreateSystemExpressionWithUnits("0", unit1)
         origin2 = NXOpen.Point3d(0.0, 0.0, 0.0)
@@ -786,7 +826,7 @@ class Duralok:
         
         objects4 = [None] * 1 
         objects4[0] = NXOpen.CAE.SetObject()
-        cAEFace3 = component1.FindObject("PROTO#CAE_Body(1)|CAE_Face(43)")
+        cAEFace3 = component1.FindObject("PROTO#CAE_Body(1)|CAE_Face(19)")
         objects4[0].Obj = cAEFace3
         objects4[0].SubType = NXOpen.CAE.CaeSetObjectSubType.NotSet
         objects4[0].SubId = 0
@@ -823,7 +863,8 @@ class Duralok:
         #MOMENT
         objects5 = [None] * 1 
         objects5[0] = NXOpen.CAE.SetObject()
-        objects5[0].Obj = cAEFace3
+        cAEFace4 = component1.FindObject("PROTO#CAE_Body(1)|CAE_Face(19)")
+        objects5[0].Obj = cAEFace4
         objects5[0].SubType = NXOpen.CAE.CaeSetObjectSubType.NotSet
         objects5[0].SubId = 0
         setManager4.SetTargetSetMembers(0, NXOpen.CAE.CaeSetGroupFilterType.GeomCylFace, objects5)
@@ -837,7 +878,7 @@ class Duralok:
         field3 = scalarFieldWrapper9.GetField()
         propertyValue4 = []
         propertyTable6.SetTextPropertyValue("description", propertyValue4)
-             
+              
         # ----------------------------------------------
         #   Menu: Analysis->Solve...
         # ----------------------------------------------
@@ -847,7 +888,7 @@ class Duralok:
         numsolutionssolved1, numsolutionsfailed1, numsolutionsskipped1 = theCAESimSolveManager.SolveChainOfSolutions(psolutions1, NXOpen.CAE.SimSolution.SolveOption.Solve, NXOpen.CAE.SimSolution.SetupCheckOption.CompleteCheckAndOutputErrors, NXOpen.CAE.SimSolution.SolveMode.Background)
         
         #simulation needs time to complete...
-        time.sleep(30)
+        time.sleep(45)
         simResultReference1 = simSolution1.Find("Structural")
         solutionResult1 = self.session.ResultManager.CreateReferenceResult(simResultReference1)
         
@@ -857,12 +898,26 @@ class Duralok:
         postviewId1 = self.session.Post.CreateNewPostview(0, solutionResult1, False, NXOpen.CAE.Post.DisplayColorSchemeType.Fringe)
         
     def make_gif(self):
+
+        """
+            Creates gif of deformation and saves it to Gif folder.
+        """
+
         self.session = NXOpen.Session.GetSession()
         self.session.Post.PostviewAnimationControl(1, NXOpen.CAE.Post.AnimationControl.Play, -1, True, -1)
         
         self.session.Post.PostviewCaptureAnimatedGif(1, "C:\\Users\\lera_\\OneDrive\\Dokumenter\\NTNU\\KBE\\KBE-Prosjekt\\Nodes\\Gif\\"+ self.name +".gif", False, False)
         self.session.Post.PostviewAnimationControl(1, NXOpen.CAE.Post.AnimationControl.Stop, -1, True, -1)
     
+    def close_file(self):
+        self.session = NXOpen.Session.GetSession()
+        workSimPart = self.session.Parts.BaseWork
+        displaySimPart = self.session.Parts.BaseDisplay
+        simPart1 = workSimPart
+        self.session.Post.PostviewDelete(1)
         
-
-
+        simPart1.Close(NXOpen.BasePart.CloseWholeTree.TrueValue, NXOpen.BasePart.CloseModified.UseResponses, None)
+        
+        workSimPart = NXOpen.BasePart.Null
+        displaySimPart = NXOpen.BasePart.Null
+        self.session.ApplicationSwitchImmediate("UG_APP_NOPART")
