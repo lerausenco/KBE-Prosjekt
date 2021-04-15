@@ -1,0 +1,2 @@
+{'N_max': '6000', 'N_min': '-6000', 'V_max': '5000', 'V_min': '-6000', 'M_max': '500', 'M_min': '-1500', 'pipe_diam': '80', 'wall_th': '8', 'material_pref': 'stiff_cheap', 'name': '210415161617'}
+{'N_max': '6000', 'N_min': '-6000', 'V_max': '5000', 'V_min': '-6000', 'M_max': '500', 'M_min': '-1000', 'pipe_diam': '80', 'wall_th': '8', 'material_pref': 'AISI_Steel_4340', 'name': '210415162113'}

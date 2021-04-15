@@ -14,7 +14,8 @@ values = {
     "M_min": 0,
     "pipe_diam": 0,
     "wall_th":0, 
-    "material_pref": 0
+    "material_pref": 0,
+    "name":0
 }
 
 
@@ -27,7 +28,7 @@ def parse_path(param_line):
             values [dictionary] - dictionary of values containing wall dimensions
     """
 
-    values = {}
+    #values = {}
     
     pairs = param_line.split("&")  # key value pairs
 
@@ -39,6 +40,7 @@ def parse_path(param_line):
             values[pairs[i].split("=")[0]] = param_value
 
     return values
+
 
 def get_HTML_string(file_name):
     """
@@ -78,13 +80,11 @@ def query_fuseki():
 
     QUERY += "}" 
     
-    print("QUERY--------", QUERY)
-
     PARAMS = {"query": QUERY}
     response = requests.post(URL, data=PARAMS)
     json_data = response.json()
-    print(json_data)
     return json_data
+
 
 def parse_json(json_data):  # returns an array with parameters
     """
@@ -104,7 +104,7 @@ def parse_json(json_data):  # returns an array with parameters
             values[key] = json_data["results"]["bindings"][x][key]["value"]
         dic_copy = values.copy()
         node_list.append(dic_copy)
-    print("Node list",node_list)
+    #print("Node list",node_list)
     return node_list
 
 def update_fuseki(values):
@@ -118,17 +118,20 @@ def update_fuseki(values):
     
     #create ID-number from date and time
     now = datetime.now()
-    ID = now.strftime('%d%m%y%H%M%S')
+    ID = now.strftime('%y%m%d%H%M%S')
     node_name = str(ID)
+    values["name"] = ID
 
     #create node
     insert_str = 'kbe:Node' + ID + ' a kbe:Node.\n'
 
     #extract values from dictionary
     for key in values:
-        if key.find("material_pref") != -1:
+        #for string type attributes
+        if (key.find("material_pref") != -1) or (key.find("name") !=-1):
             insert_str += "kbe:Node"+ ID + " kbe:" + key + ' "' + str(values[key]) + '". \n'
         else:
+        #for floats    
             insert_str += "kbe:Node"+ ID + " kbe:" + key + ' "' + str(values[key]) + '"^^xsd:float. \n'
 
     URL = "http://127.0.0.1:3030/kbe/update"
@@ -148,7 +151,7 @@ def update_fuseki(values):
             """
     )
 
-    print("update query----- \n", UPDATE)
+    #print("update query----- \n", UPDATE) #debugging
     PARAMS = {"update": UPDATE}
     response = requests.post(URL, data=PARAMS)
     print(response)
