@@ -7,7 +7,8 @@ import NXOpen.Preferences
 class Cylinder:
 
     
-    def __init__(self, x, y, z, diameter, height, direction, color, material):
+    def __init__(self ,x, y, z, diameter, height, direction, color, material):
+        
         self.diameter = diameter    # instance variable unique to each instance
         self.height = height
         self.x = x    
@@ -32,6 +33,7 @@ class Cylinder:
 
         self.body = cylinderbuilder1.Commit().GetBodies()[0]
         cylinderbuilder1.Destroy() 
+        return self.body
         
     def subtract(self, tool):
         theSession  = NXOpen.Session.GetSession()
@@ -60,22 +62,4 @@ class Cylinder:
         subtractfeaturebuilder1.Commit()
         subtractfeaturebuilder1.Destroy()
         
-    def makeSeeThrough(self, t):
-        theSession  = NXOpen.Session.GetSession()
-        
-        displayModification1 = theSession.DisplayManager.NewDisplayModification()
-        
-        displayModification1.ApplyToAllFaces = True
-        
-        displayModification1.ApplyToOwningParts = False
-        
-        displayModification1.NewColor = 40
-        
-        displayModification1.NewTranslucency = t
-        
-        objects1 = [NXOpen.DisplayableObject.Null] * 1 
-        body1 = self.body
-        objects1[0] = body1
-        displayModification1.Apply(objects1)
-        
-        displayModification1.Dispose()
+

@@ -39,6 +39,7 @@ class Cone:
 
         self.body = conebuilder1.CommitFeature().GetBodies()[0]
         conebuilder1.Destroy()
+        return self.body
         
     def subtract(self, tool):
         theSession  = NXOpen.Session.GetSession()
