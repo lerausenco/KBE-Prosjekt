@@ -14,6 +14,7 @@ The feedback is given in the form of bullet points in addition to an image of an
 
 ## Architecture
 The architecture is shown in blocks in the figure below, with a short description of what the modules in each block do, and which modules interact with each other. 
+
 ![](Figures/A3/architecture3.png)
 
 Below is a UML sequence diagram which shows the a typical usage scenario for the system from both the customer and manufacturer side. The user can enter loads and dimensions and receives results through a web-browser, while the manufacturer only needs to start the server and play the NX journal.
@@ -27,8 +28,23 @@ A more detailed description of the architecture is shown in the class diagram be
 :star: One improvement from the previous assignments is that the architecture uses class inheritance, which allows two different handlers to be defined based on myHandler. This allows for common functions to be reused without copying code. The functions in the handler have been reused from assignment 2. It is also worth mentioning that the send_image() function from assignment 2 was easy to extend to be able to handle .gifs in addition to .png and .jpg files. Another new feature is that one of the modules, more specifically traidingeconomics.com, retrieves live data and feeds it into the knowledge-based system. 
 
 # Implementation
+
 ## UI
-## Modules
+
+## Code Modules
+
+* duralok.py - This contains the class for the duralok node. The class has all the functions needed for the node to be built up from cones and cylinders, perform FEA simulations and make a gif. 
+* myHandler.py - Custom handler with helper functions, derived from BaseHTTPRequestHandler.
+* customer_handler.py - Child of myHandler with redefined do_POST() and do_GET() methods to host customer server.
+* NASTRAN_handler.py - Child of myHandler with redefined do_POST() and do_GET() methods to host NASTRAN server.
+* parsers.py - helper functions to parse json data and generate query text.
+* extract_data_from_website.py - scripts to extract live material information from a website.
+* find_correct_material.py - scripts to find the correct material based on specified criteria.
+* play_NX_min.py - journal to be played in NX to generate analysis with minimum loads.
+* play_NX_max.py - journal to be played in NX to generate analysis with maximum loads.
+* run_customer_server.py - script to run the customer server.
+* run_NASTRAN_server.py - script to run the NASTRAN server.
+
 # Examples from run-through
 
 # Video
