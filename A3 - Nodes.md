@@ -67,8 +67,17 @@ A more detailed description of the architecture is shown in the class diagram be
 
 <img src="Figures/A3/node2_max.gif" width="470" height="400"> <img src="Figures/A3/node2_min.gif" width="470" height="400">
 
-
 ## Example 3
+
+### Inputs from user and generated part, this time the material will be Steel:
+
+![](Figures/A3/node_example3.png)
+
+### Results:
+The deformation legend shows that the deformation is much larger.
+<img src="Figures/A3/node3_max.gif" width="470" height="400"> <img src="Figures/A3/node3_min.gif" width="470" height="400">
+
+
 
 # Video
 
