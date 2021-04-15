@@ -75,6 +75,7 @@ A more detailed description of the architecture is shown in the class diagram be
 
 ### Results:
 The deformation legend shows that the deformation is much larger.
+
 <img src="Figures/A3/node3_max.gif" width="470" height="400"> <img src="Figures/A3/node3_min.gif" width="470" height="400">
 
 
