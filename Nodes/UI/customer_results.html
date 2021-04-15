@@ -30,7 +30,16 @@
     margin-left: auto;
     margin-right: auto;    
     }
-    
+
+
+    .row {
+    display: flex;
+  }
+
+.column {
+    flex: 33.33%;
+    padding: 5px;
+  }
     
     </style>
     </head>
@@ -38,33 +47,29 @@
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-
-<div style="float:left; width:600px">
+<div style="float:left; width:600px"></div>
 
     <h2> Results </h2>
     <hr>
-    Recommended material based on strength: STRENGTH_MATERIAL1 <br> <br>
-    Safety factor vs. yielding: &nbsp;&nbsp;&nbsp;&nbsp; SF_YIELDING1 <br><br>
-    Safety factor vs. fracture: &nbsp;&nbsp;&nbsp;&nbsp; SF_FRACTURE1 <br><br>
+    Recommended material: STRENGTH_MATERIAL1 <br> <br>
     <hr>
-
-    <h2> Another possible material</h2>
-    <hr>
-    Recommended material based on strength: STRENGTH_MATERIAL2 <br> <br>
-    Safety factor vs. yielding: &nbsp;&nbsp;&nbsp;&nbsp; SF_YIELDING2 <br><br>
-    Safety factor vs. fracture: &nbsp;&nbsp;&nbsp;&nbsp; SF_FRACTURE2 <br><br>
-    <hr>
-    
-
 </div>
   
-  <div style="float:right; width: 350px;">
+<h2> Deflection results </h2>
+    <hr>
     
-    <h2> Stress results </h2>
-    <img src="UI\\giphy.gif" width ="379" height = "341" alt="FEA analysis" class="center"><br>
-    
-    </div>    
-    
+     
+    <div class="row">
+      <div class="column">
+        <h3>Maximum</h3>
+        <img src="GIF_FILE_PATH_MAX" alt="FEA analysis max" style="width:100%">
+      </div>
+      
+      <div class="column">
+        <h3>Minimum</h3>
+        <img src="GIF_FILE_PATH_MIN" alt="FEA analysis min" style="width:100%">
+      </div>
+    </div>
     
 </body>
 </html>
