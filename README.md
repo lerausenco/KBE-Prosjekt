@@ -1,5 +1,5 @@
 # KBE Project Course TMM4275 Repository
-# Group members: Håkon Bakke & Valeria Usenco
+# Group members: Håkon Bakke (MTPROD) & Valeria Usenco (MTPROD)
 
 ## Table of Contents
 
