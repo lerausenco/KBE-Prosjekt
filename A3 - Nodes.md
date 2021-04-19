@@ -29,8 +29,12 @@ A more detailed description of the architecture is shown in the class diagram be
 
 # Implementation
 
-##
+## UI
+Below are screenshots of the actual UIs. The input UI is very similar to the UI sketch, however the results UI is different as it was deemed unnecessary to suggest two materials.
 
+![](Figures/A3/UI-input.PNG)
+
+![](Figures/A3/UI-res.PNG)
 
 ## Code Modules
 
@@ -47,7 +51,7 @@ A more detailed description of the architecture is shown in the class diagram be
 * run_NASTRAN_server.py - script to run the NASTRAN server in the terminal.
 
 :star: As in assignments 1 and 2, the use of dictionaries makes it easy to add new attributes to the ontology. To add a new attribute, all that needs to be done with the code is the 'values' dictionary in parsers.py needs to be updated with the new attribute as a key. The update/query functions then take care of the rest. However, the .owl file must also be updated. 
-An improvement concerning the database is the new naming system for node entries. The name of the node in this assignment is the data and time which the user submitted the order in the following format <YYMMDDHHMMSS>. This allows for NASTRAN_handler to easily sort the entries by time, and perform simulations on the newest entry, contrary to the first assignment, where the NX-generating module checked if a part with the same name existed, before generating it.
+An improvement concerning the database is the new naming system for node entries. The name of the node in this assignment is the data and time which the user submitted the order in the following format <YYMMDDHHMMSS>. This allows for NASTRAN_handler to easily sort the entries by time, and perform simulations on the newest entry, contrary to the first assignment, where the NX-generating module checked if a part with the same name existed, before generating it. Finally, it is also worth mentioning that the play_NX scripts give maximum automation - the script covers everything from opening creating a new part file, generating the part and saving it, meshing the part, running the analysis, creating and saving the gif and closing the part file. The operator only needs to open NX and press play.
 
 # Examples from run-through
 
@@ -86,14 +90,15 @@ The deformation legend shows that the deformation is much larger.
 Below is a video of the run-through, sped up 2x.
 ![](Figures/A3/fast-video.gif)
 
-# Conclusion
-A KBE system for proposing node material and running a FEA simulation was successfully implemented. The system connects different modules with information and knowledge flowing between them by updating and quering a Fuseki server. The system demonstrates on a low level, how intedisciplinary engineering modules can interact with each other. More specifically, it includes a materials module which interacts with a finite element analysis module. Feedback is given to the user in the form of a suggested best-fit material and FEA deformation results, based on input as load and material characteristics from the user. Finally, many utility functions were reused from previous assignments.
-
 # Extendability and Improvements
 Regarding extendability, it is easy to implement new materials, should the manufacturer be interested in working with other standard metals. Furthermore, the live cost for all the most common metals is already stored in a dictionary. Extending the ontology to take into account more user inputs is also easy to do, as the database queries and updates can be easily adapted to accomodate extra parameters. The use of website-data demonstrates the potential for extending the system as data from other sources can be implemented in the system in the same manner. Another factor which improves the extendibility is the parametric design of the node. The model of the node is generated based on the scaffolding pipe diameter and thickness. Although this resulted in challenges when developing the automatic analysis code, it provides flexibility for the user who can perform an automatic FEA analysis for pipes of different sizes simply by changing the diameter parameter. 
 
 That being said, the current implementation would require a more robust process for the selection of faces for where the forces are applied. Currently, the scaffolding pipe diameter can only be varied over a relatively small range (ca. ±10cm), before openNX struggles to find the face specified and gives an error. This is not ideal, however this range may be sufficient for this application which uses standardised components.
 
 Another drawback is that the current implementation requires an operator to run the FEA script in NX in order to perform the analysis. Ideally, this feature would be changed such that a Python script opens NX automatically, which would ensure a seamless connection from user to feedback. Another feature that could be implemented in the future is topology optimization. The user can then input the design space and loads in the UI and the system performs a topology optimisation and FEA on the geometry.
+
+# Conclusion
+A KBE system for proposing node material and running a FEA simulation was successfully implemented. The system connects different modules with information and knowledge flowing between them by updating and quering a Fuseki server. The system demonstrates on a low level, how intedisciplinary engineering modules can interact with each other. More specifically, it includes a materials module which interacts with a finite element analysis module. Feedback is given to the user in the form of a suggested best-fit material and FEA deformation results, based on input as load and material characteristics from the user. Finally, many utility functions were reused from previous assignments.
+Although this is by no means an ideal systems, it serves as a proof of concept for the potential modules that can be tied together to make a KBE system
 
 
