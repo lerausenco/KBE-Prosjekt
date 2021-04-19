@@ -30,10 +30,25 @@
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Video](https://github.com/lerausenco/KBE-Prosjekt/blob/main/A2%20-%20Weldability%20Check.md#video)
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Conclusion](https://github.com/lerausenco/KBE-Prosjekt/blob/main/A2%20-%20Weldability%20Check.md#conclusion)
-
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Extendability and Improvements](https://github.com/lerausenco/KBE-Prosjekt/blob/main/A2%20-%20Weldability%20Check.md#extendability-and-improvements)
 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Conclusion](https://github.com/lerausenco/KBE-Prosjekt/blob/main/A2%20-%20Weldability%20Check.md#conclusion)
+
+
 [A3 - Nodes](https://github.com/lerausenco/KBE-Prosjekt/blob/main/A3%20-%20Nodes.md)
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Introduction](https://github.com/lerausenco/KBE-Prosjekt/blob/main/A3%20-%20Nodes.md#introduction)
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Design Overview](https://github.com/lerausenco/KBE-Prosjekt/blob/main/A3%20-%20Nodes.md#design-overview)
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Implementation](https://github.com/lerausenco/KBE-Prosjekt/blob/main/A3%20-%20Nodes.md#implementation)
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Examples from run-through](https://github.com/lerausenco/KBE-Prosjekt/blob/main/A3%20-%20Nodes.md#examples-from-run-through)
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Video](https://github.com/lerausenco/KBE-Prosjekt/blob/main/A3%20-%20Nodes.md#video)
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Extendability and Improvements](https://github.com/lerausenco/KBE-Prosjekt/blob/main/A3%20-%20Nodes.md#extendability-and-improvements)
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Conclusion](https://github.com/lerausenco/KBE-Prosjekt/blob/main/A3%20-%20Nodes.md#conclusion)
 
 [Presentation slides](https://docs.google.com/presentation/d/1b_uDx3eRB-gx80HBujppxmrYbu2rVfRbG9EpXXqe6O0/edit?usp=sharing)
