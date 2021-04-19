@@ -135,10 +135,6 @@ The algorithm seem to work best at the more simple "mazes". Both in the image ab
 ![](Figures/A2/A2-video2.gif)
 Note: the upload button is pre-programmed to receive the image locally. Please note at the end of the video, that the model takes a little while to load, but is shown at the end.
 
-# Conclusion
-A system for checking the weldability was developed. The computer vision part of the task worked successfully, and it was possible to create an NX-model automatically with NXOpen. Uploading an image to an HTML website and getting it to communicate with python proved difficult and was not implemented.
-Improvements from assignment one have been taken into account and utilised in the development of this assignment. To conclude, the system has the key features needed for a local weldability checker application, but lacks an image-handling server for full online integration. 
-
 # Extendability and Improvements
 There are a few features that could be improved for an even more extendable solution. The first one is that some walls are counted twice which is unneccesary. A more elegant solution would be to have a system for determining the wall thickness in pixels - e.g. the user can enter wall thickness themselves. 
 Another feauture would be to implement more flexible edge-detection functions - i.e. so that the section size could be varied based on wall thickness.
@@ -146,3 +142,7 @@ Another feauture would be to implement more flexible edge-detection functions - 
 In a real user case, the upload/download image function coupled with a database would also be working.
 
 Of note, the code developed for finding space for the welding gun uses three nested for-loops in python which is not ideal for a fast response and extendable system. This would probably have been swapped out with a function from a library written in a faster programming language when integrating this system in a real user case.
+
+# Conclusion
+A system for checking the weldability was developed. The computer vision part of the task worked successfully, and it was possible to create an NX-model automatically with NXOpen. Uploading an image to an HTML website and getting it to communicate with python proved difficult and was not implemented.
+Improvements from assignment one have been taken into account and utilised in the development of this assignment. To conclude, the system has the key features needed for a local weldability checker application, but lacks an image-handling server for full online integration. 
