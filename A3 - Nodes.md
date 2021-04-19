@@ -54,7 +54,7 @@ Below are screenshots of the actual UIs. The input UI is very similar to the UI 
 An improvement concerning the database is the new naming system for node entries. The name of the node in this assignment is the data and time which the user submitted the order in the following format <YYMMDDHHMMSS>. This allows for NASTRAN_handler to easily sort the entries by time, and perform simulations on the newest entry, contrary to the first assignment, where the NX-generating module checked if a part with the same name existed, before generating it. Finally, it is also worth mentioning that the play_NX scripts give maximum automation - the script covers everything from opening creating a new part file, generating the part and saving it, meshing the part, running the analysis, creating and saving the gif and closing the part file. The operator only needs to open NX and press play.
 
 # Examples from run-through
-
+Different material preferences and load dimensions are demonstrated in each example.
 ## Example 1
 ### Inputs from user and generated part, the material will be Aluminium:
 
