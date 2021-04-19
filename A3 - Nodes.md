@@ -29,17 +29,20 @@ A more detailed description of the architecture is shown in the class diagram be
 
 # Implementation
 
+##
+
+
 ## Code Modules
 
-* duralok.py - This contains the class for the duralok node. The class has all the functions needed for the node to be built up from cones and cylinders, perform FEA simulations and make a gif.
+* duralok.py - This contains the class for the duralok node. The class has all the functions needed for the node to be built up parametrically from cones and cylinders, perform FEA simulations and make a gif.
 * myHandler.py - Custom handler with helper functions, derived from BaseHTTPRequestHandler.
-* customer_handler.py - Child of myHandler with redefined do_POST() and do_GET() methods to host customer server. Uploads the loads and dimensions defined by the customer to the fuseki database.
+* customer_handler.py - Child of myHandler with redefined do_POST() and do_GET() methods to host customer server. Uploads the loads and dimensions defined by the customer to the Fuseki database.
 * NASTRAN_handler.py - Child of myHandler with redefined do_POST() and do_GET() methods to host NASTRAN server. Queries the fuseki database and finds the most recent addition. Writes the parameters of the most recent addition to params.txt, so that the play_NX scripts can read them.
 * parsers.py - helper functions to parse json data and generate query text.
 * extract_data_from_website.py - scripts to extract live material information from a website.
 * find_correct_material.py - scripts to find the correct material based on specified criteria.
-* play_NX_min.py - journal to be played in NX to generate analysis with minimum loads.
-* play_NX_max.py - journal to be played in NX to generate analysis with maximum loads.
+* play_NX_min.py - this is the journal to be played in NX to generate analysis with minimum loads. It creates a parametric model of the node using the parameters specified by the user. Then, using the methods in the Duralok class it goes through all the steps necessary to create a gif of the FEA simulation for the user. 
+* play_NX_max.py - same as above but for maximum loads.
 * run_customer_server.py - script to run the customer server in the terminal.
 * run_NASTRAN_server.py - script to run the NASTRAN server in the terminal.
 
@@ -84,12 +87,13 @@ Below is a video of the run-through, sped up 2x.
 ![](Figures/A3/fast-video.gif)
 
 # Conclusion
-A KBE system for proposing node material was sucseffully implemented. The system proposes the best-fit material based on input as load and wishes from the user. The system connects many different modules and information/knowledge is flowing inbetween them.
+A KBE system for proposing node material and running a FEA simulation was successfully implemented. The system connects different modules with information and knowledge flowing between them by updating and quering a Fuseki server. The system demonstrates on a low level, how intedisciplinary engineering modules can interact with each other. More specifically, it includes a materials module which interacts with a finite element analysis module. Feedback is given to the user in the form of a suggested best-fit material and FEA deformation results, based on input as load and material characteristics from the user. Finally, many utility functions were reused from previous assignments.
 
-To conclude, the system was sucseffully implemnted.
 # Extendability and Improvements
-The systsm now requires the "node calculator" to have an operator with NX running. This is for running the analysis script. In the future this feature would be changed such that python opens NX automatically.
+Regarding extendability, it is easy to implement new materials, should the manufacturer be interested in working with other standard metals. Furthermore, the live cost for all the most common metals is already stored in a dictionary. Extending the ontology to take into account more user inputs is also easy to do, as the database queries and updates can be easily adapted to accomodate extra parameters. The use of website-data demonstrates the potential for extending the system as data from other sources can be implemented in the system in the same manner. Another factor which improves the extendibility is the parametric design of the node. The model of the node is generated based on the scaffolding pipe diameter and thickness. Although this resulted in challenges when developing the automatic analysis code, it provides flexibility for the user who can perform an automatic FEA analysis for pipes of different sizes simply by changing the diameter parameter. 
 
-Another feature that can be implemented in the future is topology optimization. The user can then input the design space and loads in the UI and the computer performs a topology optimisation and FEA on the geometry.
+That being said, the current implementation would require a more robust process for the selection of faces for where the forces are applied. Currently, the scaffolding pipe diameter can only be varied over a relatively small range (ca. ±10cm), before openNX struggles to find the face specified and gives an error. This is not ideal, however this range may be sufficient for this application which uses standardised components.
 
-It is ieasy to implement new materials, if the designer should be interested in working with other standard metals. Furthermore, the live cost for all the most common metals is already stored in a dictionary
+Another drawback is that the current implementation requires an operator to run the FEA script in NX in order to perform the analysis. Ideally, this feature would be changed such that a Python script opens NX automatically, which would ensure a seamless connection from user to feedback. Another feature that could be implemented in the future is topology optimization. The user can then input the design space and loads in the UI and the system performs a topology optimisation and FEA on the geometry.
+
+
