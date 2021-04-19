@@ -1,0 +1,68 @@
+
+*** 16:27:41 *** 
+Starting Nastran Exporter
+
+*** 16:27:41 *** 
+Writing file 
+C:\Users\lera_\OneDrive\Dokumenter\NTNU\KBE\KBE-Prosjekt\Nodes\Parts\sim1-solution_1.dat
+ 
+*** 16:27:41 *** 
+Writing SIMCENTER NASTRAN 2020.1 compatible deck
+
+*** 16:27:41 *** 
+Writing Nastran System section
+
+*** 16:27:41 *** 
+Writing File Management section
+
+*** 16:27:41 *** 
+Writing Executive Control section
+
+*** 16:27:41 *** 
+Writing Case Control section
+
+*** 16:27:42 *** 
+Writing Bulk Data section
+
+*** 16:27:42 *** 
+Writing Nodes
+
+*** 16:27:43 *** 
+Writing Elements
+
+*** 16:27:44 *** 
+Writing Physical Properties
+
+*** 16:27:44 *** 
+Writing Materials
+
+*** 16:27:44 *** 
+Writing Degree-of-Freedom Sets
+
+*** 16:27:44 *** 
+Writing Loads and Constraints
+
+*** 16:27:44 *** 
+Writing Coordinate Systems
+
+*** 16:27:44 *** 
+Summary of Bulk Data cards written
+
++----------+----------+
+|   NAME   |  NUMBER  |
++----------+----------+
+| CTETRA   | 38225    |
+| FORCE    | 798      |
+| GRID     | 65010    |
+| LOAD     | 1        |
+| MAT1     | 1        |
+| MATT1    | 1        |
+| PARAM    | 6        |
+| PSOLID   | 1        |
+| SPC      | 570      |
+| TABLEM1  | 3        |
++----------+----------+
+
+*** 16:27:44 *** 
+Nastran Deck Successfully Written
+
