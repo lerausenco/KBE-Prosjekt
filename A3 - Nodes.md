@@ -99,6 +99,6 @@ Another drawback is that the current implementation requires an operator to run 
 
 # Conclusion
 A KBE system for proposing node material and running a FEA simulation was successfully implemented. The system connects different modules with information and knowledge flowing between them by updating and quering a Fuseki server. The system demonstrates on a low level, how intedisciplinary engineering modules can interact with each other. More specifically, it includes a materials module which interacts with a finite element analysis module. Feedback is given to the user in the form of a suggested best-fit material and FEA deformation results, based on input as load and material characteristics from the user. Finally, many utility functions were reused from previous assignments.
-Although this is by no means an ideal systems, it serves as a proof of concept for the potential modules that can be tied together to make a KBE system
+Although this is by no means an ideal system, it serves as a proof of concept for the potential modules that can be tied together to make a KBE system
 
 
