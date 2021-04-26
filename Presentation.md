@@ -1,13 +1,13 @@
 # Presentation Slides
 
-![](Ppt/Lessons learnt.png)
+![](Figures/Lessonslearnt.png)
 
-![](Ppt/Lessons learnt1.png)
+![](Figures/Lessonslearnt1.png)
 
-![](Ppt/Lessons learnt2.png)
+![](Figures/Lessonslearnt2.png)
 
-![](Ppt/Lessons learnt3.png)
+![](Figures/Lessonslearnt3.png)
 
-![](Ppt/Lessons learnt4.png)
+![](Figures/Lessonslearnt4.png)
 
-![](Ppt/Lessons learnt5.png)
+![](Figures/Lessonslearnt5.png)
